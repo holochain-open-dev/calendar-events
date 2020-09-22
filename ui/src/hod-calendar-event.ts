@@ -1,7 +1,7 @@
 import { html, css, LitElement, property } from 'lit-element';
 
 export class HodCalendarEvent extends LitElement {
-  static styles =css`
+  static styles = css`
     :host {
       display: block;
       padding: 25px;
@@ -9,9 +9,9 @@ export class HodCalendarEvent extends LitElement {
     }
   `;
 
-  @property({type: String}) title = 'Hey there';
+  @property({ type: String }) title = 'Hey there';
 
-  @property({type: Number}) counter = 5;
+  @property({ type: Number }) counter = 5;
 
   __increment() {
     this.counter += 1;

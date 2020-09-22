@@ -6,25 +6,21 @@ window.customElements.define('hod-calendar-event', HodCalendarEvent);
 
 describe('HodCalendarEvent', () => {
   it('has a default title "Hey there" and counter 5', async () => {
-    const el: HodCalendarEvent = await fixture(html`
-      <hod-calendar-event></hod-calendar-event>
-    `);
+    const el = await fixture(html` <hod-calendar-event></hod-calendar-event> `);
 
     expect(el.title).to.equal('Hey there');
     expect(el.counter).to.equal(5);
   });
 
   it('increases the counter on button click', async () => {
-    const el: HodCalendarEvent = await fixture(html`
-      <hod-calendar-event></hod-calendar-event>
-    `);
-    el.shadowRoot!.querySelector('button')!.click();
+    const el = await fixture(html` <hod-calendar-event></hod-calendar-event> `);
+    el.shadowRoot.querySelector('button').click();
 
     expect(el.counter).to.equal(6);
   });
 
   it('can override the title via attribute', async () => {
-    const el: HodCalendarEvent = await fixture(html`
+    const el = await fixture(html`
       <hod-calendar-event title="attribute title"></hod-calendar-event>
     `);
 
@@ -32,9 +28,7 @@ describe('HodCalendarEvent', () => {
   });
 
   it('passes the a11y audit', async () => {
-    const el: HodCalendarEvent = await fixture(html`
-      <hod-calendar-event></hod-calendar-event>
-    `);
+    const el = await fixture(html` <hod-calendar-event></hod-calendar-event> `);
 
     await expect(el).shadowDom.to.be.accessible();
   });
