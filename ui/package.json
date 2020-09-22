@@ -18,7 +18,7 @@
     "format": "npm run format:eslint && npm run format:prettier",
     "test": "tsc && karma start --coverage",
     "test:watch": "concurrently -k --names tsc,karma \"npm run tsc:watch\" \"karma start --auto-watch=true --single-run=false -- --grep e2e/**/*.test.js\"",
-    "e2e": "E2E=true concurrently -k -s first \"tsc && karma start --coverage -- --grep e2e/**/*.test.js\" \"RUST_LOG=error holochain-run-dna ../example-dna/example-dna.dna.gz\"",
+    "e2e": "E2E=true concurrently -k -s first \"tsc && karma start --coverage\" \"RUST_LOG=error holochain-run-dna ../example-dna/example-dna.dna.gz\"",
     "storybook": "concurrently --kill-others --names tsc,storybook \"npm run tsc:watch\" \"start-storybook --node-resolve --watch --open\"",
     "storybook:build": "build-storybook"
   },
@@ -26,9 +26,11 @@
     "@apollo/client": "^3.2.0",
     "@graphql-tools/schema": "^6.2.3",
     "@holochain/conductor-api": "guillemcordoba/holochain-conductor-api#develop",
+    "@rollup/plugin-commonjs": "^15.1.0",
     "graphql": "^15.3.0",
     "lit-element": "^2.2.1",
-    "lit-html": "^1.1.2"
+    "lit-html": "^1.1.2",
+    "rollup-plugin-node-builtins": "^2.1.2"
   },
   "devDependencies": {
     "@open-wc/demoing-storybook": "^2.0.0",
@@ -41,6 +43,7 @@
     "concurrently": "^5.1.0",
     "deepmerge": "^3.2.0",
     "es-dev-server": "^1.23.0",
+    "es-dev-server-rollup": "0.0.8",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.11.0",
     "husky": "^1.0.0",

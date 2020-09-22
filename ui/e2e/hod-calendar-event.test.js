@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client/core';
 import { html, fixture, expect } from '@open-wc/testing';
+import { AppWebsocket } from '@holochain/conductor-api';
 
 import {
   CREATE_CALENDAR_EVENT,

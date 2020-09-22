@@ -1,6 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const { createDefaultConfig } = require('@open-wc/testing-karma');
 const merge = require('deepmerge');
+const { wrapRollupPlugin } = require('es-dev-server-rollup');
+const commonjs = require('@rollup/plugin-commonjs');
+const builtins = require('rollup-plugin-node-builtins');
 
 const e2e = process.env.E2E;
 const testsPattern = `${e2e ? 'e2e' : 'test'}/**/*.test.js`;
@@ -18,7 +21,23 @@ module.exports = config => {
       ],
 
       esm: {
-        nodeResolve: true,
+        nodeResolve: {
+          browser: true,
+        },
+        plugins: [
+          wrapRollupPlugin(builtins()),
+          wrapRollupPlugin(
+            commonjs({
+              include: [
+                'node_modules/fast-json-stable-stringify/**/*',
+                'node_modules/zen-observable/**/*',
+                'node_modules/graphql-tag/**/*',
+                'node_modules/isomorphic-ws/**/*',
+                'node_modules/@msgpack/**/*',
+              ],
+            })
+          ),
+        ],
       },
       // you can overwrite/extend the config further
     })
