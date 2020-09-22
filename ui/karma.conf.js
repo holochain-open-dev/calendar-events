@@ -2,6 +2,9 @@
 const { createDefaultConfig } = require('@open-wc/testing-karma');
 const merge = require('deepmerge');
 
+const e2e = process.env.E2E;
+const testsPattern = `${e2e ? 'e2e' : 'test'}/**/*.test.js`;
+
 module.exports = config => {
   config.set(
     merge(createDefaultConfig(config), {
@@ -11,14 +14,14 @@ module.exports = config => {
         //
         // npm run test -- --grep test/foo/bar.test.js
         // npm run test -- --grep test/bar/*
-        { pattern: config.grep ? config.grep : 'test/**/*.test.js', type: 'module' },
+        { pattern: config.grep ? config.grep : testsPattern, type: 'module' },
       ],
 
       esm: {
         nodeResolve: true,
       },
       // you can overwrite/extend the config further
-    }),
+    })
   );
   return config;
 };
