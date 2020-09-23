@@ -40,8 +40,8 @@ export async function setupClient(url) {
   });
 }
 
-describe('HodCalendarEvent', () => {
-  it('GraphQl schema and resolvers work', async () => {
+describe('Apollo middleware', () => {
+  it('create a calendar event and retrieve it works', async () => {
     const client = await setupClient('ws://localhost:8888');
 
     const calendarHash = await client.mutate({

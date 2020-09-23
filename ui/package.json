@@ -1,13 +1,13 @@
 {
-  "name": "hod-calendar-event",
+  "name": "hod-calendar-events",
   "version": "0.0.0",
   "description": "Webcomponent hod-calendar-event following open-wc recommendations",
-  "author": "hod-calendar-event",
+  "author": "guillem.cordoba@gmail.com",
   "license": "MIT",
   "main": "index.js",
   "module": "index.js",
   "scripts": {
-    "start": "concurrently --kill-others --names tsc,es-dev-server \"npm run tsc:watch\" \"es-dev-server --app-index demo/index.html --node-resolve --open --watch\"",
+    "start": "concurrently --kill-others --names tsc,es-dev-server \"npm run tsc:watch\" \"es-dev-server --config demo/es-dev-server.config.js\" \"RUST_LOG=error holochain-run-dna ../example-dna/example-dna.dna.gz\"",
     "build": "rimraf dist && tsc",
     "tsc:watch": "tsc --watch",
     "lint:eslint": "eslint --ext .ts,.html . --ignore-path .gitignore",
@@ -29,8 +29,7 @@
     "@rollup/plugin-commonjs": "^15.1.0",
     "graphql": "^15.3.0",
     "lit-element": "^2.2.1",
-    "lit-html": "^1.1.2",
-    "rollup-plugin-node-builtins": "^2.1.2"
+    "lit-html": "^1.1.2"
   },
   "devDependencies": {
     "@open-wc/demoing-storybook": "^2.0.0",
@@ -50,6 +49,7 @@
     "lint-staged": "^10.0.0",
     "prettier": "^2.0.4",
     "rimraf": "^3.0.2",
+    "rollup-plugin-node-builtins": "^2.1.2",
     "tslib": "^1.11.0",
     "typescript": "~3.9.0"
   },
