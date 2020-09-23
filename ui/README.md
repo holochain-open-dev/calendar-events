@@ -1,50 +1,35 @@
-# \<hod-calendar-event>
+# UI Developer Setup
 
-This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) recommendation.
+UI module for the `calendar-events-zome`.
 
-## Installation
+> This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) recommendation.
+
+## Requirements
+
+- Having run through [holochain RSM installation](https://github.com/holochain/holochain-dna-build-tutorial).
+- Having [holochain-run-dna](https://www.npmjs.com/package/@holochain-open-dev/holochain-run-dna) installed.
+
+## Local Demo with `es-dev-server`
+
+Run this from inside the `nix-shell` in which you have the `holochain` binary install.
+
 ```bash
-npm i hod-calendar-event
+npm start
 ```
 
-## Usage
-```html
-<script type="module">
-  import 'hod-calendar-event/hod-calendar-event.js';
-</script>
+To run a local development server that serves the basic demo located in `demo/index.html`
+Take into account that this will run the holochain conductor in the background and connect the UI to the actual conductor.
 
-<hod-calendar-event></hod-calendar-event>
-```
+## Building
 
-## Linting with ESLint, Prettier, and Types
-To scan the project for linting errors, run
 ```bash
-npm run lint
-```
-
-You can lint with ESLint and Prettier individually as well
-```bash
-npm run lint:eslint
-```
-```bash
-npm run lint:prettier
-```
-
-To automatically fix many linting errors, run
-```bash
-npm run format
-```
-
-You can format using ESLint and Prettier individually as well
-```bash
-npm run format:eslint
-```
-```bash
-npm run format:prettier
+npm run build
 ```
 
 ## Testing with Karma
+
 To run the suite of karma tests, run
+
 ```bash
 npm run test
 ```
@@ -55,26 +40,40 @@ To run the tests in watch mode (for <abbr title="test driven development">TDD</a
 npm run test:watch
 ```
 
+## E2E tests
+
+Run this from inside the `nix-shell` in which you have the `holochain` binary install.
+
+```bash
+npm run e2e
+```
+
+Take into account that this will run the holochain conductor in the background to perform the tests.
+
 ## Demoing with Storybook
+
 To run a local instance of Storybook for your component, run
+
 ```bash
 npm run storybook
 ```
 
 To build a production version of Storybook, run
+
 ```bash
 npm run storybook:build
 ```
 
+## Linting with ESLint, Prettier, and Types
 
-## Tooling configs
+To scan the project for linting errors, run
 
-For most of the tools, the configuration is in the `package.json` to reduce the amount of files in your project.
-
-If you customize the configuration a lot, you can consider moving them to individual files.
-
-## Local Demo with `es-dev-server`
 ```bash
-npm start
+npm run lint
 ```
-To run a local development server that serves the basic demo located in `demo/index.html`
+
+To automatically fix many linting errors, run
+
+```bash
+npm run format
+```
