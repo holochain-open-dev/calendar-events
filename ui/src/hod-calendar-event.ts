@@ -1,4 +1,4 @@
-import { html, css, LitElement, property } from 'lit-element';
+import { html, css, LitElement, property, customElement } from 'lit-element';
 
 export class HodCalendarEvent extends LitElement {
   static styles = css`
@@ -9,6 +9,11 @@ export class HodCalendarEvent extends LitElement {
     }
   `;
 
+  /**
+   * This is a description of a property with an attribute with exactly the same name: "color".
+   * @type {"red"|"green"|"blue"}
+   * @attr
+   */
   @property({ type: String }) title = 'Hey there';
 
   @property({ type: Number }) counter = 5;

@@ -10,5 +10,6 @@ module.exports = {
     nodeResolve: true,
     watch: true,
     open: true,
+    plugins: require('../es-dev-plugins'),
   },
 };

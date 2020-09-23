@@ -10,6 +10,7 @@
     "start": "concurrently --kill-others --names tsc,es-dev-server \"npm run tsc:watch\" \"es-dev-server --config demo/es-dev-server.config.js\" \"npm run holochain:start\"",
     "build": "rimraf dist && tsc",
     "tsc:watch": "tsc --watch",
+    "analize": "wca analyze src --format json --outFile custom-elements.json",
     "lint:eslint": "eslint --ext .ts,.html . --ignore-path .gitignore",
     "format:eslint": "eslint --ext .ts,.html . --fix --ignore-path .gitignore",
     "lint:prettier": "prettier \"**/*.js\" \"**/*.ts\" --check --ignore-path .gitignore",
@@ -54,7 +55,8 @@
     "rimraf": "^3.0.2",
     "rollup-plugin-node-builtins": "^2.1.2",
     "tslib": "^1.11.0",
-    "typescript": "~3.9.0"
+    "typescript": "~3.9.0",
+    "web-component-analyzer": "^1.1.6"
   },
   "eslintConfig": {
     "extends": [

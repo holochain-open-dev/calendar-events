@@ -4,8 +4,9 @@ import '../dist/hod-calendar-event.js';
 
 export default {
   title: 'HodCalendarEvent',
-  component: 'hod-calendar-event',
-  options: { selectedPanel: "storybookjs/knobs/panel" },
+  component: 'hod-full-calendar',
+  parameters: { component: 'hod-full-calendar' },
+  options: { selectedPanel: 'storybookjs/knobs/panel' },
 };
 ```
 
@@ -21,6 +22,8 @@ A component for...
 
 ## How to use
 
+<sb-props of="hod-full-calendar"></sb-props>
+
 ### Installation
 
 ```bash
@@ -32,9 +35,7 @@ import 'hod-calendar-event/hod-calendar-event.js';
 ```
 
 ```js preview-story
-export const Simple = () => html`
-  <hod-calendar-event></hod-calendar-event>
-`;
+export const Simple = () => html` <hod-calendar-event></hod-calendar-event> `;
 ```
 
 ## Variations
