@@ -4,6 +4,7 @@ const merge = require('deepmerge');
 const { wrapRollupPlugin } = require('es-dev-server-rollup');
 const commonjs = require('@rollup/plugin-commonjs');
 const builtins = require('rollup-plugin-node-builtins');
+const globals = require('rollup-plugin-node-globals');
 
 const e2e = process.env.E2E;
 const testsPattern = `${e2e ? 'e2e' : 'test'}/**/*.test.js`;
@@ -26,6 +27,7 @@ module.exports = config => {
         },
         plugins: [
           wrapRollupPlugin(builtins()),
+          wrapRollupPlugin(globals()),
           wrapRollupPlugin(
             commonjs({
               include: [

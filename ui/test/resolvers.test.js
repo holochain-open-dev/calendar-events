@@ -9,6 +9,8 @@ import {
   calendarEventsTypeDefs,
   calendarEventsResolvers,
 } from '../dist';
+import { AppWebsocketMock } from './mocks/AppWebsocket.mock';
+import { CalendarEventsMock } from './mocks/calendar-events.mock';
 
 const rootTypeDef = gql`
   type Query {
@@ -23,7 +25,8 @@ const rootTypeDef = gql`
 const allTypeDefs = [rootTypeDef, calendarEventsTypeDefs];
 
 export async function setupClient(url) {
-  const appWebsocket = await AppWebsocket.connect(String(url));
+  const dnaMock = new CalendarEventsMock();
+  const appWebsocket = new AppWebsocketMock(dnaMock);
 
   const appInfo = await appWebsocket.appInfo({ app_id: 'test-app' });
 
