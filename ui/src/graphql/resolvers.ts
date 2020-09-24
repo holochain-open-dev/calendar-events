@@ -16,7 +16,7 @@ export const calendarEventsResolvers = (
 ): Resolvers => ({
   Query: {
     async allCalendarEvents() {
-      return appWebsocket.callZome({
+      const events = await appWebsocket.callZome({
         cap: null as any,
         cell_id: cellId,
         zome_name: zomeName,
@@ -24,6 +24,11 @@ export const calendarEventsResolvers = (
         payload: null,
         provenance: cellId[1],
       });
+
+      return events.map((event: any) => ({
+        id: hashToString(event[0]),
+        ...event[1],
+      }));
     },
   },
   Mutation: {
@@ -48,11 +53,12 @@ export const calendarEventsResolvers = (
 
       return {
         id: hashToString(eventId),
+        createdBy: hashToString(cellId[1]),
         title,
         startTime,
         endTime,
-        location,
         invitees,
+        location,
       };
     },
   },
