@@ -17,13 +17,13 @@ jobs:
           name: test-holochain
           working_directory: ~/project/example-dna/tests
           command: |
-            npm install
+            NODE_ENV=development npm install
             npm test
       - run:
           name: build-ui
           working_directory: ~/project/ui
           command: |
-            npm install
+            NODE_ENV=development npm install
             npm run lint
             npm run build
       - run:
@@ -31,7 +31,6 @@ jobs:
           working_directory: ~/project/ui
           command: |
             npm i -g @holochain-open-dev/holochain-run-dna
-            npm install
             npm test
             npm run e2e
 
