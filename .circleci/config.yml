@@ -12,7 +12,7 @@ jobs:
           command: cd /holochain/build && nix-shell --run "cd /root/project/example-dna && CARGO_TARGET_DIR=target cargo build --release --target wasm32-unknown-unknown && dna-util -c example-dna.dna.workdir/" .
       - run:
           name: test-holochain
-          command: cd /holochain/build && nix-shell --run "cd /root/project/example-dna/tests && ls && ls node_modules && npm install && npm test" .
+          command: cd /holochain/build && nix-shell --run "cd /root/project/example-dna/tests && ls && npm install && ls node_modules && npm test" .
       - run:
           name: build-ui
           command: cd /holochain/build && nix-shell --run "cd /root/project/ui && npm install && npm run lint && npm run build" .
