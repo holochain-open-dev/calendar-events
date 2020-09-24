@@ -33,6 +33,7 @@ jobs:
             apt-get update
             apt-get install -y chromium
             npm i -g @holochain-open-dev/holochain-run-dna
+            export CHROME_BIN=/usr/bin/chromium
             npm test
             npm run e2e
 
