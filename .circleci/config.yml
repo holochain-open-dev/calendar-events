@@ -25,7 +25,7 @@ jobs:
   build-ui:
     docker:
       - image: guillemcordoba/rsm:latest
-      steps:
+    steps:
       - checkout
       - run:
         command: |
@@ -36,7 +36,7 @@ jobs:
   test-ui:
     docker:
       - image: guillemcordoba/rsm:latest
-      steps:
+    steps:
       - checkout
       - run:
         command: |
