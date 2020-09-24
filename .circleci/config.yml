@@ -9,7 +9,7 @@ jobs:
       - checkout
       - run:
           command: |
-            nix-shell --run "cd example-dna && CARGO_TARGET=target cargo build --release --target wasm32-unknown-unknown && dna-util example-dna.dna.workdir" /holochain/build
+            nix-shell --run "cd example-dna && CARGO_TARGET=target cargo build --release --target wasm32-unknown-unknown && dna-util -c example-dna.dna.workdir" /holochain/build
   test-holochain:
     docker:
       - image: guillemcordoba/rsm
@@ -17,9 +17,7 @@ jobs:
       - checkout
       - run:
           command: |
-            cd example-dna/tests
-            npm install
-            npm test
+            nix-shell --run "cd example-dna/tests && npm install && npm test" /holochain/build
   build-ui:
     docker:
       - image: guillemcordoba/rsm
@@ -27,10 +25,7 @@ jobs:
       - checkout
       - run:
           command: |
-            cd ui
-            npm install
-            npm run lint
-            npm run build
+            nix-shell --run "cd ui && npm install && npm run lint && npm run build" /holochain/build
   test-ui:
     docker:
       - image: guillemcordoba/rsm
@@ -38,10 +33,8 @@ jobs:
       - checkout
       - run:
           command: |
-            cd ui
-            npm test
-            npm e2e
-          
+            nix-shell --run "cd ui && npm test && npm run e2e" /holochain/build
+
 # Orchestrate our job run sequence
 workflows:
   build_and_test:
