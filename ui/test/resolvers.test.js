@@ -48,7 +48,7 @@ export async function setupClient(url) {
 }
 
 describe('Apollo middleware', () => {
-  it('create a calendar event and retrieve it works', async () => {
+  it('create a calendar event and retrieve it', async () => {
     const client = await setupClient('ws://localhost:8888');
 
     const calendarHash = await client.mutate({
