@@ -9,16 +9,31 @@ jobs:
       - checkout
       - run:
           name: build-holochain
-          command: cd /holochain/build && nix-shell --run "cd /root/project/example-dna && CARGO_TARGET_DIR=target cargo build --release --target wasm32-unknown-unknown && dna-util -c example-dna.dna.workdir/" .
+          working_directory: ~/project/example-dna
+          command: | 
+            CARGO_TARGET_DIR=target cargo build --release --target wasm32-unknown-unknown
+            dna-util -c example-dna.dna.workdir/
       - run:
           name: test-holochain
-          command: cd /holochain/build && nix-shell --run "cd /root/project/example-dna/tests && ls && npm install && ls node_modules && npm test" .
+          working_directory: ~/project/example-dna/tests
+          command: |
+            npm install
+            npm test
       - run:
           name: build-ui
-          command: cd /holochain/build && nix-shell --run "cd /root/project/ui && npm install && npm run lint && npm run build" .
+          working_directory: ~/project/ui
+          command: |
+            npm install
+            npm run lint
+            npm run build
       - run:
           name: test-ui
-          command: cd /holochain/build && nix-shell --run "cd /root/project/ui && npm install && npm test && npm run e2e" .
+          working_directory: ~/project/ui
+          command: |
+            npm i -g @holochain-open-dev/holochain-run-dna
+            npm install
+            npm test
+            npm run e2e
 
 # Orchestrate our job run sequence
 workflows:
