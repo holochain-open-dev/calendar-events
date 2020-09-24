@@ -4,7 +4,7 @@ version: 2.1
 jobs:
   build-holochain:
     docker:
-      - image: guillemcordoba/rsm:latest
+      - image: guillemcordoba/rsm
     steps:
       - checkout
       - run:
@@ -14,7 +14,7 @@ jobs:
             dna-util example-dna.dna.workdir
   test-holochain:
     docker:
-      - image: guillemcordoba/rsm:latest
+      - image: guillemcordoba/rsm
     steps:
       - checkout
       - run:
@@ -24,7 +24,7 @@ jobs:
             npm test
   build-ui:
     docker:
-      - image: guillemcordoba/rsm:latest
+      - image: guillemcordoba/rsm
     steps:
       - checkout
       - run:
@@ -35,7 +35,7 @@ jobs:
             npm run build
   test-ui:
     docker:
-      - image: guillemcordoba/rsm:latest
+      - image: guillemcordoba/rsm
     steps:
       - checkout
       - run:
