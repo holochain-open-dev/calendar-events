@@ -8,41 +8,41 @@ jobs:
     steps:
       - checkout
       - run:
-        command: |
-          cd example-dna
-          CARGO_TARGET=target cargo build --release --target wasm32-unknown-unknown
-          dna-util example-dna.dna.workdir
+          command: |
+            cd example-dna
+            CARGO_TARGET=target cargo build --release --target wasm32-unknown-unknown
+            dna-util example-dna.dna.workdir
   test-holochain:
     docker:
       - image: guillemcordoba/rsm:latest
     steps:
       - checkout
       - run:
-        command: |
-          cd example-dna/tests
-          npm install
-          npm test
+          command: |
+            cd example-dna/tests
+            npm install
+            npm test
   build-ui:
     docker:
       - image: guillemcordoba/rsm:latest
     steps:
       - checkout
       - run:
-        command: |
-          cd ui
-          npm install
-          npm run lint
-          npm run build
+          command: |
+            cd ui
+            npm install
+            npm run lint
+            npm run build
   test-ui:
     docker:
       - image: guillemcordoba/rsm:latest
     steps:
       - checkout
       - run:
-        command: |
-          cd ui
-          npm test
-          npm e2e
+          command: |
+            cd ui
+            npm test
+            npm e2e
           
 # Orchestrate our job run sequence
 workflows:
