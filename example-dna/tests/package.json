@@ -15,7 +15,7 @@
     "typescript": "^3.9.6"
   },
   "devDependencies": {
-    "@holochain/tryorama": "git://github.com/holochain/tryorama#rsm",
+    "@holochain/tryorama": "holochain/tryorama#rsm",
     "@types/lodash": "^4.14.158",
     "@types/node": "^14.0.14"
   }
