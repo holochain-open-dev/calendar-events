@@ -30,7 +30,8 @@ jobs:
           name: test-ui
           working_directory: ~/project/ui
           command: |
-            apt-get install chromium-browser
+            apt-get update
+            apt-get install -y chromium-browser
             npm i -g @holochain-open-dev/holochain-run-dna
             npm test
             npm run e2e
