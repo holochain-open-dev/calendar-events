@@ -9,7 +9,7 @@ jobs:
       - checkout
       - run:
           command: |
-            nix-shell --run "cd example-dna && CARGO_TARGET=target cargo build --release --target wasm32-unknown-unknown && dna-util -c example-dna.dna.workdir" /holochain/build
+            pwd && ls && nix-shell --run "cd example-dna && CARGO_TARGET=target cargo build --release --target wasm32-unknown-unknown && dna-util -c example-dna.dna.workdir" .
   test-holochain:
     docker:
       - image: guillemcordoba/rsm
