@@ -73,6 +73,8 @@ describe('Apollo middleware', () => {
       `,
     });
 
+    console.log(result)
+
     expect(result.data.allCalendarEvents.length).to.equal(1);
     expect(result.data.allCalendarEvents[0].id).to.equal(
       createCalendarEvent.data.createCalendarEvent.id
