@@ -1,5 +1,6 @@
 import { gql, ApolloClient, InMemoryCache } from '@apollo/client/core';
 import { expect } from '@open-wc/testing';
+import { GET_MY_CALENDAR_EVENTS } from '../dist/graphql/queries';
 
 import { setupApolloClientMock } from './mocks/utils';
 
@@ -19,25 +20,13 @@ describe('Apollo middleware', () => {
     });
 
     const result = await client.query({
-      query: gql`
-        {
-          allCalendarEvents {
-            id
-            title
-            createdBy
-            startTime
-            endTime
-            invitees
-            location
-          }
-        }
-      `,
+      query: GET_MY_CALENDAR_EVENTS
     });
 
-    expect(result.data.allCalendarEvents.length).to.equal(1);
-    expect(result.data.allCalendarEvents[0].id).to.equal(
+    expect(result.data.myCalendarEvents.length).to.equal(1);
+    expect(result.data.myCalendarEvents[0].id).to.equal(
       createCalendarEvent.data.createCalendarEvent.id
     );
-    expect(result.data.allCalendarEvents[0].title).to.equal('Event 1');
+    expect(result.data.myCalendarEvents[0].title).to.equal('Event 1');
   });
 });

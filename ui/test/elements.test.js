@@ -4,8 +4,9 @@ import { HodFullCalendar } from '../dist/elements/hod-full-calendar';
 import { CREATE_CALENDAR_EVENT } from '../dist/graphql/queries';
 import { setupApolloClientMock } from './mocks/utils.js';
 
-describe('HodCalendarEvent', () => {
-  beforeAll(async () => {
+describe('HodFullCalendar', () => {
+
+  it('<hod-full-calendar> renders a newly created event', async () => {
     const client = await setupApolloClientMock();
     window.customElements.define('hod-full-calendar', HodFullCalendar(client));
 
@@ -19,9 +20,7 @@ describe('HodCalendarEvent', () => {
         invitees: [],
       },
     });
-  });
 
-  it('<hod-full-calendar> renders a newly created event', async () => {
     const el = await fixture(html` <hod-full-calendar></hod-full-calendar> `);
 
     const fullCalendar = el.shadowRoot.querySelector('#full-calendar');
