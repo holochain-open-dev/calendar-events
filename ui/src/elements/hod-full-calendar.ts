@@ -30,7 +30,7 @@ export function HodFullCalendar(apolloClient: ApolloClient<any>) {
     fullCalendar!: HTMLElement;
 
     async firstUpdated() {
-      let calendar = new Calendar(this.fullCalendar, {
+      const calendar = new Calendar(this.fullCalendar, {
         plugins: [dayGridPlugin],
         initialView: 'dayGridMonth',
       });

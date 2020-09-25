@@ -5,5 +5,5 @@ export interface CalendarEvent {
   startTime: number;
   endTime: number;
   invitees: string[];
-  location: String;
+  location: string;
 }
