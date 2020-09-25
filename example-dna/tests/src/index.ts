@@ -28,8 +28,8 @@ orchestrator.registerScenario(
       "create_calendar_event",
       {
         title: "Event 1",
-        start_time: [Math.floor(Date.now() / 1000), 0],
-        end_time: [Math.floor(Date.now() / 1000) + 1000, 0],
+        startTime: [Math.floor(Date.now() / 1000), 0],
+        endTime: [Math.floor(Date.now() / 1000) + 1000, 0],
         location: { Custom: "hiii" },
         invitees: [],
       }
@@ -39,12 +39,20 @@ orchestrator.registerScenario(
     await sleep(10);
 
     let calendarEvents = await conductor.call(
-      "bobbo",
+      "alice",
       "calendar_events",
-      "get_all_calendar_events",
+      "get_my_calendar_events",
       null
     );
     t.equal(calendarEvents.length, 1);
+
+    calendarEvents = await conductor.call(
+      "bobbo",
+      "calendar_events",
+      "get_my_calendar_events",
+      null
+    );
+    t.equal(calendarEvents.length, 0);
   }
 );
 

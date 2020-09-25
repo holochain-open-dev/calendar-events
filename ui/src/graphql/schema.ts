@@ -14,7 +14,7 @@ export const calendarEventsTypeDefs = gql`
   }
 
   extend type Query {
-    allCalendarEvents: [CalendarEvent!]!
+    myCalendarEvents: [CalendarEvent!]!
   }
 
   extend type Mutation {

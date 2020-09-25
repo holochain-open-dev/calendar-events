@@ -1,4 +1,4 @@
-# calendar-events-zome
+# calendar-events-module
 
 Small zome to create and see calendar events, in holochain RSM.
 
@@ -6,7 +6,7 @@ This module is designed to be included in other DNAs, assuming as little as poss
 
 ## Documentation
 
-See our [`storybook`](https://holochain-open-dev.github.io/calendar-events-zome).
+See our [`storybook`](https://holochain-open-dev.github.io/calendar-events-module).
 
 ## Assumptions
 
@@ -27,7 +27,7 @@ You need to include this repository as a git submodule inside the `zomes/` folde
 
 From the root folder of your DNA:
 
-1. `git submodule add https://github.com/holochain-open-dev/calendar-events-zome zomes/calendar_events`.
+1. `git submodule add https://github.com/holochain-open-dev/calendar-events-module zomes/calendar_events`.
 2.
 3. Modify the `Cargo.toml` and add `zomes/calendar_events` in the `[members]` array.
 4. Add the `calendar_events` zome in the `dna.json` of your `<DNA_NAME>.dna.workdir`.

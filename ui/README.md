@@ -1,6 +1,6 @@
 # UI Developer Setup
 
-UI module for the `calendar-events-zome`.
+UI module for the `calendar_events` zome.
 
 > This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) recommendation.
 

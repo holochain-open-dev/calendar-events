@@ -11,7 +11,7 @@ export class CalendarEventsMock {
       newId,
       {
         ...calendarInput,
-        created_by: randomHash(),
+        createdBy: randomHash(),
       },
     ]);
 

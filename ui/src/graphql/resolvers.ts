@@ -15,12 +15,12 @@ export const calendarEventsResolvers = (
   zomeName = 'calendar_events'
 ): Resolvers => ({
   Query: {
-    async allCalendarEvents() {
+    async myCalendarEvents() {
       const events = await appWebsocket.callZome({
         cap: null as any,
         cell_id: cellId,
         zome_name: zomeName,
-        fn_name: 'get_all_calendar_events',
+        fn_name: 'get_my_calendar_events',
         payload: null,
         provenance: cellId[1],
       });
@@ -28,6 +28,7 @@ export const calendarEventsResolvers = (
       return events.map((event: any) => ({
         id: hashToString(event[0]),
         ...event[1],
+        createdBy: hashToString(event[1].createdBy),
       }));
     },
   },
@@ -43,8 +44,8 @@ export const calendarEventsResolvers = (
         fn_name: 'create_calendar_event',
         payload: {
           title,
-          start_time: secondsToTimestamp(startTime),
-          end_time: secondsToTimestamp(endTime),
+          startTime: secondsToTimestamp(startTime),
+          endTime: secondsToTimestamp(endTime),
           location,
           invitees,
         },
