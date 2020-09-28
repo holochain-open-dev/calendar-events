@@ -5,7 +5,6 @@ import { CREATE_CALENDAR_EVENT } from '../dist/graphql/queries';
 import { setupApolloClientMock } from './mocks/utils.js';
 
 describe('HodFullCalendar', () => {
-
   it('<hod-full-calendar> renders a newly created event', async () => {
     const client = await setupApolloClientMock();
     window.customElements.define('hod-full-calendar', HodFullCalendar(client));

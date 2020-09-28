@@ -20,7 +20,7 @@ describe('Apollo middleware', () => {
     });
 
     const result = await client.query({
-      query: GET_MY_CALENDAR_EVENTS
+      query: GET_MY_CALENDAR_EVENTS,
     });
 
     expect(result.data.myCalendarEvents.length).to.equal(1);
