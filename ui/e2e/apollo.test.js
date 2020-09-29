@@ -73,7 +73,9 @@ describe('Apollo middleware', () => {
     const myCalendarEvents = result.data.myCalendarEvents;
 
     expect(myCalendarEvents.length).to.equal(1);
-    expect(myCalendarEvents[0].id).to.equal(calendarHash);
+    expect(myCalendarEvents[0].id).to.equal(
+      calendarHash.data.createCalendarEvent.id
+    );
     expect(myCalendarEvents[0].title).to.equal('Event 1');
   });
 });
