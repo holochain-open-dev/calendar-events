@@ -28,7 +28,7 @@
   "dependencies": {
     "@apollo/client": "^3.2.0",
     "@graphql-tools/schema": "^6.2.3",
-    "@holochain/conductor-api": "guillemcordoba/holochain-conductor-api#develop",
+    "@holochain/conductor-api": "guillemcordoba/holochain-conductor-api#build",
     "@material/mwc-circular-progress": "^0.18.0",
     "graphql": "^15.3.0",
     "lit-element": "^2.4.0",
