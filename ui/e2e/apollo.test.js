@@ -62,7 +62,7 @@ describe('Apollo middleware', () => {
     const result = await client.query({
       query: gql`
         {
-          allCalendarEvents {
+          myCalendarEvents {
             id
             title
           }
@@ -70,8 +70,10 @@ describe('Apollo middleware', () => {
       `,
     });
 
-    expect(result.length).to.equal(1);
-    expect(result[0].id).to.equal(calendarHash);
-    expect(result[0].title).to.equal('Event 1');
+    const myCalendarEvents = result.data.myCalendarEvents;
+
+    expect(myCalendarEvents.length).to.equal(1);
+    expect(myCalendarEvents[0].id).to.equal(calendarHash);
+    expect(myCalendarEvents[0].title).to.equal('Event 1');
   });
 });
