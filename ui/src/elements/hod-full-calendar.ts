@@ -1,15 +1,9 @@
 import { ApolloClient } from '@apollo/client/core';
-import {
-  html,
-  css,
-  LitElement,
-  property,
-  customElement,
-  query,
-} from 'lit-element';
+import { html, css, LitElement, property, query } from 'lit-element';
 
-import { Calendar } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
+import Calendar from 'tui-calendar';
+// @ts-ignore
+import styles from 'tui-calendar/dist/tui-calendar.css';
 import '@material/mwc-circular-progress';
 
 import { CalendarEvent } from '../types';
@@ -18,6 +12,7 @@ import { eventToFullCalendarEvent } from '../utils';
 
 export function HodFullCalendar(apolloClient: ApolloClient<any>) {
   class HodFullCalendar extends LitElement {
+    static styles = styles;
     /** Public attributes */
 
     /** Private properties */
@@ -26,24 +21,29 @@ export function HodFullCalendar(apolloClient: ApolloClient<any>) {
       | Array<CalendarEvent>
       | undefined = undefined;
 
-    @query('#full-calendar')
+    @query('#calendar')
     fullCalendar!: HTMLElement;
 
     async firstUpdated() {
       const calendar = new Calendar(this.fullCalendar, {
-        plugins: [dayGridPlugin],
-        initialView: 'dayGridMonth',
+        defaultView: 'month',
+        taskView: true,
+        template: {
+          monthDayname: function (dayname) {
+            return (
+              '<span class="calendar-week-dayname-name">' +
+              dayname.label +
+              '</span>'
+            );
+          },
+        },
       });
-
-      calendar.render();
 
       const result = await apolloClient.query({
         query: GET_MY_CALENDAR_EVENTS,
       });
 
       const events = result.data.myCalendarEvents.map(eventToFullCalendarEvent);
-
-      calendar.addEventSource(events);
     }
 
     render() {
@@ -52,7 +52,7 @@ export function HodFullCalendar(apolloClient: ApolloClient<any>) {
           ? html``
           : html`<mwc-circular-progress></mwc-circular-progress>`}
 
-        <div id="full-calendar"></div>
+        <div id="calendar"></div>
       `;
     }
   }

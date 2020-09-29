@@ -1,14 +1,20 @@
 const { wrapRollupPlugin } = require('es-dev-server-rollup');
 const commonjs = require('@rollup/plugin-commonjs');
 const builtins = require('rollup-plugin-node-builtins');
+const alias = require('@rollup/plugin-alias');
 const replace = require('@rollup/plugin-replace');
+const postcss = require('rollup-plugin-postcss');
+const postcssLit = require('rollup-plugin-postcss-lit');
 
 module.exports = [
   wrapRollupPlugin(
     replace({
       global: 'window',
+      'process.env.NODE_ENV': '"development"',
     })
   ),
+  wrapRollupPlugin(postcss({ plugins: [], extract: true })),
+  wrapRollupPlugin(postcssLit.default()),
   wrapRollupPlugin(builtins()),
   wrapRollupPlugin(
     commonjs({

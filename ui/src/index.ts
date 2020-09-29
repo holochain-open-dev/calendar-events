@@ -13,3 +13,5 @@ export function installCalendarModule(dependencies: {
     HodFullCalendar(dependencies.apolloClient)
   );
 }
+
+export { HodFullCalendar };

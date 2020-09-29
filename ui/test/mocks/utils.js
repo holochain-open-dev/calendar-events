@@ -1,9 +1,10 @@
 import { Buffer } from 'buffer';
 
+import { gql, ApolloClient, InMemoryCache } from '@apollo/client/core';
 import { SchemaLink } from '@apollo/client/link/schema';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 
-import { calendarEventsTypeDefs, calendarEventsResolvers } from '../../dist';
+import { calendarEventsResolvers, calendarEventsTypeDefs } from '../../dist';
 import { AppWebsocketMock } from './AppWebsocket.mock';
 import { CalendarEventsMock } from './calendar-events.mock';
 
