@@ -7,19 +7,25 @@
         background: #fafafa;
       }
     </style>
+    <link
+      href="http://fonts.googleapis.com/css?family=Roboto"
+      rel="stylesheet"
+      type="text/css"
+    />
   </head>
   <body>
-    <div id="demo"></div>
+    <hod-full-calendar> </hod-full-calendar>
 
     <script type="module">
       console.log('asdfsadf');
       import { html, render } from 'lit-html';
       import { setupApolloClientMock } from '../test/mocks/utils';
-      import { HodFullCalendar, CREATE_CALENDAR_EVENT } from '../dist';
+      import {
+        installCalendarEventsModule,
+        CREATE_CALENDAR_EVENT,
+      } from '../dist';
 
-      setupApolloClientMock().then(client => {
-        customElements.define('hod-full-calendar', HodFullCalendar(client));
-
+      setupApolloClientMock('ws://localhost:8888').then(client => {
         client
           .mutate({
             mutation: CREATE_CALENDAR_EVENT,
@@ -31,12 +37,7 @@
               invitees: [],
             },
           })
-          .then(_ =>
-            render(
-              html` hello<hod-full-calendar> </hod-full-calendar> `,
-              document.querySelector('#demo')
-            )
-          );
+          .then(_ => installCalendarEventsModule({ apolloClient: client }));
       });
     </script>
   </body>

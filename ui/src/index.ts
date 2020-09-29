@@ -8,7 +8,7 @@ export {
   GET_MY_CALENDAR_EVENTS,
 } from './graphql/queries';
 
-export function installCalendarModule(dependencies: {
+export function installCalendarEventsModule(dependencies: {
   apolloClient: ApolloClient<any>;
 }) {
   customElements.define(

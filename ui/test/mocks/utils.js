@@ -3,6 +3,7 @@ import { Buffer } from 'buffer';
 import { gql, ApolloClient, InMemoryCache } from '@apollo/client/core';
 import { SchemaLink } from '@apollo/client/link/schema';
 import { makeExecutableSchema } from '@graphql-tools/schema';
+import { AppWebsocket } from '@holochain/conductor-api';
 
 import { calendarEventsResolvers, calendarEventsTypeDefs } from '../../dist';
 import { AppWebsocketMock } from './AppWebsocket.mock';
@@ -39,9 +40,20 @@ const rootTypeDef = gql`
 
 const allTypeDefs = [rootTypeDef, calendarEventsTypeDefs];
 
-export async function setupApolloClientMock() {
-  const dnaMock = new CalendarEventsMock();
-  const appWebsocket = new AppWebsocketMock(dnaMock);
+async function getAppWebsocket(url) {
+  if (url) return AppWebsocket.connect(url);
+  else {
+    const dnaMock = new CalendarEventsMock();
+    return new AppWebsocketMock(dnaMock);
+  }
+}
+
+/**
+ * If url is undefined, it will mock the backend
+ * If url is defined, it will try to connect to holochain
+ */
+export async function setupApolloClientMock(url) {
+  const appWebsocket = await getAppWebsocket(url);
 
   const appInfo = await appWebsocket.appInfo({ app_id: 'test-app' });
 

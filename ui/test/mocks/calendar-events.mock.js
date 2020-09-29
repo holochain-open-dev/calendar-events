@@ -22,4 +22,3 @@ export class CalendarEventsMock {
     return this.calendarEvents;
   }
 }
-

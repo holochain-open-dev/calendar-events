@@ -12,7 +12,14 @@ import { eventToSchedule } from '../utils';
 
 export function HodFullCalendar(apolloClient: ApolloClient<any>) {
   class HodFullCalendar extends LitElement {
-    static styles = styles;
+    static styles = [
+      styles,
+      css`
+        :host {
+          font-family: 'Roboto', sans-serif;
+        }
+      `,
+    ];
     /** Public attributes */
 
     /** Private properties */
@@ -22,12 +29,12 @@ export function HodFullCalendar(apolloClient: ApolloClient<any>) {
       | undefined = undefined;
 
     @query('#calendar')
-    fullCalendar!: HTMLElement;
+    calendar!: HTMLElement;
 
     async firstUpdated() {
-      const calendar = new Calendar(this.fullCalendar, {
-        defaultView: 'month',
-        taskView: true,
+      const calendar = new Calendar(this.calendar, {
+        defaultView: 'week',
+        taskView: false,
         template: {
           monthDayname: function (dayname) {
             return (
@@ -43,9 +50,12 @@ export function HodFullCalendar(apolloClient: ApolloClient<any>) {
         query: GET_MY_CALENDAR_EVENTS,
       });
 
-      const schedules = result.data.myCalendarEvents.map(eventToSchedule);
-      calendar.createSchedules(schedules);
-      calendar.render();
+      this._myCalendarEvents = result.data.myCalendarEvents;
+      if (this._myCalendarEvents) {
+        const schedules = this._myCalendarEvents.map(eventToSchedule);
+        calendar.createSchedules(schedules);
+        calendar.render();
+      }
     }
 
     render() {
