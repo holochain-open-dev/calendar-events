@@ -18,7 +18,8 @@ export class CalendarEventsMock {
     return newId;
   }
 
-  get_all_calendar_events() {
+  get_my_calendar_events() {
     return this.calendarEvents;
   }
 }
+

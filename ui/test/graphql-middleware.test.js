@@ -1,6 +1,5 @@
-import { gql, ApolloClient, InMemoryCache } from '@apollo/client/core';
 import { expect } from '@open-wc/testing';
-import { GET_MY_CALENDAR_EVENTS } from '../dist/graphql/queries';
+import { GET_MY_CALENDAR_EVENTS, CREATE_CALENDAR_EVENT } from '../dist';
 
 import { setupApolloClientMock } from './mocks/utils';
 

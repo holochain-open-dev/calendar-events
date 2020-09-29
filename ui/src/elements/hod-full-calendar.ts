@@ -8,7 +8,7 @@ import '@material/mwc-circular-progress';
 
 import { CalendarEvent } from '../types';
 import { GET_MY_CALENDAR_EVENTS } from '../graphql/queries';
-import { eventToFullCalendarEvent } from '../utils';
+import { eventToSchedule } from '../utils';
 
 export function HodFullCalendar(apolloClient: ApolloClient<any>) {
   class HodFullCalendar extends LitElement {
@@ -43,7 +43,9 @@ export function HodFullCalendar(apolloClient: ApolloClient<any>) {
         query: GET_MY_CALENDAR_EVENTS,
       });
 
-      const events = result.data.myCalendarEvents.map(eventToFullCalendarEvent);
+      const schedules = result.data.myCalendarEvents.map(eventToSchedule);
+      calendar.createSchedules(schedules);
+      calendar.render();
     }
 
     render() {

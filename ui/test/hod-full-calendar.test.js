@@ -1,13 +1,11 @@
-import { html, fixture, expect } from '@open-wc/testing';
+import { html, fixture, expect, waitUntil } from '@open-wc/testing';
 
-import { Calendar } from '@fullcalendar/core';
-//import { HodFullCalendar } from '../dist/elements/hod-full-calendar';
-//import { CREATE_CALENDAR_EVENT } from '../dist/graphql/queries';
-//import { setupApolloClientMock } from './mocks/utils.js';
+import { HodFullCalendar, CREATE_CALENDAR_EVENT } from '../dist';
+import { setupApolloClientMock } from './mocks/utils.js';
 
 describe('HodFullCalendar', () => {
   it('<hod-full-calendar> renders a newly created event', async () => {
-    /* const client = await setupApolloClientMock();
+    const client = await setupApolloClientMock();
     window.customElements.define('hod-full-calendar', HodFullCalendar(client));
 
     await client.mutate({
@@ -23,8 +21,9 @@ describe('HodFullCalendar', () => {
 
     const el = await fixture(html` <hod-full-calendar></hod-full-calendar> `);
 
-    const fullCalendar = el.shadowRoot.querySelector('#full-calendar');
+    const fullCalendar = el.shadowRoot.querySelector('#calendar');
+    await waitUntil(() => fullCalendar.innerHTML.includes('Event 1'));
 
-    expect(fullCalendar.innerHTML.includes('Event 1')).to.be.ok; */
+    expect(fullCalendar.innerHTML).to.include('Event 1');
   });
 });

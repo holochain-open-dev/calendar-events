@@ -15,16 +15,28 @@
       console.log('asdfsadf');
       import { html, render } from 'lit-html';
       import { setupApolloClientMock } from '../test/mocks/utils';
-      import { HodFullCalendar } from '../dist';
+      import { HodFullCalendar, CREATE_CALENDAR_EVENT } from '../dist';
 
       setupApolloClientMock().then(client => {
-        console.log('asdf', client);
         customElements.define('hod-full-calendar', HodFullCalendar(client));
 
-        render(
-          html` hello<hod-full-calendar> </hod-full-calendar> `,
-          document.querySelector('#demo')
-        );
+        client
+          .mutate({
+            mutation: CREATE_CALENDAR_EVENT,
+            variables: {
+              title: 'Event 1',
+              startTime: Math.floor(Date.now() / 1000),
+              endTime: Math.floor(Date.now() / 1000) + 10,
+              location: null,
+              invitees: [],
+            },
+          })
+          .then(_ =>
+            render(
+              html` hello<hod-full-calendar> </hod-full-calendar> `,
+              document.querySelector('#demo')
+            )
+          );
       });
     </script>
   </body>

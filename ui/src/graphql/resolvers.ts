@@ -28,6 +28,8 @@ export const calendarEventsResolvers = (
       return events.map((event: any) => ({
         id: hashToString(event[0]),
         ...event[1],
+        startTime: event[1].startTime[0],
+        endTime: event[1].endTime[0],
         createdBy: hashToString(event[1].createdBy),
       }));
     },
