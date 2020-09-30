@@ -6,6 +6,7 @@ import '@material/mwc-button';
 import { CalendarEvent } from '../types';
 import { sharedStyles } from '../sharedStyles';
 import { CREATE_CALENDAR_EVENT } from '../graphql/queries';
+import { secsTimestampToDate } from '../utils';
 
 export function HodCreateCalendarEvent(apolloClient: ApolloClient<any>) {
   class HodCreateCalendarEvent extends LitElement {
@@ -15,11 +16,6 @@ export function HodCreateCalendarEvent(apolloClient: ApolloClient<any>) {
 
     @query('#event-title')
     titleField!: TextField;
-
-    secsToDate(secs: number | undefined): Date | undefined {
-      if (!secs) return undefined;
-      return new Date(secs * 1000);
-    }
 
     async createEvent() {
       const result = await apolloClient.mutate({
@@ -52,10 +48,15 @@ export function HodCreateCalendarEvent(apolloClient: ApolloClient<any>) {
 
           <span style="margin-top: 16px">
             Start Time:
-            ${this.secsToDate(this.initialEventProperties?.startTime)}
+            ${secsTimestampToDate(
+              this.initialEventProperties?.startTime as number
+            )}
           </span>
           <span style="margin-top: 8px">
-            End Time: ${this.secsToDate(this.initialEventProperties?.endTime)}
+            End Time:
+            ${secsTimestampToDate(
+              this.initialEventProperties?.endTime as number
+            )}
           </span>
 
           <div class="row" style="align-self: flex-end; margin-top: 16px;">

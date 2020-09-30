@@ -15,7 +15,7 @@ import timeGridStyles from '@fullcalendar/timegrid/main.css';
 import bootstrapStyles from 'bootstrap/dist/css/bootstrap.css';
 // @ts-ignore
 import iconStyles from '@fortawesome/fontawesome-free/css/all.css'; // needs additional webpack config!
-import '@material/mwc-circular-progress';
+import '@material/mwc-linear-progress';
 import { MenuSurface } from '@material/mwc-menu/mwc-menu-surface';
 
 import { CalendarEvent } from '../types';
@@ -42,6 +42,7 @@ export function HodMyCalendar(apolloClient: ApolloClient<any>) {
 
     /** Private properties */
 
+    @property({ type: Boolean, attribute: false }) loading = false;
     @property({ type: Array, attribute: false }) _myCalendarEvents:
       | Array<CalendarEvent>
       | undefined = undefined;
@@ -51,12 +52,14 @@ export function HodMyCalendar(apolloClient: ApolloClient<any>) {
 
     @query('#create-event-menu')
     createEventMenu!: MenuSurface;
+
     @query('#create-calendar-event')
     createEvent!: any;
 
     calendar!: Calendar;
 
     async loadCalendarEvents() {
+      this.loading = true;
       const result = await apolloClient.query({
         query: GET_MY_CALENDAR_EVENTS,
         fetchPolicy: 'network-only',
@@ -71,6 +74,7 @@ export function HodMyCalendar(apolloClient: ApolloClient<any>) {
         this.calendar.addEventSource(fullCalendarEvents);
         this.calendar.render();
       }
+      this.loading = false;
     }
 
     setupCalendar() {
@@ -87,6 +91,8 @@ export function HodMyCalendar(apolloClient: ApolloClient<any>) {
         },
         select: info => {
           this.createEventMenu.open = true;
+          this.createEventMenu.anchor = (info.jsEvent as any)
+            .path[0] as HTMLElement;
           this.createEvent.initialEventProperties = {
             startTime: dateToSecsTimestamp(info.start),
             endTime: dateToSecsTimestamp(info.end),
@@ -104,7 +110,11 @@ export function HodMyCalendar(apolloClient: ApolloClient<any>) {
     }
 
     renderCreateEventCard() {
-      return html` <mwc-menu-surface id="create-event-menu">
+      return html` <mwc-menu-surface
+        id="create-event-menu"
+        absolute
+        corner="TOP_END"
+      >
         <div style="padding: 16px;">
           <hod-create-calendar-event
             id="create-calendar-event"
@@ -112,18 +122,21 @@ export function HodMyCalendar(apolloClient: ApolloClient<any>) {
               this.createEventMenu.open = false;
               this.loadCalendarEvents();
             }}
-          ></hod-create-calendar-event></div
-      ></mwc-menu-surface>`;
+          ></hod-create-calendar-event>
+        </div>
+      </mwc-menu-surface>`;
     }
 
     render() {
       return html`
-        ${this.renderCreateEventCard()}
-        ${this._myCalendarEvents
-          ? html``
-          : html`<mwc-circular-progress></mwc-circular-progress>`}
+        <div style="position: relative;">
+          ${this.renderCreateEventCard()}
+          ${this.loading
+            ? html`<mwc-linear-progress indeterminate></mwc-linear-progress>`
+            : html``}
 
-        <div id="calendar"></div>
+          <div id="calendar"></div>
+        </div>
       `;
     }
   }

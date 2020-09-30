@@ -36,6 +36,7 @@
     "@holochain/conductor-api": "guillemcordoba/holochain-conductor-api#build",
     "@material/mwc-button": "^0.18.0",
     "@material/mwc-circular-progress": "^0.18.0",
+    "@material/mwc-linear-progress": "^0.18.0",
     "@material/mwc-menu": "^0.18.0",
     "@material/mwc-textfield": "^0.18.0",
     "bootstrap": "^4.5.2",
