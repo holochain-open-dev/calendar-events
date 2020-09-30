@@ -23,6 +23,17 @@ module.exports = config => {
         },
         plugins: require('./es-dev-plugins'),
       },
+      coverageIstanbulReporter: {
+        thresholds: {
+          global: {
+            statements: 20,
+            branches: 20,
+            functions: 20,
+            lines: 20,
+          },
+        },
+      },
+
       // you can overwrite/extend the config further
     })
   );

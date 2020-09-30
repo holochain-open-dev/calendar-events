@@ -23,124 +23,133 @@ import { CalendarEvent } from '../types';
 import { GET_MY_CALENDAR_EVENTS } from '../graphql/queries';
 import { dateToSecsTimestamp, eventToFullCalendar } from '../utils';
 
-export function HodMyCalendar(apolloClient: ApolloClient<any>) {
-  class HodMyCalendar extends LitElement {
-    static get styles() {
-      return [
-        commonStyles,
-        daygridStyles,
-        timeGridStyles,
-        bootstrapStyles,
-        iconStyles,
-        css`
-          :host {
-            font-family: 'Roboto', sans-serif;
-          }
-        `,
-      ];
-    }
-    /** Public attributes */
+export abstract class HodMyCalendar extends LitElement {
+  static get styles() {
+    return [
+      commonStyles,
+      daygridStyles,
+      timeGridStyles,
+      bootstrapStyles,
+      iconStyles,
+      css`
+        :host {
+          font-family: 'Roboto', sans-serif;
+        }
+      `,
+    ];
+  }
+  /** Public attributes */
 
-    /** Private properties */
+  /** Dependencies */
+  abstract get apolloClient(): ApolloClient<any>;
 
-    @property({ type: Boolean, attribute: false }) loading = false;
-    @property({ type: Array, attribute: false }) _myCalendarEvents:
-      | Array<CalendarEvent>
-      | undefined = undefined;
+  /** Private properties */
 
-    @query('#calendar')
-    calendarEl!: HTMLElement;
+  @property({ type: Boolean, attribute: false }) loading = false;
+  @property({ type: Array, attribute: false }) _myCalendarEvents:
+    | Array<CalendarEvent>
+    | undefined = undefined;
 
-    @query('#create-event-menu')
-    createEventMenu!: MenuSurface;
+  @query('#calendar')
+  calendarEl!: HTMLElement;
 
-    @query('#create-calendar-event')
-    createEvent!: any;
+  @query('#create-event-menu')
+  createEventMenu!: MenuSurface;
 
-    calendar!: Calendar;
+  @query('#create-calendar-event')
+  createEvent!: any;
 
-    async loadCalendarEvents() {
-      this.loading = true;
-      const result = await apolloClient.query({
-        query: GET_MY_CALENDAR_EVENTS,
-        fetchPolicy: 'network-only',
-      });
+  calendar!: Calendar;
 
-      this._myCalendarEvents = result.data.myCalendarEvents;
-      if (this._myCalendarEvents) {
-        const fullCalendarEvents = this._myCalendarEvents.map(
-          eventToFullCalendar
-        );
-        this.calendar.removeAllEventSources();
-        this.calendar.addEventSource(fullCalendarEvents);
-        this.calendar.render();
-      }
-      this.loading = false;
-    }
+  async loadCalendarEvents() {
+    this.loading = true;
+    const result = await this.apolloClient.query({
+      query: GET_MY_CALENDAR_EVENTS,
+      fetchPolicy: 'network-only',
+    });
 
-    setupCalendar() {
-      this.calendar = new Calendar(this.calendarEl, {
-        plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin],
-        initialView: 'timeGridWeek',
-        themeSystem: 'bootstrap',
-        selectable: true,
-        selectMirror: true,
-        headerToolbar: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay',
-        },
-        select: info => {
-          this.createEventMenu.open = true;
-          this.createEventMenu.anchor = (info.jsEvent as any)
-            .path[0] as HTMLElement;
-          this.createEvent.initialEventProperties = {
-            startTime: dateToSecsTimestamp(info.start),
-            endTime: dateToSecsTimestamp(info.end),
-          };
-        },
-      });
-
+    this._myCalendarEvents = result.data.myCalendarEvents;
+    if (this._myCalendarEvents) {
+      const fullCalendarEvents = this._myCalendarEvents.map(
+        eventToFullCalendar
+      );
+      this.calendar.removeAllEventSources();
+      this.calendar.addEventSource(fullCalendarEvents);
       this.calendar.render();
     }
-
-    async firstUpdated() {
-      this.setupCalendar();
-
-      await this.loadCalendarEvents();
-    }
-
-    renderCreateEventCard() {
-      return html` <mwc-menu-surface
-        id="create-event-menu"
-        absolute
-        corner="TOP_END"
-      >
-        <div style="padding: 16px;">
-          <hod-create-calendar-event
-            id="create-calendar-event"
-            @event-created=${() => {
-              this.createEventMenu.open = false;
-              this.loadCalendarEvents();
-            }}
-          ></hod-create-calendar-event>
-        </div>
-      </mwc-menu-surface>`;
-    }
-
-    render() {
-      return html`
-        <div style="position: relative;">
-          ${this.renderCreateEventCard()}
-          ${this.loading
-            ? html`<mwc-linear-progress indeterminate></mwc-linear-progress>`
-            : html``}
-
-          <div id="calendar"></div>
-        </div>
-      `;
-    }
+    this.loading = false;
   }
 
-  return HodMyCalendar;
+  setupCalendar() {
+    this.calendar = new Calendar(this.calendarEl, {
+      plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin],
+      initialView: 'timeGridWeek',
+      themeSystem: 'bootstrap',
+      selectable: true,
+      selectMirror: true,
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay',
+      },
+      select: info => {
+        this.createEventMenu.open = true;
+        this.createEventMenu.anchor = (info.jsEvent as any)
+          .path[0] as HTMLElement;
+        this.createEvent.initialEventProperties = {
+          startTime: dateToSecsTimestamp(info.start),
+          endTime: dateToSecsTimestamp(info.end),
+        };
+      },
+    });
+
+    this.calendar.render();
+  }
+
+  async firstUpdated() {
+    this.setupCalendar();
+
+    await this.loadCalendarEvents();
+  }
+
+  renderCreateEventCard() {
+    return html` <mwc-menu-surface
+      id="create-event-menu"
+      absolute
+      corner="TOP_END"
+    >
+      <div style="padding: 16px;">
+        <hod-create-calendar-event
+          id="create-calendar-event"
+          @event-created=${() => {
+            this.createEventMenu.open = false;
+            this.loadCalendarEvents();
+          }}
+        ></hod-create-calendar-event>
+      </div>
+    </mwc-menu-surface>`;
+  }
+
+  render() {
+    return html`
+      <div style="position: relative;">
+        ${this.renderCreateEventCard()}
+        ${this.loading
+          ? html`<mwc-linear-progress indeterminate></mwc-linear-progress>`
+          : html``}
+
+        <div id="calendar"></div>
+      </div>
+    `;
+  }
+}
+export function defineHodMyCalendar(apolloClient: ApolloClient<any>): void {
+  customElements.define(
+    'hod-my-calendar',
+    class extends HodMyCalendar {
+      get apolloClient() {
+        return apolloClient;
+      }
+    }
+  );
 }

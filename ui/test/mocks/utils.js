@@ -9,6 +9,9 @@ import { calendarEventsResolvers, calendarEventsTypeDefs } from '../../dist';
 import { AppWebsocketMock } from './AppWebsocket.mock';
 import { CalendarEventsMock } from './calendar-events.mock';
 
+export const sleep = ms =>
+  new Promise(resolve => setTimeout(() => resolve(), ms));
+
 export function randomByte() {
   return Math.floor(Math.random() * 1000) % 256;
 }
