@@ -1,5 +1,5 @@
 import { ApolloClient } from '@apollo/client/core';
-import { HodFullCalendar } from './elements/hod-full-calendar';
+import { HodMyCalendar } from './elements/hod-my-calendar';
 
 export { calendarEventsTypeDefs } from './graphql/schema';
 export { calendarEventsResolvers } from './graphql/resolvers';
@@ -12,9 +12,9 @@ export function installCalendarEventsModule(dependencies: {
   apolloClient: ApolloClient<any>;
 }) {
   customElements.define(
-    'hod-full-calendar',
-    HodFullCalendar(dependencies.apolloClient)
+    'hod-my-calendar',
+    HodMyCalendar(dependencies.apolloClient)
   );
 }
 
-export { HodFullCalendar };
+export { HodMyCalendar };

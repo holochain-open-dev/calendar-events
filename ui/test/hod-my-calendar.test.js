@@ -1,12 +1,12 @@
 import { html, fixture, expect, waitUntil } from '@open-wc/testing';
 
-import { HodFullCalendar, CREATE_CALENDAR_EVENT } from '../dist';
+import { HodMyCalendar, CREATE_CALENDAR_EVENT } from '../dist';
 import { setupApolloClientMock } from './mocks/utils.js';
 
-describe('HodFullCalendar', () => {
-  it('<hod-full-calendar> renders a newly created event', async () => {
+describe('HodMyCalendar', () => {
+  it('<hod-my-calendar> renders a newly created event', async () => {
     const client = await setupApolloClientMock();
-    window.customElements.define('hod-full-calendar', HodFullCalendar(client));
+    window.customElements.define('hod-my-calendar', HodMyCalendar(client));
 
     await client.mutate({
       mutation: CREATE_CALENDAR_EVENT,
@@ -19,7 +19,7 @@ describe('HodFullCalendar', () => {
       },
     });
 
-    const el = await fixture(html` <hod-full-calendar></hod-full-calendar> `);
+    const el = await fixture(html` <hod-my-calendar></hod-my-calendar> `);
 
     const fullCalendar = el.shadowRoot.querySelector('#calendar');
     await waitUntil(() => fullCalendar.innerHTML.includes('Event 1'));

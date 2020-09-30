@@ -10,8 +10,8 @@ import { CalendarEvent } from '../types';
 import { GET_MY_CALENDAR_EVENTS } from '../graphql/queries';
 import { eventToSchedule } from '../utils';
 
-export function HodFullCalendar(apolloClient: ApolloClient<any>) {
-  class HodFullCalendar extends LitElement {
+export function HodMyCalendar(apolloClient: ApolloClient<any>) {
+  class HodMyCalendar extends LitElement {
     static styles = [
       styles,
       css`
@@ -69,5 +69,5 @@ export function HodFullCalendar(apolloClient: ApolloClient<any>) {
     }
   }
 
-  return HodFullCalendar;
+  return HodMyCalendar;
 }
