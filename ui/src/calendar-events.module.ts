@@ -5,6 +5,6 @@ import { defineHodMyCalendar } from './elements/hod-my-calendar';
 export function installCalendarEventsModule(dependencies: {
   apolloClient: ApolloClient<any>;
 }) {
-    defineHodMyCalendar(dependencies.apolloClient)
-    defineHodCreateCalendarEvent(dependencies.apolloClient)
+  defineHodMyCalendar(dependencies.apolloClient);
+  defineHodCreateCalendarEvent(dependencies.apolloClient);
 }
