@@ -1,5 +1,6 @@
 import { ApolloClient } from '@apollo/client/core';
 import { html, LitElement, property, query } from 'lit-element';
+import '@material/mwc-textfield';
 import { TextField } from '@material/mwc-textfield';
 import '@material/mwc-button';
 
@@ -50,13 +51,13 @@ export function HodCreateCalendarEvent(apolloClient: ApolloClient<any>) {
             Start Time:
             ${secsTimestampToDate(
               this.initialEventProperties?.startTime as number
-            )}
+            ).toLocaleString()}
           </span>
           <span style="margin-top: 8px">
             End Time:
             ${secsTimestampToDate(
               this.initialEventProperties?.endTime as number
-            )}
+            ).toLocaleString()}
           </span>
 
           <div class="row" style="align-self: flex-end; margin-top: 16px;">
