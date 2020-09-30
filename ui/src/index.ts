@@ -1,4 +1,5 @@
 import { ApolloClient } from '@apollo/client/core';
+import { HodCreateCalendarEvent } from './elements/hod-create-calendar-event';
 import { HodMyCalendar } from './elements/hod-my-calendar';
 
 export { calendarEventsTypeDefs } from './graphql/schema';
@@ -14,6 +15,10 @@ export function installCalendarEventsModule(dependencies: {
   customElements.define(
     'hod-my-calendar',
     HodMyCalendar(dependencies.apolloClient)
+  );
+  customElements.define(
+    'hod-create-calendar-event',
+    HodCreateCalendarEvent(dependencies.apolloClient)
   );
 }
 

@@ -17,7 +17,6 @@
     <hod-my-calendar> </hod-my-calendar>
 
     <script type="module">
-      console.log('asdfsadf');
       import { html, render } from 'lit-html';
       import { setupApolloClientMock } from '../test/mocks/utils';
       import {
@@ -26,18 +25,7 @@
       } from '../dist';
 
       setupApolloClientMock('ws://localhost:8888').then(client => {
-        client
-          .mutate({
-            mutation: CREATE_CALENDAR_EVENT,
-            variables: {
-              title: 'Event 1',
-              startTime: Math.floor(Date.now() / 1000),
-              endTime: Math.floor(Date.now() / 1000) + 10,
-              location: null,
-              invitees: [],
-            },
-          })
-          .then(_ => installCalendarEventsModule({ apolloClient: client }));
+        installCalendarEventsModule({ apolloClient: client });
       });
     </script>
   </body>

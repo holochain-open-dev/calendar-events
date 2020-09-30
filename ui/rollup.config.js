@@ -11,26 +11,24 @@ export default {
   output: [{ dir: 'dist', format: 'es', sourcemap: true }],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash-es')
   external: [
-    ...Object.keys(pkg.dependencies || {}).filter(key => !key.includes('tui')),
+    ...Object.keys(pkg.dependencies || {}).filter(
+      key => !key.includes('@fullcalendar')
+    ),
     ...Object.keys(pkg.peerDependencies || {}),
     '@apollo/client/core',
   ],
   watch: {
     include: 'src/**',
   },
-  context: 'window',
   plugins: [
     postcss({
-      inject: false,
+      inject: true,
     }),
     postcssLit(),
     typescript({}),
     resolve({}),
     commonjs({
-      include: [
-        'node_modules/tui-calendar/**/*',
-        'node_modules/tui-code-snippet/**/*',
-      ],
+      include: [],
     }),
   ],
 };

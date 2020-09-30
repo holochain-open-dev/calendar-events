@@ -1,5 +1,6 @@
 import { Resolvers } from '@apollo/client/core';
 import { AppWebsocket, CellId } from '@holochain/conductor-api';
+import { sleep } from '../utils';
 
 function secondsToTimestamp(secs: number) {
   return [secs, 0];

@@ -1,12 +1,20 @@
 import { CalendarEvent } from './types';
 
-export function eventToSchedule(calendarEvent: CalendarEvent) {
+export function secsTimestampToDate(secs: number): Date {
+  return new Date(secs * 1000);
+}
+
+export function dateToSecsTimestamp(date: Date): number {
+  return Math.floor(date.valueOf() / 1000);
+}
+
+export function eventToFullCalendar(calendarEvent: CalendarEvent) {
   return {
-    title: calendarEvent.title,
-    start: new Date(calendarEvent.startTime * 1000).toISOString(),
-    end: new Date(calendarEvent.endTime * 1000).toISOString(),
     id: calendarEvent.id,
-    calendarId: '1',
-    category: 'time',
+    title: calendarEvent.title,
+    start: secsTimestampToDate(calendarEvent.startTime).toISOString(),
+    end: secsTimestampToDate(calendarEvent.endTime).toISOString(),
   };
 }
+export const sleep = (ms: number) =>
+  new Promise(resolve => setTimeout(() => resolve(), ms));
