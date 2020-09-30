@@ -1,7 +1,7 @@
 import { ApolloClient } from '@apollo/client/core';
 import { html, LitElement, property, query } from 'lit-element';
 import '@material/mwc-textfield';
-import { TextField } from '@material/mwc-textfield';
+import type { TextField } from '@material/mwc-textfield';
 import '@material/mwc-button';
 
 import { CalendarEvent } from '../types';

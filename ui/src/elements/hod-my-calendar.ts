@@ -17,7 +17,7 @@ import bootstrapStyles from 'bootstrap/dist/css/bootstrap.css';
 import iconStyles from '@fortawesome/fontawesome-free/css/all.css'; // needs additional webpack config!
 import '@material/mwc-linear-progress';
 import '@material/mwc-menu/mwc-menu-surface';
-import { MenuSurface } from '@material/mwc-menu/mwc-menu-surface';
+import type { MenuSurface } from '@material/mwc-menu/mwc-menu-surface';
 
 import { CalendarEvent } from '../types';
 import { GET_MY_CALENDAR_EVENTS } from '../graphql/queries';

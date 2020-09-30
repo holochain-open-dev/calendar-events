@@ -19,7 +19,6 @@ module.exports = {
     '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/camelcase': 'off',
     'no-duplicate-imports': 'off',
-    'import/named': 'off',
     'import/no-unresolved': 'off',
     'import/extensions': 'off',
   },
