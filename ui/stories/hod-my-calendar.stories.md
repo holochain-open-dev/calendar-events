@@ -47,10 +47,10 @@ After having installed the `CalendarEventsModule`, just add the element to your 
 ### Variants
 
 ```js preview-story
-export const Default = () => html` <hod-my-calendar></hod-my-calendar> `;
+export const Default = () => html` <hod-my-calendar style="flex: 1"></hod-my-calendar> `;
 ```
 
 ```js preview-story
 export const MonthView = () =>
-  html` <hod-my-calendar initial-view="dayGridMonth"></hod-my-calendar> `;
+  html` <hod-my-calendar initial-view="dayGridMonth" style="flex: 1"></hod-my-calendar> `;
 ```

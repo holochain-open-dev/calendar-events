@@ -62,6 +62,7 @@ export abstract class HodCreateCalendarEvent extends LitElement {
       <div class="column">
         <mwc-textfield
           id="event-title"
+          placeholder="Event title"
           .value=${this.initialEventProperties?.title || ''}
         ></mwc-textfield>
 
@@ -87,6 +88,13 @@ export abstract class HodCreateCalendarEvent extends LitElement {
         </div>
       </div>
     `;
+  }
+
+  /**
+   * @member
+   */
+  clear() {
+    this._titleField.value = '';
   }
 }
 

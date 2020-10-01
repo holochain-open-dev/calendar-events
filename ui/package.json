@@ -23,7 +23,8 @@
     "format": "npm run format:eslint && npm run format:prettier",
     "storybook": "start-storybook --node-resolve --watch --open",
     "storybook:build": "build-storybook",
-    "storybook:publish": "npm run lint && npm run analyze && npm run storybook:build && gh-pages -d storybook-static"
+    "storybook:publish": "npm run lint && npm run analyze && npm run storybook:build && gh-pages -d storybook-static",
+    "npm:publish": "npm run lint && npm run build && cp LICENSE dist/ && cp README dist/ && cp package.json dist && cd dist && npm publish"
   },
   "dependencies": {
     "@apollo/client": "^3.2.0",

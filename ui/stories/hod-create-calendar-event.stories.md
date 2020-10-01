@@ -46,7 +46,11 @@ After having installed the `CalendarEventsModule`, just add the element to your 
 
 ```js preview-story
 export const Default = () =>
-  html` <hod-create-calendar-event></hod-create-calendar-event> `;
+  html`
+    <div style="height: 200px; width: 300px; padding: 16px;">
+      <hod-create-calendar-event></hod-create-calendar-event>
+    </div>
+  `;
 ```
 
 ```js preview-story
@@ -54,7 +58,7 @@ export const InitialEventProperties = () => {
   const startTime = Math.floor(Date.now() / 1000);
   const endTime = Math.floor(Date.now() / 1000) + 3600;
   return html`
-    <div>
+    <div style="height: 200px; width: 300px; padding: 16px;">
       <hod-create-calendar-event
         .initialEventProperties=${{ startTime, endTime }}
       ></hod-create-calendar-event>

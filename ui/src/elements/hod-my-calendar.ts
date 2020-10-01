@@ -2,6 +2,7 @@ import { ApolloClient } from '@apollo/client/core';
 import { html, css, LitElement, property, query } from 'lit-element';
 
 import { Calendar } from '@fullcalendar/core';
+import type { DateSelectArg } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 // @ts-ignore
 import commonStyles from '@fullcalendar/common/main.css';
@@ -23,6 +24,9 @@ import { CalendarEvent } from '../types';
 import { GET_MY_CALENDAR_EVENTS } from '../graphql/queries';
 import { dateToSecsTimestamp, eventToFullCalendar } from '../utils';
 
+/**
+ * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
+ */
 export abstract class HodMyCalendar extends LitElement {
   static get styles() {
     return [
@@ -33,7 +37,7 @@ export abstract class HodMyCalendar extends LitElement {
       iconStyles,
       css`
         :host {
-          font-family: 'Roboto', sans-serif;
+          display: flex;
         }
       `,
     ];
@@ -88,6 +92,15 @@ export abstract class HodMyCalendar extends LitElement {
     this._loading = false;
   }
 
+  openCreateEventMenu(info: DateSelectArg) {
+    this._createEventMenu.open = true;
+    this._createEventMenu.anchor = (info.jsEvent as any).path[0] as HTMLElement;
+    this._createEvent.initialEventProperties = {
+      startTime: dateToSecsTimestamp(info.start),
+      endTime: dateToSecsTimestamp(info.end),
+    };
+  }
+
   setupCalendar() {
     this._calendar = new Calendar(this._calendarEl, {
       plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin],
@@ -95,19 +108,16 @@ export abstract class HodMyCalendar extends LitElement {
       themeSystem: 'bootstrap',
       selectable: true,
       selectMirror: true,
+      unselectAuto: false,
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay',
       },
       select: info => {
-        this._createEventMenu.open = true;
-        this._createEventMenu.anchor = (info.jsEvent as any)
-          .path[0] as HTMLElement;
-        this._createEvent.initialEventProperties = {
-          startTime: dateToSecsTimestamp(info.start),
-          endTime: dateToSecsTimestamp(info.end),
-        };
+        if (this._createEventMenu.open) {
+          setTimeout(() => this.openCreateEventMenu(info), 100);
+        } else this.openCreateEventMenu(info);
       },
     });
 
@@ -129,9 +139,10 @@ export abstract class HodMyCalendar extends LitElement {
       <div style="padding: 16px;">
         <hod-create-calendar-event
           id="create-calendar-event"
-          @event-created=${() => {
+          @event-created=${(e: CustomEvent) => {
             this._createEventMenu.open = false;
             this.loadCalendarEvents();
+            this.dispatchEvent(e);
           }}
         ></hod-create-calendar-event>
       </div>
@@ -140,13 +151,13 @@ export abstract class HodMyCalendar extends LitElement {
 
   render() {
     return html`
-      <div style="position: relative;">
+      <div style="position: relative; flex: 1; display: flex;">
         ${this.renderCreateEventCard()}
         ${this._loading
           ? html`<mwc-linear-progress indeterminate></mwc-linear-progress>`
           : html``}
 
-        <div id="calendar"></div>
+        <div id="calendar" style="flex: 1;"></div>
       </div>
     `;
   }

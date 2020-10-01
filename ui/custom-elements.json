@@ -38,6 +38,12 @@
           "type": "'dayGridMonth' | 'timeGridWeek' | 'timeGridDay'",
           "default": "\"timeGridWeek\""
         }
+      ],
+      "events": [
+        {
+          "name": "event-created",
+          "description": "Fired after actually creating the event, containing the new CalendarEvent"
+        }
       ]
     }
   ]
