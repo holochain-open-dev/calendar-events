@@ -32,8 +32,9 @@ module.exports = {
       plugins: [
         replace({
           global: 'window',
-          'process.env.NODE_ENV': '"development"',
+          'process.env.NODE_ENV': '"production"',
         }),
+        builtins(),
         commonjs({
           include: [
             'node_modules/buffer/**/*',
@@ -42,6 +43,7 @@ module.exports = {
             'node_modules/graphql-tag/**/*',
             'node_modules/isomorphic-ws/**/*',
             'node_modules/@msgpack/**/*',
+            'node_modules/@holochain/conductor-api/**/*',
           ],
         }),
 
@@ -50,9 +52,10 @@ module.exports = {
           customResolveOptions: {
             moduleDirectory: ['node_modules', 'web_modules'],
           },
-          preferBuiltins: false,
+          browser: true,
+          preferBuiltins: true,
+          dedupe: ['graphql'],
         }),
-        builtins(),
       ],
     };
   },

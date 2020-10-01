@@ -27,6 +27,7 @@ import { HodCreateCalendarEvent } from './hod-create-calendar-event';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
+ * @csspart calendar - Style the calendar
  */
 export abstract class HodMyCalendar extends LitElement {
   static get styles() {
@@ -159,7 +160,7 @@ export abstract class HodMyCalendar extends LitElement {
           ? html`<mwc-linear-progress indeterminate></mwc-linear-progress>`
           : html``}
 
-        <div id="calendar" style="flex: 1;"></div>
+        <div id="calendar" style="flex: 1;" part="calendar"></div>
       </div>
     `;
   }

@@ -10,17 +10,18 @@
           "description": "Initial calendar event parameters with which to populate the form",
           "type": "Partial<CalendarEvent> | undefined",
           "default": "\"undefined\""
-        },
-        {
-          "name": "clear",
-          "type": "() => void",
-          "default": "\"() => {\\n    this._titleField.value = '';\\n  }\""
         }
       ],
       "events": [
         {
           "name": "event-created",
           "description": "Fired after actually creating the event, containing the new CalendarEvent"
+        }
+      ],
+      "cssParts": [
+        {
+          "name": "event-title",
+          "description": "Style the event title textfield"
         }
       ]
     },
@@ -48,6 +49,12 @@
         {
           "name": "event-created",
           "description": "Fired after actually creating the event, containing the new CalendarEvent"
+        }
+      ],
+      "cssParts": [
+        {
+          "name": "calendar",
+          "description": "Style the calendar"
         }
       ]
     }

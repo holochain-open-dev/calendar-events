@@ -11,6 +11,7 @@ import { secsTimestampToDate } from '../utils';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
+ * @csspart event-title - Style the event title textfield
  */
 export abstract class HodCreateCalendarEvent extends LitElement {
   static get styles() {
@@ -64,6 +65,7 @@ export abstract class HodCreateCalendarEvent extends LitElement {
           id="event-title"
           placeholder="Event title"
           .value=${this.initialEventProperties?.title || ''}
+          part="event-title"
         ></mwc-textfield>
 
         <span style="margin-top: 16px">
@@ -91,11 +93,12 @@ export abstract class HodCreateCalendarEvent extends LitElement {
   }
 
   /**
-   * @property method to call to clear all previously filled values of the form
+   * Clears all previously filled values of the form
+   * @method
    */
-  clear = () => {
+  public clear() {
     this._titleField.value = '';
-  };
+  }
 }
 
 export function defineHodCreateCalendarEvent(apolloClient: ApolloClient<any>) {
