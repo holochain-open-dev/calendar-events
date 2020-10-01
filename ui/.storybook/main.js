@@ -26,7 +26,7 @@ module.exports = {
   // Configuration for rollup (build-storybook only)
   rollup: config => {
     const plugins = config.plugins.filter(p => p.name !== 'node-resolve');
-    console.log(plugins);
+
     return {
       ...config,
       plugins: [
