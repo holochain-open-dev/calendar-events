@@ -33,7 +33,7 @@ module.exports = config => {
             lines: 20,
           },
         },
-      }
+      },
 
       // you can overwrite/extend the config further
     })

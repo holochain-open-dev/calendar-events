@@ -17,7 +17,7 @@ describe('top-level workflows', () => {
     expect(fullCalendar.innerHTML.includes('Event 1')).to.be.not.ok;
 
     fullCalendar.querySelector('.fc-timegrid-slot').click();
-/* 
+    /* 
     TODO: uncomment when we find a way to click the middle of the screen
 
     await waitUntil(
@@ -39,5 +39,6 @@ describe('top-level workflows', () => {
 
     console.log('asdf3');
     expect(fullCalendar.innerHTML).to.include('Event 1');
- */  });
+ */
+  });
 });
