@@ -91,11 +91,11 @@ export abstract class HodCreateCalendarEvent extends LitElement {
   }
 
   /**
-   * @member
+   * @property method to call to clear all previously filled values of the form
    */
-  clear() {
+  clear = () => {
     this._titleField.value = '';
-  }
+  };
 }
 
 export function defineHodCreateCalendarEvent(apolloClient: ApolloClient<any>) {

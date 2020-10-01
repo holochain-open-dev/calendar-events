@@ -23,6 +23,7 @@ import type { MenuSurface } from '@material/mwc-menu/mwc-menu-surface';
 import { CalendarEvent } from '../types';
 import { GET_MY_CALENDAR_EVENTS } from '../graphql/queries';
 import { dateToSecsTimestamp, eventToFullCalendar } from '../utils';
+import { HodCreateCalendarEvent } from './hod-create-calendar-event';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
@@ -69,7 +70,7 @@ export abstract class HodMyCalendar extends LitElement {
   _createEventMenu!: MenuSurface;
 
   @query('#create-calendar-event')
-  _createEvent!: any;
+  _createEvent!: HodCreateCalendarEvent;
 
   _calendar!: Calendar;
 
@@ -95,6 +96,7 @@ export abstract class HodMyCalendar extends LitElement {
   openCreateEventMenu(info: DateSelectArg) {
     this._createEventMenu.open = true;
     this._createEventMenu.anchor = (info.jsEvent as any).path[0] as HTMLElement;
+    this._createEvent.clear();
     this._createEvent.initialEventProperties = {
       startTime: dateToSecsTimestamp(info.start),
       endTime: dateToSecsTimestamp(info.end),

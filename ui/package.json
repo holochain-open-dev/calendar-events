@@ -1,6 +1,6 @@
 {
   "name": "hod-calendar-events",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Webcomponent hod-calendar-event following open-wc recommendations",
   "author": "guillem.cordoba@gmail.com",
   "license": "MIT",
@@ -14,7 +14,7 @@
     "test:watch": "concurrently -k --names rollup,karma \"npm run build:watch\" \"karma start --auto-watch=true --single-run=false\"",
     "e2e": "E2E=true concurrently -k -s first \"npm run build && karma start --coverage\" \"npm run holochain:start\"",
     "holochain:start": "RUST_LOG=warn holochain-run-dna ../example-dna/example-dna.dna.gz",
-    "analyze": "wca analyze src --format json --outFile custom-elements.json",
+    "analyze": "wca analyze src --format json --outFile custom-elements.json --features member method cssproperty csspart event slot",
     "lint:eslint": "eslint --ext .ts,.html . --ignore-path .gitignore",
     "format:eslint": "eslint --ext .ts,.html . --fix --ignore-path .gitignore",
     "lint:prettier": "prettier \"**/*.js\" \"**/*.ts\" --check --ignore-path .gitignore",
@@ -24,7 +24,7 @@
     "storybook": "start-storybook --node-resolve --watch --open",
     "storybook:build": "build-storybook",
     "storybook:publish": "npm run lint && npm run analyze && npm run storybook:build && gh-pages -d storybook-static",
-    "npm:publish": "npm run lint && npm run build && cp LICENSE dist/ && cp README dist/ && cp package.json dist && cd dist && npm publish"
+    "npm:publish": "npm run lint && npm run build && cp ../README.md dist/  && cp ../LICENSE dist/ && cp package.json dist/ && cd dist/ && npm publish --access public && rimraf dist/"
   },
   "dependencies": {
     "@apollo/client": "^3.2.0",

@@ -10,6 +10,11 @@
           "description": "Initial calendar event parameters with which to populate the form",
           "type": "Partial<CalendarEvent> | undefined",
           "default": "\"undefined\""
+        },
+        {
+          "name": "clear",
+          "type": "() => void",
+          "default": "\"() => {\\n    this._titleField.value = '';\\n  }\""
         }
       ],
       "events": [
