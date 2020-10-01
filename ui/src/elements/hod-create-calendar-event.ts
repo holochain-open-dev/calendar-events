@@ -9,25 +9,36 @@ import { sharedStyles } from '../sharedStyles';
 import { CREATE_CALENDAR_EVENT } from '../graphql/queries';
 import { secsTimestampToDate } from '../utils';
 
+/**
+ * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
+ */
 export abstract class HodCreateCalendarEvent extends LitElement {
-  static styles = sharedStyles;
+  static get styles() {
+    return sharedStyles;
+  }
+
   /** Public attributes */
-  @property()
+
+  /**
+   * Initial calendar event parameters with which to populate the form
+   * @type Partial<CalendarEvent>
+   */
+  @property({ type: Object, attribute: false })
   initialEventProperties: Partial<CalendarEvent> | undefined = undefined;
 
   /** Dependencies */
-  abstract get apolloClient(): ApolloClient<any>;
+  abstract get _apolloClient(): ApolloClient<any>;
 
   /** Private properties */
 
   @query('#event-title')
-  titleField!: TextField;
+  _titleField!: TextField;
 
   async createEvent() {
-    const result = await this.apolloClient.mutate({
+    const result = await this._apolloClient.mutate({
       mutation: CREATE_CALENDAR_EVENT,
       variables: {
-        title: this.titleField.value,
+        title: this._titleField.value,
         startTime: this.initialEventProperties?.startTime,
         endTime: this.initialEventProperties?.endTime,
         location: null,
@@ -40,6 +51,8 @@ export abstract class HodCreateCalendarEvent extends LitElement {
         detail: {
           event: result.data.createCalendarEvent,
         },
+        composed: true,
+        bubbles: true,
       })
     );
   }
@@ -81,7 +94,7 @@ export function defineHodCreateCalendarEvent(apolloClient: ApolloClient<any>) {
   customElements.define(
     'hod-create-calendar-event',
     class extends HodCreateCalendarEvent {
-      get apolloClient() {
+      get _apolloClient() {
         return apolloClient;
       }
     }

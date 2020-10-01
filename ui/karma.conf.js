@@ -3,19 +3,20 @@ const { createDefaultConfig } = require('@open-wc/testing-karma');
 const merge = require('deepmerge');
 
 const e2e = process.env.E2E;
-const testsPattern = `${e2e ? 'e2e' : 'test'}/**/*.test.js`;
+
+function testFilePatterns() {
+  const base = ['test/**/*.test.js'];
+  if (e2e) base.push('e2e/**/*.test.js');
+  return base;
+}
 
 module.exports = config => {
   config.set(
     merge(createDefaultConfig(config), {
-      files: [
-        // runs all files ending with .test in the test folder,
-        // can be overwritten by passing a --grep flag. examples:
-        //
-        // npm run test -- --grep test/foo/bar.test.js
-        // npm run test -- --grep test/bar/*
-        { pattern: config.grep ? config.grep : testsPattern, type: 'module' },
-      ],
+      files: testFilePatterns().map(pattern => ({
+        pattern: config.grep ? config.grep : pattern,
+        type: 'module',
+      })),
 
       esm: {
         nodeResolve: {
@@ -32,7 +33,7 @@ module.exports = config => {
             lines: 20,
           },
         },
-      },
+      }
 
       // you can overwrite/extend the config further
     })

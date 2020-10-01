@@ -7,7 +7,9 @@ module.exports = {
   ],
   esDevServer: {
     // custom es-dev-server options
-    nodeResolve: true,
+    nodeResolve: {
+      browser: true,
+    },
     watch: true,
     open: true,
     plugins: require('../es-dev-plugins'),

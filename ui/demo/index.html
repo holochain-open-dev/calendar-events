@@ -19,13 +19,10 @@
     <script type="module">
       import { html, render } from 'lit-html';
       import { setupApolloClientMock } from '../test/mocks/utils';
-      import {
-        installCalendarEventsModule,
-        CREATE_CALENDAR_EVENT,
-      } from '../dist';
+      import { CalendarEventsModule, CREATE_CALENDAR_EVENT } from '../dist';
 
       setupApolloClientMock('ws://localhost:8888').then(client => {
-        installCalendarEventsModule({ apolloClient: client });
+        new CalendarEventsModule({ apolloClient: client }).install();
       });
     </script>
   </body>

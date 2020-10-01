@@ -43,8 +43,10 @@ const rootTypeDef = gql`
 
 const allTypeDefs = [rootTypeDef, calendarEventsTypeDefs];
 
-async function getAppWebsocket(url) {
-  if (url) return AppWebsocket.connect(url);
+const e2e = process.env.E2E;
+
+async function getAppWebsocket() {
+  if (process.env.E2E) return AppWebsocket.connect('ws://localhost:8888');
   else {
     const dnaMock = new CalendarEventsMock();
     return new AppWebsocketMock(dnaMock);
@@ -52,11 +54,11 @@ async function getAppWebsocket(url) {
 }
 
 /**
- * If url is undefined, it will mock the backend
- * If url is defined, it will try to connect to holochain
+ * If process.env.E2E is undefined, it will mock the backend
+ * If process.env.E2E is defined, it will try to connect to holochain at ws://localhost:8888
  */
-export async function setupApolloClientMock(url) {
-  const appWebsocket = await getAppWebsocket(url);
+export async function setupApolloClientMock() {
+  const appWebsocket = await getAppWebsocket();
 
   const appInfo = await appWebsocket.appInfo({ app_id: 'test-app' });
 

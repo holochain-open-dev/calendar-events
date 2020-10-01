@@ -2,39 +2,41 @@
   "version": "experimental",
   "tags": [
     {
-      "name": "hod-full-calendar",
-      "path": "./src/index.ts",
+      "name": "hod-create-calendar-event",
+      "path": "./src/elements/hod-create-calendar-event.ts",
+      "properties": [
+        {
+          "name": "initialEventProperties",
+          "description": "Initial calendar event parameters with which to populate the form",
+          "type": "Partial<CalendarEvent> | undefined",
+          "default": "\"undefined\""
+        }
+      ],
+      "events": [
+        {
+          "name": "event-created",
+          "description": "Fired after actually creating the event, containing the new CalendarEvent"
+        }
+      ]
+    },
+    {
+      "name": "hod-my-calendar",
+      "path": "./src/elements/hod-my-calendar.ts",
       "attributes": [
         {
-          "name": "title",
-          "description": "This is a description of a property with an attribute with exactly the same name: \"color\".",
-          "type": "\"red\"|\"green\"|\"blue\"",
-          "default": "\"Hey there\""
-        },
-        {
-          "name": "counter",
-          "type": "number",
-          "default": "5"
+          "name": "initial-view",
+          "description": "Initial calendar view (for reference visit https://fullcalendar.io/docs/plugin-index)",
+          "type": "'dayGridMonth' | 'timeGridWeek' | 'timeGridDay'",
+          "default": "\"timeGridWeek\""
         }
       ],
       "properties": [
         {
-          "name": "styles",
-          "type": "CSSResult",
-          "default": "\"css`\\n    :host {\\n      display: block;\\n      padding: 25px;\\n      color: var(--hod-calendar-event-text-color, #000);\\n    }\\n  `\""
-        },
-        {
-          "name": "title",
-          "attribute": "title",
-          "description": "This is a description of a property with an attribute with exactly the same name: \"color\".",
-          "type": "\"red\"|\"green\"|\"blue\"",
-          "default": "\"Hey there\""
-        },
-        {
-          "name": "counter",
-          "attribute": "counter",
-          "type": "number",
-          "default": "5"
+          "name": "initialView",
+          "attribute": "initial-view",
+          "description": "Initial calendar view (for reference visit https://fullcalendar.io/docs/plugin-index)",
+          "type": "'dayGridMonth' | 'timeGridWeek' | 'timeGridDay'",
+          "default": "\"timeGridWeek\""
         }
       ]
     }

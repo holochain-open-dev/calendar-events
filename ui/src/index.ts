@@ -11,4 +11,4 @@ export {
   GET_MY_CALENDAR_EVENTS,
 } from './graphql/queries';
 
-export { installCalendarEventsModule } from './calendar-events.module';
+export { CalendarEventsModule } from './calendar-events.module';

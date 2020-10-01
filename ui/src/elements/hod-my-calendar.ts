@@ -40,30 +40,38 @@ export abstract class HodMyCalendar extends LitElement {
   }
   /** Public attributes */
 
+  /**
+   * Initial calendar view (for reference visit https://fullcalendar.io/docs/plugin-index)
+   * @type {'dayGridMonth' | 'timeGridWeek' | 'timeGridDay'}
+   * @attr initial-view
+   */
+  @property({ type: String, attribute: 'initial-view' })
+  initialView: 'dayGridMonth' | 'timeGridWeek' | 'timeGridDay' = 'timeGridWeek';
+
   /** Dependencies */
-  abstract get apolloClient(): ApolloClient<any>;
+  abstract get _apolloClient(): ApolloClient<any>;
 
   /** Private properties */
 
-  @property({ type: Boolean, attribute: false }) loading = false;
+  @property({ type: Boolean, attribute: false }) _loading = false;
   @property({ type: Array, attribute: false }) _myCalendarEvents:
     | Array<CalendarEvent>
     | undefined = undefined;
 
   @query('#calendar')
-  calendarEl!: HTMLElement;
+  _calendarEl!: HTMLElement;
 
   @query('#create-event-menu')
-  createEventMenu!: MenuSurface;
+  _createEventMenu!: MenuSurface;
 
   @query('#create-calendar-event')
-  createEvent!: any;
+  _createEvent!: any;
 
-  calendar!: Calendar;
+  _calendar!: Calendar;
 
   async loadCalendarEvents() {
-    this.loading = true;
-    const result = await this.apolloClient.query({
+    this._loading = true;
+    const result = await this._apolloClient.query({
       query: GET_MY_CALENDAR_EVENTS,
       fetchPolicy: 'network-only',
     });
@@ -73,17 +81,17 @@ export abstract class HodMyCalendar extends LitElement {
       const fullCalendarEvents = this._myCalendarEvents.map(
         eventToFullCalendar
       );
-      this.calendar.removeAllEventSources();
-      this.calendar.addEventSource(fullCalendarEvents);
-      this.calendar.render();
+      this._calendar.removeAllEventSources();
+      this._calendar.addEventSource(fullCalendarEvents);
+      this._calendar.render();
     }
-    this.loading = false;
+    this._loading = false;
   }
 
   setupCalendar() {
-    this.calendar = new Calendar(this.calendarEl, {
+    this._calendar = new Calendar(this._calendarEl, {
       plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin],
-      initialView: 'timeGridWeek',
+      initialView: this.initialView,
       themeSystem: 'bootstrap',
       selectable: true,
       selectMirror: true,
@@ -93,17 +101,17 @@ export abstract class HodMyCalendar extends LitElement {
         right: 'dayGridMonth,timeGridWeek,timeGridDay',
       },
       select: info => {
-        this.createEventMenu.open = true;
-        this.createEventMenu.anchor = (info.jsEvent as any)
+        this._createEventMenu.open = true;
+        this._createEventMenu.anchor = (info.jsEvent as any)
           .path[0] as HTMLElement;
-        this.createEvent.initialEventProperties = {
+        this._createEvent.initialEventProperties = {
           startTime: dateToSecsTimestamp(info.start),
           endTime: dateToSecsTimestamp(info.end),
         };
       },
     });
 
-    this.calendar.render();
+    this._calendar.render();
   }
 
   async firstUpdated() {
@@ -122,7 +130,7 @@ export abstract class HodMyCalendar extends LitElement {
         <hod-create-calendar-event
           id="create-calendar-event"
           @event-created=${() => {
-            this.createEventMenu.open = false;
+            this._createEventMenu.open = false;
             this.loadCalendarEvents();
           }}
         ></hod-create-calendar-event>
@@ -134,7 +142,7 @@ export abstract class HodMyCalendar extends LitElement {
     return html`
       <div style="position: relative;">
         ${this.renderCreateEventCard()}
-        ${this.loading
+        ${this._loading
           ? html`<mwc-linear-progress indeterminate></mwc-linear-progress>`
           : html``}
 
@@ -147,7 +155,7 @@ export function defineHodMyCalendar(apolloClient: ApolloClient<any>): void {
   customElements.define(
     'hod-my-calendar',
     class extends HodMyCalendar {
-      get apolloClient() {
+      get _apolloClient() {
         return apolloClient;
       }
     }

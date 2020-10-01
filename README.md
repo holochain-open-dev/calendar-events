@@ -89,7 +89,7 @@ async function initApp() {
 ```html
 ...
 <body>
-  <hod-cal-full-calendar></hod-cal-full-calendar>
+  <hod-my-calendar></hod-my-calendar>
 </body>
 ```
 
