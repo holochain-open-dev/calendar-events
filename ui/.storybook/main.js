@@ -30,6 +30,10 @@ module.exports = {
     return {
       ...config,
       plugins: [
+        replace({
+          global: 'window',
+          'process.env.NODE_ENV': '"development"',
+        }),
         commonjs({
           include: [
             'node_modules/buffer/**/*',
@@ -47,10 +51,6 @@ module.exports = {
             moduleDirectory: ['node_modules', 'web_modules'],
           },
           preferBuiltins: false,
-        }),
-        replace({
-          global: 'window',
-          'process.env.NODE_ENV': '"development"',
         }),
         builtins(),
       ],
