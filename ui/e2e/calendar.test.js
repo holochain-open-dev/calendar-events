@@ -1,7 +1,7 @@
 import { html, fixture, expect, waitUntil } from '@open-wc/testing';
 
 import { CalendarEventsModule } from '../dist';
-import { setupApolloClientMock } from '../test/mocks/utils.js';
+import { setupApolloClientMock } from '../test/mocks.js';
 
 describe('top-level workflows', () => {
   it('create calendar event and retrieve it', async () => {

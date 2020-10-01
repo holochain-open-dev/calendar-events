@@ -16,5 +16,3 @@ export function eventToFullCalendar(calendarEvent: CalendarEvent) {
     end: secsTimestampToDate(calendarEvent.endTime).toISOString(),
   };
 }
-export const sleep = (ms: number) =>
-  new Promise(resolve => setTimeout(() => resolve(), ms));

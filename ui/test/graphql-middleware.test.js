@@ -1,7 +1,7 @@
 import { expect } from '@open-wc/testing';
 import { GET_MY_CALENDAR_EVENTS, CREATE_CALENDAR_EVENT } from '../dist';
 
-import { setupApolloClientMock } from './mocks/utils';
+import { setupApolloClientMock } from './mockss';
 
 describe('Apollo middleware', () => {
   it('create a calendar event and retrieve it', async () => {

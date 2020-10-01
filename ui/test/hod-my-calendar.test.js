@@ -1,7 +1,7 @@
 import { html, fixture, expect, waitUntil } from '@open-wc/testing';
 
 import { CREATE_CALENDAR_EVENT, defineHodMyCalendar } from '../dist';
-import { setupApolloClientMock } from './mocks/utils.js';
+import { setupApolloClientMock } from './mockss.js';
 
 describe('HodMyCalendar', () => {
   it('<hod-my-calendar> renders a newly created event', async () => {
