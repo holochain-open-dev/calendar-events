@@ -1,4 +1,4 @@
-# CaelndarEventsModule
+# CalendarEventsModule
 
 Small module to create and see calendar events, in holochain RSM.
 
