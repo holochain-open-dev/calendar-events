@@ -1,8 +1,10 @@
-# calendar-events-module
+# CaelndarEventsModule
 
-Small zome to create and see calendar events, in holochain RSM.
+Small module to create and see calendar events, in holochain RSM.
 
 This module is designed to be included in other DNAs, assuming as little as possible from those. It is packaged as a holochain zome, and an npm package that offers native Web Components that can be used across browsers and frameworks.
+
+> Please note, this module is in its early infancy, right now more usable as a reference for building reusable modules. Help is appreciated and much needed!
 
 ## Documentation
 

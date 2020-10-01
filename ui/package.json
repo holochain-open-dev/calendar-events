@@ -1,7 +1,7 @@
 {
-  "name": "hod-calendar-events",
-  "version": "0.0.1",
-  "description": "Webcomponent hod-calendar-event following open-wc recommendations",
+  "name": "@holochain-open-dev/calendar-events",
+  "version": "0.0.2",
+  "description": "Holochain reusable module to include calendar events in your happ",
   "author": "guillem.cordoba@gmail.com",
   "license": "MIT",
   "main": "index.js",
