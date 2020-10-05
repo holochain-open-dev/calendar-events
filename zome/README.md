@@ -1,6 +1,6 @@
 # Zome Developer Setup
 
-This folder has an example DNA for the `calendar_events` zome. It has symbolic links to the source code of the zome, which sits on the root folder of the repository to be able to include it in other DNAs with `git submodules`.
+This folder has an example DNA for the `calendar_events` zome. 
 
 To change the code, you can work either opening VSCode inside the root folder of the repo or in this folder, you should have rust intellisense either way.
 

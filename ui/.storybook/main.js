@@ -1,4 +1,3 @@
-const merge = require('deepmerge');
 const resolve = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
 const builtins = require('rollup-plugin-node-builtins');

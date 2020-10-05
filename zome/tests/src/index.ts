@@ -5,8 +5,8 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms));
 const orchestrator = new Orchestrator();
 
 export const simpleConfig = {
-  alice: Config.dna("../example-dna.dna.gz", null),
-  bobbo: Config.dna("../example-dna.dna.gz", null),
+  alice: Config.dna("../calendar_events.dna.gz", null),
+  bobbo: Config.dna("../calendar_events.dna.gz", null),
 };
 
 const dateToTimestamp = (date) => [

@@ -13,7 +13,7 @@
     "test": "npm run build && karma start --coverage",
     "test:watch": "concurrently -k --names rollup,karma \"npm run build:watch\" \"karma start --auto-watch=true --single-run=false\"",
     "e2e": "E2E=true concurrently -k -s first \"npm run build && karma start --coverage\" \"npm run holochain:start\"",
-    "holochain:start": "RUST_LOG=warn holochain-run-dna ../example-dna/example-dna.dna.gz",
+    "holochain:start": "RUST_LOG=warn holochain-run-dna ../zome/calendar_events.dna.gz",
     "analyze": "wca analyze src --format json --outFile custom-elements.json --features member method cssproperty csspart event slot",
     "lint:eslint": "eslint --ext .ts,.html . --ignore-path .gitignore",
     "format:eslint": "eslint --ext .ts,.html . --fix --ignore-path .gitignore",

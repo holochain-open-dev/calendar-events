@@ -101,8 +101,8 @@ Take into account that at this point the elements already expect a holochain con
 
 This respository is structured in the following way:
 
-- Top level `src/` and `Cargo.toml` contains the code for the zome itself. This is to allow direct usage of the zome through git submodule.
+- Top level `Cargo.toml` is a 
 - `ui/`: UI library.
-- `example-dna/`: an example of a DNA that uses the zome. It contains a link to the zome code and its tryorama tests.
+- `zome/`: example DNA with the `calendar_events` code.
 
 Read the [UI developer setup](/ui/README.md) and the [Zome developer setup](/example-dna/README.md).
