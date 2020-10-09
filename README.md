@@ -25,19 +25,20 @@ These are the things you need to know to decide if you can use this module in yo
 
 ### Including the zome in your DNA
 
-You need to include this repository as a git submodule inside the `zomes/` folder of your application.
-
-From the root folder of your DNA:
-
-1. `git submodule add https://github.com/holochain-open-dev/calendar-events-module zomes/calendar_events`.
-2.
-3. Modify the `Cargo.toml` and add `zomes/calendar_events` in the `[members]` array.
-4. Add the `calendar_events` zome in the `dna.json` of your `<DNA_NAME>.dna.workdir`.
-5. Compile the DNA with the usual `CARGO_TARGET=target cargo build --release --target wasm32-unknown-unknown `.
-
-Now the submodule is added and linked with the code from this repository. In the future, whenever this repository is cloned, run `git submodule init` and `git submodule update`.
-
-You can read more documentation on git submodules [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
+1. Create a new folder in the `zomes` of the consuming DNA, with the name you want to give to this zome in your DNA.
+2. Add a new `Cargo.toml` in that folder. In its content, paste the `Cargo.toml` content from any zome.
+3. Change the `name` properties of the `Cargo.toml` file to the name you want to give to this zome in your DNA.
+4. Add this zome as a dependency in the `Cargo.toml` file:
+```toml
+[dependencies]
+calendar_events = {git = "https://github.com/holochain-open-dev/calendar-events-module", package = "calendar_events"}
+```
+5. Create a `src` folder besides the `Cargo.toml` with this content:
+```rust
+extern crate calendar_events;
+```
+6. Add the zome into your `*.dna.workdir/dna.json` file.
+7. Compile the DNA with the usual `CARGO_TARGET=target cargo build --release --target wasm32-unknown-unknown`.
 
 ### Using the UI module
 
@@ -101,8 +102,8 @@ Take into account that at this point the elements already expect a holochain con
 
 This respository is structured in the following way:
 
-- Top level `Cargo.toml` is a 
 - `ui/`: UI library.
 - `zome/`: example DNA with the `calendar_events` code.
+- Top level `Cargo.toml` is a virtual package necessary for other DNAs to include this zome by pointing to this git repository.
 
-Read the [UI developer setup](/ui/README.md) and the [Zome developer setup](/example-dna/README.md).
+Read the [UI developer setup](/ui/README.md) and the [Zome developer setup](/zome/README.md).
