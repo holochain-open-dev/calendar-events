@@ -31160,9 +31160,22 @@ class HodMyCalendar extends LitElement {
         }
         this._loading = false;
     }
+    getEventBeingCreated() {
+        const harnesses = this._calendarEl.querySelectorAll('.fc-timegrid-event-harness');
+        let eventBeingCreated = undefined;
+        harnesses.forEach(element => {
+            if (element.style.zIndex === '') {
+                eventBeingCreated = element;
+            }
+        });
+        return eventBeingCreated;
+    }
     openCreateEventMenu(info) {
         this._createEventMenu.open = true;
-        this._createEventMenu.anchor = info.jsEvent.path[0];
+        const element = this.getEventBeingCreated();
+        if (element) {
+            this._createEventMenu.anchor = element;
+        }
         this._createEvent.clear();
         this._createEvent.initialEventProperties = {
             startTime: dateToSecsTimestamp(info.start),

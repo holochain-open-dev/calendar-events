@@ -30,6 +30,7 @@ export declare abstract class HodMyCalendar extends LitElement {
     _createEvent: HodCreateCalendarEvent;
     _calendar: Calendar;
     loadCalendarEvents(): Promise<void>;
+    getEventBeingCreated(): HTMLElement | undefined;
     openCreateEventMenu(info: DateSelectArg): void;
     setupCalendar(): void;
     firstUpdated(): Promise<void>;
