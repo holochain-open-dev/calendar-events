@@ -94,9 +94,29 @@ export abstract class HodMyCalendar extends LitElement {
     this._loading = false;
   }
 
+  getEventBeingCreated(): HTMLElement | undefined {
+    const harnesses = this._calendarEl.querySelectorAll(
+      '.fc-timegrid-event-harness'
+    );
+
+    let eventBeingCreated: HTMLElement | undefined = undefined;
+    harnesses.forEach(element => {
+      if ((element as HTMLElement).style.zIndex === '') {
+        eventBeingCreated = element as HTMLElement;
+      }
+    });
+
+    return eventBeingCreated;
+  }
+
   openCreateEventMenu(info: DateSelectArg) {
     this._createEventMenu.open = true;
-    this._createEventMenu.anchor = (info.jsEvent as any).path[0] as HTMLElement;
+
+    const element = this.getEventBeingCreated();
+    if (element) {
+      this._createEventMenu.anchor = element;
+    }
+
     this._createEvent.clear();
     this._createEvent.initialEventProperties = {
       startTime: dateToSecsTimestamp(info.start),
