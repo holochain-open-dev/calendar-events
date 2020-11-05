@@ -1,13 +1,23 @@
 import { ApolloClient } from '@apollo/client/core';
-import { defineHodCreateCalendarEvent } from './elements/hod-create-calendar-event';
-import { defineHodMyCalendar } from './elements/hod-my-calendar';
+import { HodCreateCalendarEvent } from './elements/hod-create-calendar-event';
+import { HodMyCalendar } from './elements/hod-my-calendar';
+import { setupApolloClientElement } from './utils';
 
 export class CalendarEventsModule {
   constructor(protected dependencies: { apolloClient: ApolloClient<any> }) {}
 
   async install(): Promise<void> {
-    defineHodMyCalendar(this.dependencies.apolloClient);
-    defineHodCreateCalendarEvent(this.dependencies.apolloClient);
+    customElements.define(
+      'hod-my-calendar',
+      setupApolloClientElement(HodMyCalendar, this.dependencies.apolloClient)
+    );
+    customElements.define(
+      'hod-create-calendar-event',
+      setupApolloClientElement(
+        HodCreateCalendarEvent,
+        this.dependencies.apolloClient
+      )
+    );
   }
 
   static isInstalled(): boolean {

@@ -1,10 +1,11 @@
+use hc_utils::WrappedEntryHash;
 use hdk3::prelude::*;
 
 pub fn try_get_and_convert<T: TryFrom<SerializedBytes>>(
     entry_hash: EntryHash,
-) -> ExternResult<(EntryHash, T)> {
+) -> ExternResult<(WrappedEntryHash, T)> {
     match get!(entry_hash.clone())? {
-        Some(element) => Ok((entry_hash, try_from_element(element)?)),
+        Some(element) => Ok((WrappedEntryHash(entry_hash), try_from_element(element)?)),
         None => crate::error("Entry not found"),
     }
 }

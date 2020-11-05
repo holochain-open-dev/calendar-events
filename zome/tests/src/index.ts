@@ -22,7 +22,7 @@ orchestrator.registerScenario(
     });
     await conductor.spawn();
 
-    let calendarEventHash = await conductor.call(
+    let calendarEvent = await conductor.call(
       "alice",
       "calendar_events",
       "create_calendar_event",
@@ -34,7 +34,7 @@ orchestrator.registerScenario(
         invitees: [],
       }
     );
-    t.ok(calendarEventHash);
+    t.ok(calendarEvent.entry_hash);
 
     await sleep(10);
 

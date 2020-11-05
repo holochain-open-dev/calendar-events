@@ -1,10 +1,10 @@
 import { gql, ApolloClient, InMemoryCache } from '@apollo/client/core';
 import { SchemaLink } from '@apollo/client/link/schema';
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import { AppWebsocket } from '@holochain/conductor-api';
+import ConductorApi from '@holochain/conductor-api';
 
 import { calendarEventsResolvers, calendarEventsTypeDefs } from '../../dist';
-import { AppWebsocketMock } from './AppWebsocket.mock';
+import { AppWebsocketMock, DnaMock } from 'holochain-ui-test-utils';
 import { CalendarEventsMock } from './calendar-events.mock';
 
 const rootTypeDef = gql`
@@ -19,17 +19,20 @@ const rootTypeDef = gql`
 
 export const allTypeDefs = [rootTypeDef, calendarEventsTypeDefs];
 
+const dnaMock = new DnaMock({
+  calendar_events: new CalendarEventsMock(),
+});
 export async function getAppWebsocket() {
-  if (process.env.E2E) return AppWebsocket.connect('ws://localhost:8888');
+  if (process.env.CONDUCTOR_URL)
+    return ConductorApi.AppWebsocket.connect(process.env.CONDUCTOR_URL);
   else {
-    const dnaMock = new CalendarEventsMock();
-    return new AppWebsocketMock(dnaMock);
+    return new AppWebsocketMock([dnaMock]);
   }
 }
 
 /**
- * If process.env.E2E is undefined, it will mock the backend
- * If process.env.E2E is defined, it will try to connect to holochain at ws://localhost:8888
+ * If process.env.CONDUCTOR_URL is undefined, it will mock the backend
+ * If process.env.CONDUCTOR_URL is defined, it will try to connect to holochain at ws://localhost:8888
  */
 export async function setupApolloClientMock() {
   const appWebsocket = await getAppWebsocket();

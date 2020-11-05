@@ -22,7 +22,7 @@ export default {
   },
   plugins: [
     postcss({
-      inject: true,
+      inject: false,
     }),
     postcssLit(),
     typescript({}),

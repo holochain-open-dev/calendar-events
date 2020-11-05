@@ -1,11 +1,23 @@
 <style>
-  :host {
+  :root {
     font-family: 'Roboto', sans-serif;
   }
 
-  html, body, #root, #root-inner, #root > div {
+  html,
+  body,
+  #root,
+  #root-inner,
+  #root > div {
     width: 100%;
     height: 100%;
-    display: flex;
+    margin: 0;
   }
 </style>
+<script type="module">
+  import { CalendarEventsModule } from './dist';
+  import { setupApolloClientMock } from './test/mocks';
+
+  setupApolloClientMock().then(client =>
+    new CalendarEventsModule({ apolloClient: client }).install()
+  );
+</script>

@@ -12,4 +12,5 @@ name = "calendar_events"
 derive_more = "0"
 serde = "1"
 
-hdk3 = {git = "https://github.com/holochain/holochain", rev = "44cf2a6", package = "hdk3"}
+hc_utils = "0"
+hdk3 = "0"

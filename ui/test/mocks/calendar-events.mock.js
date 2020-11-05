@@ -1,4 +1,4 @@
-import { randomHash } from './utils';
+import { randomEntryHash, randomPubKey } from 'holochain-ui-test-utils';
 
 export class CalendarEventsMock {
   constructor() {
@@ -6,16 +6,16 @@ export class CalendarEventsMock {
   }
 
   create_calendar_event(calendarInput) {
-    const newId = randomHash();
-    this.calendarEvents.push([
-      newId,
-      {
+    const calendarEntry = {
+      entry_hash: randomEntryHash(),
+      entry: {
         ...calendarInput,
-        createdBy: randomHash(),
+        createdBy: randomPubKey(),
       },
-    ]);
+    };
+    this.calendarEvents.push(calendarEntry);
 
-    return newId;
+    return calendarEntry;
   }
 
   get_my_calendar_events() {

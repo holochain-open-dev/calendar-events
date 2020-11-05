@@ -145,7 +145,6 @@ export abstract class HodMyCalendar extends LitElement {
           @event-created=${(e: CustomEvent) => {
             this._createEventMenu.open = false;
             this.loadCalendarEvents();
-            this.dispatchEvent(e);
           }}
         ></hod-create-calendar-event>
       </div>
@@ -164,14 +163,4 @@ export abstract class HodMyCalendar extends LitElement {
       </div>
     `;
   }
-}
-export function defineHodMyCalendar(apolloClient: ApolloClient<any>): void {
-  customElements.define(
-    'hod-my-calendar',
-    class extends HodMyCalendar {
-      get _apolloClient() {
-        return apolloClient;
-      }
-    }
-  );
 }

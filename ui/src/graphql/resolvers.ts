@@ -5,10 +5,6 @@ function secondsToTimestamp(secs: number) {
   return [secs, 0];
 }
 
-function hashToString(hash: { hash: Buffer; hash_type: Buffer }) {
-  return hash.hash_type.toString('hex') + hash.hash.toString('hex');
-}
-
 export const calendarEventsResolvers = (
   appWebsocket: AppWebsocket,
   cellId: CellId,
@@ -25,13 +21,15 @@ export const calendarEventsResolvers = (
         provenance: cellId[1],
       });
 
-      return events.map((event: any) => ({
-        id: hashToString(event[0]),
-        ...event[1],
-        startTime: event[1].startTime[0],
-        endTime: event[1].endTime[0],
-        createdBy: hashToString(event[1].createdBy),
-      }));
+      return events.map(
+        ({ entry_hash, entry }: { entry_hash: string; entry: any }) => ({
+          id: entry_hash,
+          ...entry,
+          startTime: entry.startTime[0],
+          endTime: entry.endTime[0],
+          createdBy: entry.createdBy,
+        })
+      );
     },
   },
   Mutation: {
@@ -39,7 +37,7 @@ export const calendarEventsResolvers = (
       _,
       { title, startTime, endTime, location, invitees }
     ) {
-      const eventId = await appWebsocket.callZome({
+      const { entry_hash, entry } = await appWebsocket.callZome({
         cap: null as any,
         cell_id: cellId,
         zome_name: zomeName,
@@ -55,13 +53,8 @@ export const calendarEventsResolvers = (
       });
 
       return {
-        id: hashToString(eventId),
-        createdBy: hashToString(cellId[1]),
-        title,
-        startTime,
-        endTime,
-        invitees,
-        location,
+        id: entry_hash,
+        ...entry,
       };
     },
   },

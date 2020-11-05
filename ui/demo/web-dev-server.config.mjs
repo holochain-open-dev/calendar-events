@@ -1,4 +1,6 @@
-module.exports = {
+import plugins from '../web-dev.plugins.mjs';
+
+export default {
   port: 8080,
   watch: true,
   nodeResolve: {
@@ -6,6 +8,5 @@ module.exports = {
   },
   appIndex: 'demo/index.html',
   open: true,
-  plugins: require('../es-dev-plugins'),
-  moduleDirs: ['node_modules', 'web_modules'],
+  plugins,
 };

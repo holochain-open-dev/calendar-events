@@ -22,7 +22,7 @@
       import { setupApolloClientMock } from '../test/mocks';
       import { CalendarEventsModule } from '../dist';
 
-      setupApolloClientMock('ws://localhost:8888').then(client => {
+      setupApolloClientMock().then(client => {
         new CalendarEventsModule({ apolloClient: client }).install();
       });
     </script>

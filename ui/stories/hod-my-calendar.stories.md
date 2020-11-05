@@ -1,12 +1,6 @@
 ```js script
 import { html } from '@open-wc/demoing-storybook';
 import { withKnobs, withWebComponentsKnobs } from '@open-wc/demoing-storybook';
-import { CalendarEventsModule } from '../dist';
-import { setupApolloClientMock } from '../test/mocks';
-
-setupApolloClientMock().then(client =>
-  new CalendarEventsModule({ apolloClient: client }).install()
-);
 
 export default {
   title: 'HodMyCalendar',
@@ -47,10 +41,16 @@ After having installed the `CalendarEventsModule`, just add the element to your 
 ### Variants
 
 ```js preview-story
-export const Default = () => html` <hod-my-calendar style="flex: 1"></hod-my-calendar> `;
+export const Default = () =>
+  html` <hod-my-calendar style="flex: 1"></hod-my-calendar> `;
 ```
 
 ```js preview-story
 export const MonthView = () =>
-  html` <hod-my-calendar initial-view="dayGridMonth" style="flex: 1"></hod-my-calendar> `;
+  html`
+    <hod-my-calendar
+      initial-view="dayGridMonth"
+      style="flex: 1"
+    ></hod-my-calendar>
+  `;
 ```

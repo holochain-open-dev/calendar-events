@@ -100,14 +100,3 @@ export abstract class HodCreateCalendarEvent extends LitElement {
     this._titleField.value = '';
   }
 }
-
-export function defineHodCreateCalendarEvent(apolloClient: ApolloClient<any>) {
-  customElements.define(
-    'hod-create-calendar-event',
-    class extends HodCreateCalendarEvent {
-      get _apolloClient() {
-        return apolloClient;
-      }
-    }
-  );
-}

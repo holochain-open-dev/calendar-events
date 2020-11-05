@@ -1,12 +1,6 @@
 ```js script
 import { html } from '@open-wc/demoing-storybook';
 import { withKnobs, withWebComponentsKnobs } from '@open-wc/demoing-storybook';
-import { CalendarEventsModule } from '../dist';
-import { setupApolloClientMock } from '../test/mocks';
-
-setupApolloClientMock().then(client =>
-  new CalendarEventsModule({ apolloClient: client }).install()
-);
 
 export default {
   title: 'HodCreateCalendarEvent',
