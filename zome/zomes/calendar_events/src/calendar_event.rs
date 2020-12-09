@@ -42,7 +42,7 @@ pub struct CreateCalendarEventInput {
 pub fn create_calendar_event(
     calendar_event_input: CreateCalendarEventInput,
 ) -> ExternResult<CalendarEventOutput> {
-    let agent_info = agent_info!()?;
+    let agent_info = agent_info()?;
 
     let calendar_event = CalendarEvent {
         created_by: WrappedAgentPubKey(agent_info.agent_latest_pubkey.clone()),
@@ -61,13 +61,13 @@ pub fn create_calendar_event(
 
     path.ensure()?;
 
-    create_link!(path.hash()?, calendar_event_hash.clone())?;
+    create_link(path.hash()?, calendar_event_hash.clone())?;
 
     for invitee in calendar_event.invitees.clone() {
         let invitee_path = calendar_events_path_for_agent(invitee.0);
         invitee_path.ensure()?;
 
-        create_link!(invitee_path.hash()?, calendar_event_hash.clone())?;
+        create_link(invitee_path.hash()?, calendar_event_hash.clone())?;
     }
 
     Ok(CalendarEventOutput {
@@ -82,7 +82,7 @@ pub fn create_calendar_event(
 pub fn get_my_calendar_events() -> ExternResult<Vec<CalendarEventOutput>> {
     let path = my_calendar_events_path()?;
 
-    let links = get_links!(path.hash()?)?;
+    let links = get_links(path.hash()?, None)?;
 
     links
         .into_inner()
@@ -96,7 +96,7 @@ pub fn get_my_calendar_events() -> ExternResult<Vec<CalendarEventOutput>> {
 
 /** Private helpers **/
 fn my_calendar_events_path() -> ExternResult<Path> {
-    let agent_info = agent_info!()?;
+    let agent_info = agent_info()?;
     Ok(calendar_events_path_for_agent(
         agent_info.agent_latest_pubkey,
     ))
