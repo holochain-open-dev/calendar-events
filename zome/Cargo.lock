@@ -73,6 +73,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "common"
+version = "0.0.1"
+dependencies = [
+ "common 0.0.1 (git+https://github.com/holochain-open-dev/common?branch=main)",
+ "derive_more",
+ "hc_utils",
+ "hdk3",
+ "serde",
+]
+
+[[package]]
+name = "common"
+version = "0.0.1"
+source = "git+https://github.com/holochain-open-dev/common?branch=main#edfb41bf8cc8c2206d9c0cb02f040c172137ea0d"
+dependencies = [
+ "derive_more",
+ "hc_utils",
+ "hdk3",
+ "serde",
+]
+
+[[package]]
 name = "constant_time_eq"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"

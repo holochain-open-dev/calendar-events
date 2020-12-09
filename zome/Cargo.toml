@@ -1,6 +1,7 @@
 [workspace]
 members = [
   "zomes/calendar_events",
+  "zomes/common",
 ]
 
 [profile.dev]

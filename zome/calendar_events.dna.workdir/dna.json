@@ -1,10 +1,14 @@
 {
-  "name": "resource-bookings",
+  "name": "calendar-events",
   "uuid": "",
   "properties": null,
   "zomes": {
     "calendar_events": {
-      "wasm_path": "../target/wasm32-unknown-unknown/release/calendar_events.wasm"
+      "wasm_path": "../target/wasm32-unknown-unknown/release/calendar_events.wasm",
+      "ui_path": "../../ui/dist/index.js"
+    },
+    "common": {
+      "wasm_path": "../target/wasm32-unknown-unknown/release/common.wasm"
     }
   }
 }

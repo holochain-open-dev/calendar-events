@@ -15,7 +15,7 @@ export async function getAppWebsocket() {
 
   const appInfo = await appWebsocket.appInfo({ installed_app_id: 'test-app' });
 
-  const cellId = appInfo.cell_data[0][0];
+  const cellId = appInfo.cell_data[1][0];
 
   return {
     appWebsocket,

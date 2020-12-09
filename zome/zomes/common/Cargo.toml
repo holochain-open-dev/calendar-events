@@ -1,0 +1,17 @@
+[package]
+authors = ["guillem.cordoba@gmail.com"]
+edition = "2018"
+name = "common"
+version = "0.0.1"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+name = "common"
+
+[dependencies]
+derive_more = "0"
+serde = "1"
+
+common = {git = "https://github.com/holochain-open-dev/common", branch = "main", package = "common"}
+hc_utils = "0"
+hdk3 = "0"
