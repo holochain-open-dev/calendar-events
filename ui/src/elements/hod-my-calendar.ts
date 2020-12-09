@@ -16,13 +16,11 @@ import timeGridStyles from '@fullcalendar/timegrid/main.css';
 import bootstrapStyles from 'bootstrap/dist/css/bootstrap.css';
 // @ts-ignore
 import iconStyles from '@fortawesome/fontawesome-free/css/all.css'; // needs additional webpack config!
-import '@material/mwc-linear-progress';
-import '@material/mwc-menu/mwc-menu-surface';
 import type { MenuSurface } from '@material/mwc-menu/mwc-menu-surface';
 
 import { CalendarEvent } from '../types';
 import { GET_MY_CALENDAR_EVENTS } from '../graphql/queries';
-import { dateToSecsTimestamp, eventToFullCalendar } from '../utils';
+import { eventToFullCalendar } from '../utils';
 import { HodCreateCalendarEvent } from './hod-create-calendar-event';
 
 /**
@@ -80,9 +78,12 @@ export abstract class HodMyCalendar extends LitElement {
     const result = await this._apolloClient.query({
       query: GET_MY_CALENDAR_EVENTS,
       fetchPolicy: 'network-only',
+      variables: {
+        membraneId: 'asdf',
+      },
     });
 
-    this._myCalendarEvents = result.data.myCalendarEvents;
+    this._myCalendarEvents = result.data.membrane.myCalendarEvents;
     if (this._myCalendarEvents) {
       const fullCalendarEvents = this._myCalendarEvents.map(
         eventToFullCalendar
@@ -119,8 +120,8 @@ export abstract class HodMyCalendar extends LitElement {
 
     this._createEvent.clear();
     this._createEvent.initialEventProperties = {
-      startTime: dateToSecsTimestamp(info.start),
-      endTime: dateToSecsTimestamp(info.end),
+      startTime: info.start.valueOf(),
+      endTime: info.end.valueOf(),
     };
   }
 

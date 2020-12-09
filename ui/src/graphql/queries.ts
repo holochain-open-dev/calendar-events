@@ -2,6 +2,7 @@ import { gql } from '@apollo/client/core';
 
 export const CREATE_CALENDAR_EVENT = gql`
   mutation CreateCalendarEvent(
+    $membraneId: ID!
     $title: String!
     $startTime: Date!
     $endTime: Date!
@@ -9,6 +10,7 @@ export const CREATE_CALENDAR_EVENT = gql`
     $invitees: [ID!]!
   ) {
     createCalendarEvent(
+      membraneId: $membraneId
       title: $title
       startTime: $startTime
       endTime: $endTime
@@ -27,15 +29,37 @@ export const CREATE_CALENDAR_EVENT = gql`
 `;
 
 export const GET_MY_CALENDAR_EVENTS = gql`
-  query GetMyCalendarEvents {
-    myCalendarEvents {
-      id
-      title
-      createdBy
-      startTime
-      endTime
-      location
-      invitees
+  query GetMyCalendarEvents($membraneId: ID!) {
+    membrane(membraneId: $membraneId) {
+      ... on CalendarEventsMembrane {
+        myCalendarEvents {
+          id
+          title
+          createdBy
+          startTime
+          endTime
+          location
+          invitees
+        }
+      }
+    }
+  }
+`;
+
+export const GET_CALENDAR_EVENT = gql`
+  query GetCalendarEvent($membraneId: ID!, $calendarEventId: ID!) {
+    membrane(membraneId: $membraneId) {
+      ... on CalendarEventsMembrane {
+        calendarEvent(calendarEventId: $calendarEventId) {
+          id
+          title
+          createdBy
+          startTime
+          endTime
+          location
+          invitees
+        }
+      }
     }
   }
 `;

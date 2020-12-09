@@ -21,5 +21,6 @@ module.exports = {
     'no-duplicate-imports': 'off',
     'import/no-unresolved': 'off',
     'import/extensions': 'off',
+    'import/named': 'off'
   },
 };

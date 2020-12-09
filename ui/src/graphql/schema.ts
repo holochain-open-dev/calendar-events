@@ -13,12 +13,14 @@ export const calendarEventsTypeDefs = gql`
     invitees: [ID!]!
   }
 
-  extend type Query {
+  type CalendarEventsMembrane {
     myCalendarEvents: [CalendarEvent!]!
+    calendarEvent(calendarEventId: ID!): CalendarEvent!
   }
 
   extend type Mutation {
     createCalendarEvent(
+      membraneId: ID!
       title: String!
       startTime: Date!
       endTime: Date!

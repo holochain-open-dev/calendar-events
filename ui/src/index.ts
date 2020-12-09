@@ -8,6 +8,6 @@ export {
   GET_MY_CALENDAR_EVENTS,
 } from './graphql/queries';
 
-export { CalendarEventsModule } from './calendar-events.module';
+import { setupComponents } from './setup-components';
 
-export { setupApolloClientElement } from './utils';
+export default setupComponents;

@@ -53,21 +53,21 @@ pub fn create_calendar_event(
         invitees: calendar_event_input.invitees,
     };
 
-    create_entry!(calendar_event.clone())?;
+    create_entry(&calendar_event)?;
 
-    let calendar_event_hash = hash_entry!(calendar_event.clone())?;
+    let calendar_event_hash = hash_entry(&calendar_event)?;
 
     let path = my_calendar_events_path()?;
 
     path.ensure()?;
 
-    create_link(path.hash()?, calendar_event_hash.clone())?;
+    create_link(path.hash()?, calendar_event_hash.clone(), ())?;
 
     for invitee in calendar_event.invitees.clone() {
         let invitee_path = calendar_events_path_for_agent(invitee.0);
         invitee_path.ensure()?;
 
-        create_link(invitee_path.hash()?, calendar_event_hash.clone())?;
+        create_link(invitee_path.hash()?, calendar_event_hash.clone(), ())?;
     }
 
     Ok(CalendarEventOutput {
@@ -92,6 +92,11 @@ pub fn get_my_calendar_events() -> ExternResult<Vec<CalendarEventOutput>> {
                 .map(|(entry_hash, entry)| CalendarEventOutput { entry_hash, entry })
         })
         .collect()
+}
+
+#[hdk_extern]
+pub fn get_calendar_event(calendar_event_hash: WrappedEntryHash) -> ExternResult<CalendarEvent> {
+    utils::try_get_and_convert::<CalendarEvent>(calendar_event_hash.0).map(|(_, entry)| entry)
 }
 
 /** Private helpers **/

@@ -1,57 +1,24 @@
-import { gql, ApolloClient, InMemoryCache } from '@apollo/client/core';
-import { SchemaLink } from '@apollo/client/link/schema';
-import { makeExecutableSchema } from '@graphql-tools/schema';
 import ConductorApi from '@holochain/conductor-api';
 
-import { calendarEventsResolvers, calendarEventsTypeDefs } from '../../dist';
 import { AppWebsocketMock, DnaMock } from 'holochain-ui-test-utils';
 import { CalendarEventsMock } from './calendar-events.mock';
-
-const rootTypeDef = gql`
-  type Query {
-    _: Boolean
-  }
-
-  type Mutation {
-    _: Boolean
-  }
-`;
-
-export const allTypeDefs = [rootTypeDef, calendarEventsTypeDefs];
 
 const dnaMock = new DnaMock({
   calendar_events: new CalendarEventsMock(),
 });
 export async function getAppWebsocket() {
+  let appWebsocket = new AppWebsocketMock([dnaMock]);
   if (process.env.CONDUCTOR_URL)
-    return ConductorApi.AppWebsocket.connect(process.env.CONDUCTOR_URL);
-  else {
-    return new AppWebsocketMock([dnaMock]);
-  }
-}
+    appWebsocket = await ConductorApi.AppWebsocket.connect(
+      process.env.CONDUCTOR_URL
+    );
 
-/**
- * If process.env.CONDUCTOR_URL is undefined, it will mock the backend
- * If process.env.CONDUCTOR_URL is defined, it will try to connect to holochain at ws://localhost:8888
- */
-export async function setupApolloClientMock() {
-  const appWebsocket = await getAppWebsocket();
-
-  const appInfo = await appWebsocket.appInfo({ app_id: 'test-app' });
+  const appInfo = await appWebsocket.appInfo({ installed_app_id: 'test-app' });
 
   const cellId = appInfo.cell_data[0][0];
 
-  const executableSchema = makeExecutableSchema({
-    typeDefs: allTypeDefs,
-    resolvers: [calendarEventsResolvers(appWebsocket, cellId)],
-  });
-
-  const schemaLink = new SchemaLink({ schema: executableSchema });
-
-  return new ApolloClient({
-    typeDefs: allTypeDefs,
-
-    cache: new InMemoryCache(),
-    link: schemaLink,
-  });
+  return {
+    appWebsocket,
+    cellId,
+  };
 }

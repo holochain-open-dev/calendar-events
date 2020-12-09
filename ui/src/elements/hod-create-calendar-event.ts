@@ -1,13 +1,10 @@
 import { ApolloClient } from '@apollo/client/core';
 import { html, LitElement, property, query } from 'lit-element';
-import '@material/mwc-textfield';
 import type { TextField } from '@material/mwc-textfield';
-import '@material/mwc-button';
 
 import { CalendarEvent } from '../types';
 import { sharedStyles } from '../sharedStyles';
 import { CREATE_CALENDAR_EVENT } from '../graphql/queries';
-import { secsTimestampToDate } from '../utils';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
@@ -39,6 +36,7 @@ export abstract class HodCreateCalendarEvent extends LitElement {
     const result = await this._apolloClient.mutate({
       mutation: CREATE_CALENDAR_EVENT,
       variables: {
+        membraneId: 'asdfdasf',
         title: this._titleField.value,
         startTime: this.initialEventProperties?.startTime,
         endTime: this.initialEventProperties?.endTime,
@@ -70,13 +68,13 @@ export abstract class HodCreateCalendarEvent extends LitElement {
 
         <span style="margin-top: 16px">
           Start Time:
-          ${secsTimestampToDate(
+          ${new Date(
             this.initialEventProperties?.startTime as number
           ).toLocaleString()}
         </span>
         <span style="margin-top: 8px">
           End Time:
-          ${secsTimestampToDate(
+          ${new Date(
             this.initialEventProperties?.endTime as number
           ).toLocaleString()}
         </span>

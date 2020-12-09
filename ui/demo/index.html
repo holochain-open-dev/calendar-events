@@ -6,7 +6,6 @@
       body {
         background: #fafafa;
       }
-
     </style>
     <link
       href="http://fonts.googleapis.com/css?family=Roboto"
@@ -19,12 +18,18 @@
 
     <script type="module">
       import { html, render } from 'lit-html';
-      import { setupApolloClientMock } from '../test/mocks';
-      import { CalendarEventsModule } from '../dist';
+      import { getAppWebsocket } from '../test/mocks';
+      import setupComponents from '../dist';
 
-      setupApolloClientMock().then(client => {
-        new CalendarEventsModule({ apolloClient: client }).install();
-      });
+      (async function () {
+        const { appWebsocket, cellId } = await getAppWebsocket();
+
+        const bundle = await setupComponents(appWebsocket, cellId);
+
+        for (const tag of Object.keys(bundle.components)) {
+          customElements.define(tag, bundle.components[tag]);
+        }
+      })();
     </script>
   </body>
 </html>
