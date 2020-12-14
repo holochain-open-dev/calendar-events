@@ -46,7 +46,7 @@
     "graphql": "^15.3.0",
     "lit-element": "^2.4.0",
     "lit-html": "^1.3.0",
-    "scoped-lit-element": "git+https://github.com/guillemcordoba/scoped-lit-element.git"
+    "scoped-element-mixin": "git+https://github.com/guillemcordoba/scoped-element-mixin.git"
   },
   "devDependencies": {
     "@open-wc/demoing-storybook": "^2.0.0",

@@ -24,13 +24,13 @@ import { GET_MY_CALENDAR_EVENTS } from '../graphql/queries';
 import { eventToFullCalendar } from '../utils';
 import { HodCreateCalendarEvent } from './hod-create-calendar-event';
 import { property, query } from 'lit-element/lib/decorators';
-import { ScopedLitElement } from 'scoped-lit-element';
+import { Scoped } from 'scoped-element-mixin';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
  * @csspart calendar - Style the calendar
  */
-export abstract class HodMyCalendar extends ScopedLitElement {
+export abstract class HodMyCalendar extends Scoped(LitElement) {
 
   /** Public attributes */
 
