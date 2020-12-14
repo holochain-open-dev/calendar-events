@@ -1,24 +1,19 @@
 import { ApolloClient } from '@apollo/client/core';
 import { AppWebsocket, CellId } from '@holochain/conductor-api';
 import { setupApolloClientElement } from '@holochain-open-dev/common';
-import { SetupComponents } from 'compository';
-import { CircularProgressBase } from '@material/mwc-circular-progress/mwc-circular-progress-base';
+import { Dictionary, SetupRenderers } from 'compository';
+import { html, render } from 'lit-html';
 
 import { createApolloClient } from './client';
 import { HodCreateCalendarEvent } from './elements/hod-create-calendar-event';
 import { HodMyCalendar } from './elements/hod-my-calendar';
 import { HodCalendarEvent } from './elements/hod-calendar-event';
-import { html } from 'lit-html';
-import { LinearProgressBase } from '@material/mwc-linear-progress/mwc-linear-progress-base';
-import { Button } from '@material/mwc-button';
-import { TextField } from '@material/mwc-textfield';
-import { MenuSurface } from '@material/mwc-menu/mwc-menu-surface';
 
-export const setupComponents: SetupComponents = async (
+export function setupElements(
   appWebsocket: AppWebsocket,
   cellId: CellId,
   apolloClient?: ApolloClient<any>
-) => {
+): Dictionary<typeof HTMLElement> {
   if (!apolloClient) {
     apolloClient = createApolloClient(appWebsocket, cellId);
   }
@@ -35,28 +30,48 @@ export const setupComponents: SetupComponents = async (
     HodCalendarEvent,
     apolloClient
   );
-
   return {
-    components: {
-      'hod-my-calendar': myCalendar,
-      'hod-create-calendar-event': createCalendar,
-      'hod-calendar-event': calendarEvent,
-      'mwc-circular-progress': CircularProgressBase,
-      'mwc-linear-progress': LinearProgressBase,
-      'mwc-menu-surface': MenuSurface,
-      'mwc-textfield': TextField,
-      'mwc-button': Button,
-    },
+    'hod-my-calendar': myCalendar,
+    'hod-create-calendar-event': createCalendar,
+    'hod-calendar-event': calendarEvent,
+  };
+}
+
+function defineElements(
+  registry: CustomElementRegistry,
+  elements: Dictionary<typeof HTMLElement>
+) {
+  for (const tag of Object.keys(elements)) {
+    registry.define(tag, elements[tag]);
+  }
+}
+
+export const setupRenderers: SetupRenderers = async (
+  appWebsocket: AppWebsocket,
+  cellId: CellId
+) => {
+  const elements = setupElements(appWebsocket, cellId, undefined);
+  return {
     standalone: [],
     entryRenderers: {
       calendar_event: {
         name: 'Calendar Event',
-        render: (entryHash: string) =>
-          html`<hod-calendar-event
-            .calendarEventHash=${entryHash}
-          ></hod-calendar-event>`,
+        render: (
+          registry: CustomElementRegistry,
+          root: ShadowRoot,
+          entryHash: string
+        ) => {
+          defineElements(registry, elements);
+          render(
+            html`<hod-calendar-event
+              .calendarEventHash="${entryHash}"
+            ></hod-calendar-event>`,
+            root
+          );
+        },
       },
     },
     entryAttachments: [],
   };
 };
+

@@ -1,5 +1,8 @@
 import { ApolloClient } from '@apollo/client/core';
-import { html, LitElement, property, query } from 'lit-element';
+import { html, LitElement } from 'lit-element';
+import { property, query } from 'lit-element/lib/decorators';
+import { ScopedLitElement } from 'scoped-lit-element';
+import { CircularProgress } from '@material/mwc-circular-progress';
 
 import { CalendarEvent } from '../types';
 import { sharedStyles } from '../sharedStyles';
@@ -7,15 +10,21 @@ import { GET_CALENDAR_EVENT } from '../graphql/queries';
 
 /**
  */
-export abstract class HodCalendarEvent extends LitElement {
+export abstract class HodCalendarEvent extends ScopedLitElement {
   static get styles() {
     return sharedStyles;
+  }
+
+  static get scopedElements() {
+    return {
+      'mwc-circular-progress': CircularProgress,
+    };
   }
 
   /** Public attributes */
 
   /**
-   * Cale ndar event hash to retrieve from the DNA
+   * Calendar event hash to retrieve from the DNA
    * @type String
    */
   @property({ type: String, attribute: false })

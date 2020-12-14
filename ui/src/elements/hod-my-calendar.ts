@@ -1,5 +1,5 @@
 import { ApolloClient } from '@apollo/client/core';
-import { html, css, LitElement, property, query } from 'lit-element';
+import { html, css, LitElement } from 'lit-element';
 
 import { Calendar } from '@fullcalendar/core';
 import type { DateSelectArg } from '@fullcalendar/core';
@@ -16,32 +16,22 @@ import timeGridStyles from '@fullcalendar/timegrid/main.css';
 import bootstrapStyles from 'bootstrap/dist/css/bootstrap.css';
 // @ts-ignore
 import iconStyles from '@fortawesome/fontawesome-free/css/all.css'; // needs additional webpack config!
-import type { MenuSurface } from '@material/mwc-menu/mwc-menu-surface';
+import { MenuSurface } from '@material/mwc-menu/mwc-menu-surface';
+import { LinearProgress } from '@material/mwc-linear-progress';
 
 import { CalendarEvent } from '../types';
 import { GET_MY_CALENDAR_EVENTS } from '../graphql/queries';
 import { eventToFullCalendar } from '../utils';
 import { HodCreateCalendarEvent } from './hod-create-calendar-event';
+import { property, query } from 'lit-element/lib/decorators';
+import { ScopedLitElement } from 'scoped-lit-element';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
  * @csspart calendar - Style the calendar
  */
-export abstract class HodMyCalendar extends LitElement {
-  static get styles() {
-    return [
-      commonStyles,
-      daygridStyles,
-      timeGridStyles,
-      bootstrapStyles,
-      iconStyles,
-      css`
-        :host {
-          display: flex;
-        }
-      `,
-    ];
-  }
+export abstract class HodMyCalendar extends ScopedLitElement {
+
   /** Public attributes */
 
   /**
@@ -73,6 +63,27 @@ export abstract class HodMyCalendar extends LitElement {
 
   _calendar!: Calendar;
 
+  static get styles() {
+    return [
+      commonStyles,
+      daygridStyles,
+      timeGridStyles,
+      bootstrapStyles,
+      iconStyles,
+      css`
+        :host {
+          display: flex;
+        }
+      `,
+    ];
+  }
+  static get scopedElements() {
+    return {
+      'mwc-menu-surface': MenuSurface,
+      'mwc-linear-progress': LinearProgress,
+    };
+  }
+  
   async loadCalendarEvents() {
     this._loading = true;
     const result = await this._apolloClient.query({

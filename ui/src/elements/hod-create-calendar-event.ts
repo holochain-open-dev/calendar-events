@@ -1,18 +1,27 @@
 import { ApolloClient } from '@apollo/client/core';
-import { html, LitElement, property, query } from 'lit-element';
-import type { TextField } from '@material/mwc-textfield';
+import { html, LitElement } from 'lit-element';
+import { property, query } from 'lit-element/lib/decorators';
+import { TextField } from '@material/mwc-textfield';
+import { Button } from '@material/mwc-button';
 
 import { CalendarEvent } from '../types';
 import { sharedStyles } from '../sharedStyles';
 import { CREATE_CALENDAR_EVENT } from '../graphql/queries';
+import { ScopedLitElement } from 'scoped-lit-element';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
  * @csspart event-title - Style the event title textfield
  */
-export abstract class HodCreateCalendarEvent extends LitElement {
+export abstract class HodCreateCalendarEvent extends ScopedLitElement {
   static get styles() {
     return sharedStyles;
+  }
+  static get scopedElements() {
+    return {
+      'mwc-textfield': TextField,
+      'mwc-button': Button,
+    };
   }
 
   /** Public attributes */

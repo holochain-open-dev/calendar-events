@@ -19,15 +19,15 @@
     <script type="module">
       import { html, render } from 'lit-html';
       import { getAppWebsocket } from '../test/mocks';
-      import setupComponents from '../dist';
+      import { setupElements } from '../dist';
 
       (async function () {
         const { appWebsocket, cellId } = await getAppWebsocket();
 
-        const bundle = await setupComponents(appWebsocket, cellId);
+        const elements = await setupElements(appWebsocket, cellId);
 
-        for (const tag of Object.keys(bundle.components)) {
-          customElements.define(tag, bundle.components[tag]);
+        for (const tag of Object.keys(elements)) {
+          customElements.define(tag, elements[tag]);
         }
       })();
     </script>
