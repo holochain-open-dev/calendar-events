@@ -1,7 +1,7 @@
 import { ApolloClient } from '@apollo/client/core';
 import { html, LitElement } from 'lit-element';
 import { property, query } from 'lit-element/lib/decorators';
-import { Scoped } from 'scoped-element-mixin';
+import { Scoped } from 'scoped-elements';
 import { CircularProgress } from '@material/mwc-circular-progress';
 
 import { CalendarEvent } from '../types';

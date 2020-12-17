@@ -42,11 +42,11 @@
     "@material/mwc-menu": "^0.18.0",
     "@material/mwc-textfield": "^0.18.0",
     "bootstrap": "^4.5.2",
-    "compository": "git+https://github.com/guillemcordoba/compository.git#ui-build",
+    "compository": "git+https://github.com/guillemcordoba/compository.git#ui-lib-build",
     "graphql": "^15.3.0",
     "lit-element": "^2.4.0",
     "lit-html": "^1.3.0",
-    "scoped-element-mixin": "git+https://github.com/guillemcordoba/scoped-element-mixin.git"
+    "scoped-elements": "git+https://github.com/guillemcordoba/scoped-elements.git"
   },
   "devDependencies": {
     "@open-wc/demoing-storybook": "^2.0.0",

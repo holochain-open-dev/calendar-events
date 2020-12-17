@@ -24,7 +24,7 @@ import { GET_MY_CALENDAR_EVENTS } from '../graphql/queries';
 import { eventToFullCalendar } from '../utils';
 import { HodCreateCalendarEvent } from './hod-create-calendar-event';
 import { property, query } from 'lit-element/lib/decorators';
-import { Scoped } from 'scoped-element-mixin';
+import { Scoped } from 'scoped-elements';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent

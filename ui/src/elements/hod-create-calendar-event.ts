@@ -7,7 +7,7 @@ import { Button } from '@material/mwc-button';
 import { CalendarEvent } from '../types';
 import { sharedStyles } from '../sharedStyles';
 import { CREATE_CALENDAR_EVENT } from '../graphql/queries';
-import { Scoped } from 'scoped-element-mixin';
+import { Scoped } from 'scoped-elements';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
