@@ -8,4 +8,4 @@ export {
   GET_MY_CALENDAR_EVENTS,
 } from './graphql/queries';
 
-export { setupElements, setupRenderers } from './setup';
+export { setupElements } from './setup';

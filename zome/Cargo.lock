@@ -114,7 +114,7 @@ dependencies = [
 [[package]]
 name = "fixt"
 version = "0.0.1"
-source = "git+https://github.com/holochain/holochain?rev=ad6603b3d4f5a8dfc053a0a7c6f2038c98aa79a1#ad6603b3d4f5a8dfc053a0a7c6f2038c98aa79a1"
+source = "git+https://github.com/holochain/holochain?rev=3a437bab4b09de35c3ef67fc8f6a384a84e471e3#3a437bab4b09de35c3ef67fc8f6a384a84e471e3"
 dependencies = [
  "holochain_serialized_bytes",
  "lazy_static",
@@ -158,7 +158,7 @@ dependencies = [
 [[package]]
 name = "hdk3"
 version = "0.0.1"
-source = "git+https://github.com/holochain/holochain?rev=ad6603b3d4f5a8dfc053a0a7c6f2038c98aa79a1#ad6603b3d4f5a8dfc053a0a7c6f2038c98aa79a1"
+source = "git+https://github.com/holochain/holochain?rev=3a437bab4b09de35c3ef67fc8f6a384a84e471e3#3a437bab4b09de35c3ef67fc8f6a384a84e471e3"
 dependencies = [
  "hdk3_derive",
  "holo_hash",
@@ -173,7 +173,7 @@ dependencies = [
 [[package]]
 name = "hdk3_derive"
 version = "0.0.1"
-source = "git+https://github.com/holochain/holochain?rev=ad6603b3d4f5a8dfc053a0a7c6f2038c98aa79a1#ad6603b3d4f5a8dfc053a0a7c6f2038c98aa79a1"
+source = "git+https://github.com/holochain/holochain?rev=3a437bab4b09de35c3ef67fc8f6a384a84e471e3#3a437bab4b09de35c3ef67fc8f6a384a84e471e3"
 dependencies = [
  "holochain_zome_types",
  "paste",
@@ -194,7 +194,7 @@ dependencies = [
 [[package]]
 name = "holo_hash"
 version = "0.0.1"
-source = "git+https://github.com/holochain/holochain?rev=ad6603b3d4f5a8dfc053a0a7c6f2038c98aa79a1#ad6603b3d4f5a8dfc053a0a7c6f2038c98aa79a1"
+source = "git+https://github.com/holochain/holochain?rev=3a437bab4b09de35c3ef67fc8f6a384a84e471e3#3a437bab4b09de35c3ef67fc8f6a384a84e471e3"
 dependencies = [
  "base64",
  "blake2b_simd",
@@ -255,7 +255,7 @@ dependencies = [
 [[package]]
 name = "holochain_zome_types"
 version = "0.0.1"
-source = "git+https://github.com/holochain/holochain?rev=ad6603b3d4f5a8dfc053a0a7c6f2038c98aa79a1#ad6603b3d4f5a8dfc053a0a7c6f2038c98aa79a1"
+source = "git+https://github.com/holochain/holochain?rev=3a437bab4b09de35c3ef67fc8f6a384a84e471e3#3a437bab4b09de35c3ef67fc8f6a384a84e471e3"
 dependencies = [
  "fixt",
  "holo_hash",
