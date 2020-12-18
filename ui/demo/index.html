@@ -14,21 +14,35 @@
     />
   </head>
   <body>
-    <hod-my-calendar> </hod-my-calendar>
+    <holochain-membrane-context id="context">
+      <hod-my-calendar> </hod-my-calendar>
+    </holochain-membrane-context>
 
     <script type="module">
       import { html, render } from 'lit-html';
       import { getAppWebsocket } from '../test/mocks';
-      import { setupElements } from '../dist';
+      import { HodMyCalendar } from '../dist';
+      import { defineGlobalElements } from 'scoped-elements/dist/global';
+      import { HolochainMembraneContext } from 'holochain-membrane-context';
 
       (async function () {
         const { appWebsocket, cellId } = await getAppWebsocket();
+        defineGlobalElements({
+          'holochain-membrane-context': HolochainMembraneContext,
+        });
 
-        const elements = await setupElements(appWebsocket, cellId);
+        const context = document.getElementById('context');
+        context.appWebsocket = appWebsocket;
+        context.cellId = cellId;
 
-        for (const tag of Object.keys(elements)) {
-          customElements.define(tag, elements[tag]);
-        }
+        setTimeout(() => {
+          defineGlobalElements(
+            {
+              'hod-my-calendar': HodMyCalendar,
+            },
+            200
+          );
+        });
       })();
     </script>
   </body>

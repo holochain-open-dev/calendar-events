@@ -1,16 +1,17 @@
-import { ApolloClient } from '@apollo/client/core';
 import { html, LitElement } from 'lit-element';
 import { property, query } from 'lit-element/lib/decorators';
 import { Scoped } from 'scoped-elements';
 import { CircularProgress } from '@material/mwc-circular-progress';
 
 import { CalendarEvent } from '../types';
-import { sharedStyles } from '../sharedStyles';
-import { GET_CALENDAR_EVENT } from '../graphql/queries';
+import { sharedStyles } from './sharedStyles';
+import { CalendarEventsService } from '../calendar-events.service';
+import { Hashed } from 'compository';
+import { membraneContext } from 'holochain-membrane-context';
 
 /**
  */
-export abstract class HodCalendarEvent extends Scoped(LitElement) {
+export class HodCalendarEvent extends membraneContext(Scoped(LitElement)) {
   static get styles() {
     return sharedStyles;
   }
@@ -30,25 +31,19 @@ export abstract class HodCalendarEvent extends Scoped(LitElement) {
   @property({ type: String, attribute: false })
   calendarEventHash!: string;
 
-  /** Dependencies */
-  abstract get _apolloClient(): ApolloClient<any>;
-
   /** Private properties */
 
   @property({ type: Object })
-  _calendarEvent: CalendarEvent | undefined = undefined;
+  _calendarEvent: Hashed<CalendarEvent> | undefined = undefined;
+
+  get calendarEventsService(): CalendarEventsService {
+    return new CalendarEventsService(this.appWebsocket, this.cellId);
+  }
 
   async firstUpdated() {
-    const result = await this._apolloClient.query({
-      query: GET_CALENDAR_EVENT,
-      fetchPolicy: 'network-only',
-      variables: {
-        membraneId: 'asdf',
-        calendarEventId: this.calendarEventHash,
-      },
-    });
-
-    this._calendarEvent = result.data.membrane.calendarEvent;
+    this._calendarEvent = await this.calendarEventsService.getCalendarEvent(
+      this.calendarEventHash
+    );
   }
 
   render() {
@@ -57,15 +52,16 @@ export abstract class HodCalendarEvent extends Scoped(LitElement) {
 
     return html`
       <div class="column">
-        <span> ${this._calendarEvent.title} </span>
-        <span> Created By: ${this._calendarEvent.createdBy} </span>
+        <span> ${this._calendarEvent.content.title} </span>
+        <span> Created By: ${this._calendarEvent.content.createdBy} </span>
 
         <span style="margin-top: 16px">
           Start Time:
-          ${new Date(this._calendarEvent.startTime).toLocaleString()}
+          ${new Date(this._calendarEvent.content.startTime).toLocaleString()}
         </span>
         <span style="margin-top: 8px">
-          End Time: ${new Date(this._calendarEvent.endTime).toLocaleString()}
+          End Time:
+          ${new Date(this._calendarEvent.content.endTime).toLocaleString()}
         </span>
       </div>
     `;

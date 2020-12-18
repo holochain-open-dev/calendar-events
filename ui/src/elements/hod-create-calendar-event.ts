@@ -1,19 +1,21 @@
-import { ApolloClient } from '@apollo/client/core';
 import { html, LitElement } from 'lit-element';
 import { property, query } from 'lit-element/lib/decorators';
 import { TextField } from '@material/mwc-textfield';
 import { Button } from '@material/mwc-button';
 
 import { CalendarEvent } from '../types';
-import { sharedStyles } from '../sharedStyles';
-import { CREATE_CALENDAR_EVENT } from '../graphql/queries';
+import { sharedStyles } from './sharedStyles';
 import { Scoped } from 'scoped-elements';
+import { CalendarEventsService } from '../calendar-events.service';
+import { membraneContext } from 'holochain-membrane-context';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
  * @csspart event-title - Style the event title textfield
  */
-export abstract class HodCreateCalendarEvent extends Scoped(LitElement) {
+export class HodCreateCalendarEvent extends membraneContext(
+  Scoped(LitElement)
+) {
   static get styles() {
     return sharedStyles;
   }
@@ -33,31 +35,28 @@ export abstract class HodCreateCalendarEvent extends Scoped(LitElement) {
   @property({ type: Object, attribute: false })
   initialEventProperties: Partial<CalendarEvent> | undefined = undefined;
 
-  /** Dependencies */
-  abstract get _apolloClient(): ApolloClient<any>;
-
   /** Private properties */
 
   @query('#event-title')
   _titleField!: TextField;
 
+  get calendarEventsService(): CalendarEventsService {
+    return new CalendarEventsService(this.appWebsocket, this.cellId);
+  }
+
   async createEvent() {
-    const result = await this._apolloClient.mutate({
-      mutation: CREATE_CALENDAR_EVENT,
-      variables: {
-        membraneId: 'asdfdasf',
-        title: this._titleField.value,
-        startTime: this.initialEventProperties?.startTime,
-        endTime: this.initialEventProperties?.endTime,
-        location: null,
-        invitees: [],
-      },
+    const calendarEvent = await this.calendarEventsService.createCalendarEvent({
+      title: this._titleField.value,
+      startTime: this.initialEventProperties?.startTime as number,
+      endTime: this.initialEventProperties?.endTime as number,
+      location: undefined,
+      invitees: [],
     });
 
     this.dispatchEvent(
       new CustomEvent('event-created', {
         detail: {
-          event: result.data.createCalendarEvent,
+          event: calendarEvent,
         },
         composed: true,
         bubbles: true,

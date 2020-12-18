@@ -1,11 +1,11 @@
+import { Hashed } from 'compository';
 import { CalendarEvent } from './types';
 
-export function eventToFullCalendar(calendarEvent: CalendarEvent) {
+export function eventToFullCalendar(calendarEvent: Hashed<CalendarEvent>) {
   return {
-    id: calendarEvent.id,
-    title: calendarEvent.title,
-    start: new Date(calendarEvent.startTime).toISOString(),
-    end: new Date(calendarEvent.endTime).toISOString(),
+    id: calendarEvent.hash,
+    title: calendarEvent.content.title,
+    start: new Date(calendarEvent.content.startTime).toISOString(),
+    end: new Date(calendarEvent.content.endTime).toISOString(),
   };
 }
- 

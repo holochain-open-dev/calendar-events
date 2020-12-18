@@ -1,4 +1,3 @@
-import { ApolloClient } from '@apollo/client/core';
 import { html, css, LitElement } from 'lit-element';
 
 import { Calendar } from '@fullcalendar/core';
@@ -20,18 +19,19 @@ import { MenuSurface } from '@material/mwc-menu/mwc-menu-surface';
 import { LinearProgress } from '@material/mwc-linear-progress';
 
 import { CalendarEvent } from '../types';
-import { GET_MY_CALENDAR_EVENTS } from '../graphql/queries';
 import { eventToFullCalendar } from '../utils';
 import { HodCreateCalendarEvent } from './hod-create-calendar-event';
 import { property, query } from 'lit-element/lib/decorators';
 import { Scoped } from 'scoped-elements';
+import { CalendarEventsService } from '../calendar-events.service';
+import { membraneContext } from 'holochain-membrane-context';
+import { Hashed } from 'compository';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
  * @csspart calendar - Style the calendar
  */
-export abstract class HodMyCalendar extends Scoped(LitElement) {
-
+export class HodMyCalendar extends membraneContext(Scoped(LitElement)) {
   /** Public attributes */
 
   /**
@@ -42,14 +42,11 @@ export abstract class HodMyCalendar extends Scoped(LitElement) {
   @property({ type: String, attribute: 'initial-view' })
   initialView: 'dayGridMonth' | 'timeGridWeek' | 'timeGridDay' = 'timeGridWeek';
 
-  /** Dependencies */
-  abstract get _apolloClient(): ApolloClient<any>;
-
   /** Private properties */
 
   @property({ type: Boolean, attribute: false }) _loading = false;
   @property({ type: Array, attribute: false }) _myCalendarEvents:
-    | Array<CalendarEvent>
+    | Array<Hashed<CalendarEvent>>
     | undefined = undefined;
 
   @query('#calendar')
@@ -62,6 +59,10 @@ export abstract class HodMyCalendar extends Scoped(LitElement) {
   _createEvent!: HodCreateCalendarEvent;
 
   _calendar!: Calendar;
+
+  get calendarEventsService(): CalendarEventsService {
+    return new CalendarEventsService(this.appWebsocket, this.cellId);
+  }
 
   static get styles() {
     return [
@@ -81,20 +82,14 @@ export abstract class HodMyCalendar extends Scoped(LitElement) {
     return {
       'mwc-menu-surface': MenuSurface,
       'mwc-linear-progress': LinearProgress,
+      'hod-create-calendar-event': HodCreateCalendarEvent,
     };
   }
-  
+
   async loadCalendarEvents() {
     this._loading = true;
-    const result = await this._apolloClient.query({
-      query: GET_MY_CALENDAR_EVENTS,
-      fetchPolicy: 'network-only',
-      variables: {
-        membraneId: 'asdf',
-      },
-    });
+    this._myCalendarEvents = await this.calendarEventsService.getMyCalendarEvents();
 
-    this._myCalendarEvents = result.data.membrane.myCalendarEvents;
     if (this._myCalendarEvents) {
       const fullCalendarEvents = this._myCalendarEvents.map(
         eventToFullCalendar
