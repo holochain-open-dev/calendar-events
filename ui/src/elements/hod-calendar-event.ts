@@ -1,17 +1,15 @@
-import { html, LitElement } from 'lit-element';
-import { property, query } from 'lit-element/lib/decorators';
-import { Scoped } from 'scoped-elements';
-import { CircularProgress } from '@material/mwc-circular-progress';
+import { html, PropertyValues } from 'lit-element';
+import { property } from 'lit-element/lib/decorators';
+import { CircularProgress } from 'scoped-material-components/mwc-circular-progress';
 
 import { CalendarEvent } from '../types';
 import { sharedStyles } from './sharedStyles';
-import { CalendarEventsService } from '../calendar-events.service';
-import { Hashed } from 'compository';
-import { membraneContext } from 'holochain-membrane-context';
+import { Hashed } from '@compository/lib';
+import { BaseElement } from './base-calendar';
 
 /**
  */
-export class HodCalendarEvent extends membraneContext(Scoped(LitElement)) {
+export class HodCalendarEvent extends BaseElement {
   static get styles() {
     return sharedStyles;
   }
@@ -36,11 +34,14 @@ export class HodCalendarEvent extends membraneContext(Scoped(LitElement)) {
   @property({ type: Object })
   _calendarEvent: Hashed<CalendarEvent> | undefined = undefined;
 
-  get calendarEventsService(): CalendarEventsService {
-    return new CalendarEventsService(this.appWebsocket, this.cellId);
+  updated(changedValues: PropertyValues) {
+    super.updated(changedValues);
+    if (changedValues.has('membraneContext') && this.membraneContext) {
+      this.loadEvent();
+    }
   }
 
-  async firstUpdated() {
+  async loadEvent() {
     this._calendarEvent = await this.calendarEventsService.getCalendarEvent(
       this.calendarEventHash
     );

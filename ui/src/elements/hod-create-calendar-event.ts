@@ -1,20 +1,21 @@
 import { html, LitElement } from 'lit-element';
-import { property, query } from 'lit-element/lib/decorators';
-import { TextField } from '@material/mwc-textfield';
-import { Button } from '@material/mwc-button';
+import { Constructor, property, query } from 'lit-element/lib/decorators';
+import { TextField } from 'scoped-material-components/mwc-textfield';
+import { Button } from 'scoped-material-components/mwc-button';
 
 import { CalendarEvent } from '../types';
 import { sharedStyles } from './sharedStyles';
-import { Scoped } from 'scoped-elements';
+import { ScopedElementsMixin as Scoped } from '@open-wc/scoped-elements';
 import { CalendarEventsService } from '../calendar-events.service';
-import { membraneContext } from 'holochain-membrane-context';
+import { membraneContext } from '@holochain-open-dev/membrane-context';
+import { AppWebsocket, CellId } from '@holochain/conductor-api';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
  * @csspart event-title - Style the event title textfield
  */
 export class HodCreateCalendarEvent extends membraneContext(
-  Scoped(LitElement)
+  Scoped(LitElement) as Constructor<LitElement>
 ) {
   static get styles() {
     return sharedStyles;
@@ -41,7 +42,10 @@ export class HodCreateCalendarEvent extends membraneContext(
   _titleField!: TextField;
 
   get calendarEventsService(): CalendarEventsService {
-    return new CalendarEventsService(this.appWebsocket, this.cellId);
+    return new CalendarEventsService(
+      this.membraneContext.appWebsocket as AppWebsocket,
+      this.membraneContext.cellId as CellId
+    );
   }
 
   async createEvent() {

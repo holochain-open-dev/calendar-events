@@ -1,4 +1,4 @@
-import { html, css, LitElement } from 'lit-element';
+import { html, css, LitElement, PropertyValues } from 'lit-element';
 
 import { Calendar } from '@fullcalendar/core';
 import type { DateSelectArg } from '@fullcalendar/core';
@@ -15,23 +15,21 @@ import timeGridStyles from '@fullcalendar/timegrid/main.css';
 import bootstrapStyles from 'bootstrap/dist/css/bootstrap.css';
 // @ts-ignore
 import iconStyles from '@fortawesome/fontawesome-free/css/all.css'; // needs additional webpack config!
-import { MenuSurface } from '@material/mwc-menu/mwc-menu-surface';
-import { LinearProgress } from '@material/mwc-linear-progress';
+import { MenuSurface } from 'scoped-material-components/mwc-menu-surface';
+import { LinearProgress } from 'scoped-material-components/mwc-linear-progress';
 
 import { CalendarEvent } from '../types';
 import { eventToFullCalendar } from '../utils';
 import { HodCreateCalendarEvent } from './hod-create-calendar-event';
-import { property, query } from 'lit-element/lib/decorators';
-import { Scoped } from 'scoped-elements';
-import { CalendarEventsService } from '../calendar-events.service';
-import { membraneContext } from 'holochain-membrane-context';
-import { Hashed } from 'compository';
+import { Constructor, property, query } from 'lit-element/lib/decorators';
+import { Hashed } from '@compository/lib';
+import { BaseElement } from './base-calendar';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
  * @csspart calendar - Style the calendar
  */
-export class HodMyCalendar extends membraneContext(Scoped(LitElement)) {
+export class HodMyCalendar extends BaseElement {
   /** Public attributes */
 
   /**
@@ -59,10 +57,6 @@ export class HodMyCalendar extends membraneContext(Scoped(LitElement)) {
   _createEvent!: HodCreateCalendarEvent;
 
   _calendar!: Calendar;
-
-  get calendarEventsService(): CalendarEventsService {
-    return new CalendarEventsService(this.appWebsocket, this.cellId);
-  }
 
   static get styles() {
     return [
@@ -156,8 +150,13 @@ export class HodMyCalendar extends membraneContext(Scoped(LitElement)) {
 
   async firstUpdated() {
     this.setupCalendar();
+  }
 
-    await this.loadCalendarEvents();
+  updated(changedValues: PropertyValues) {
+    super.updated(changedValues);
+    if (changedValues.has('membraneContext') && this.membraneContext) {
+      this.loadCalendarEvents();
+    }
   }
 
   renderCreateEventCard() {

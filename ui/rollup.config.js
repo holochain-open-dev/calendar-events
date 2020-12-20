@@ -15,7 +15,6 @@ export default {
       key => !key.includes('@fullcalendar')
     ),
     ...Object.keys(pkg.peerDependencies || {}),
-    '@apollo/client/core',
   ],
   watch: {
     include: 'src/**',

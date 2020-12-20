@@ -1,4 +1,4 @@
-import { Hashed } from 'compository';
+import { Hashed } from '@compository/lib';
 import { CalendarEvent } from './types';
 
 export function eventToFullCalendar(calendarEvent: Hashed<CalendarEvent>) {

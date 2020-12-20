@@ -17,9 +17,6 @@ export default [
   builtins(),
   commonjs({
     include: [
-      'node_modules/fast-json-stable-stringify/**/*',
-      'node_modules/zen-observable/**/*',
-      'node_modules/graphql-tag/**/*',
       'node_modules/ieee754/**/*',
       'node_modules/base64-js/**/*',
       'node_modules/isomorphic-ws/**/*',

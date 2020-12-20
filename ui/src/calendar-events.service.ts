@@ -4,7 +4,7 @@ import {
   millisToTimestamp,
 } from '@holochain-open-dev/common';
 import { CalendarEvent } from './types';
-import { Hashed } from 'compository';
+import { Hashed } from '@compository/lib';
 
 export class CalendarEventsService {
   constructor(
