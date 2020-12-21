@@ -18,7 +18,7 @@ const renderers: Lenses = {
           customElements
         );
         const holochainMembraneTag = createUniqueTag(
-          'holochain-membrane-context',
+          'membrane-context-provider',
           customElements
         );
         customElements.define(
@@ -40,13 +40,9 @@ const renderers: Lenses = {
         context.appWebsocket = appWebsocket;
         context.cellId = cellId;
 
-        setTimeout(
-          () =>
-            customElements.define(
-              myCalendarTag,
-              (class extends HodMyCalendar {} as unknown) as Constructor<HTMLElement>
-            ),
-          50
+        customElements.define(
+          myCalendarTag,
+          (class extends HodMyCalendar {} as unknown) as Constructor<HTMLElement>
         );
       },
     },

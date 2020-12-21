@@ -25,7 +25,9 @@ export default {
     }),
     postcssLit(),
     typescript({}),
-    resolve({}),
+    resolve({
+      dedupe: ['lit-html', 'lit-element'],
+    }),
     commonjs({
       include: [],
     }),

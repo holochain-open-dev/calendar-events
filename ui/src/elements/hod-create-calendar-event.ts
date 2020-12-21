@@ -7,16 +7,14 @@ import { CalendarEvent } from '../types';
 import { sharedStyles } from './sharedStyles';
 import { ScopedElementsMixin as Scoped } from '@open-wc/scoped-elements';
 import { CalendarEventsService } from '../calendar-events.service';
-import { membraneContext } from '@holochain-open-dev/membrane-context';
 import { AppWebsocket, CellId } from '@holochain/conductor-api';
+import { BaseElement } from './base-calendar';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
  * @csspart event-title - Style the event title textfield
  */
-export class HodCreateCalendarEvent extends membraneContext(
-  Scoped(LitElement) as Constructor<LitElement>
-) {
+export class HodCreateCalendarEvent extends BaseElement {
   static get styles() {
     return sharedStyles;
   }

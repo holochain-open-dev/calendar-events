@@ -21,9 +21,10 @@ import { LinearProgress } from 'scoped-material-components/mwc-linear-progress';
 import { CalendarEvent } from '../types';
 import { eventToFullCalendar } from '../utils';
 import { HodCreateCalendarEvent } from './hod-create-calendar-event';
-import { Constructor, property, query } from 'lit-element/lib/decorators';
+import { property, query } from 'lit-element/lib/decorators';
 import { Hashed } from '@compository/lib';
 import { BaseElement } from './base-calendar';
+import { classMap } from 'lit-html/directives/class-map';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
@@ -154,7 +155,10 @@ export class HodMyCalendar extends BaseElement {
 
   updated(changedValues: PropertyValues) {
     super.updated(changedValues);
-    if (changedValues.has('membraneContext') && this.membraneContext.appWebsocket) {
+    if (
+      changedValues.has('membraneContext') &&
+      this.membraneContext.appWebsocket
+    ) {
       this.loadCalendarEvents();
     }
   }
@@ -179,7 +183,9 @@ export class HodMyCalendar extends BaseElement {
 
   render() {
     return html`
-      <div style="position: relative; flex: 1; display: flex;">
+      <div style="position: relative; flex: 1; display: flex;"
+      class=${classMap({})}
+      >
         ${this.renderCreateEventCard()}
         ${this._loading
           ? html`<mwc-linear-progress indeterminate></mwc-linear-progress>`

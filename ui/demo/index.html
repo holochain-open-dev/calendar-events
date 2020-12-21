@@ -18,10 +18,13 @@
       <hod-my-calendar> </hod-my-calendar>
     </membrane-context-provider>
 
+    <div id="app"></div>
+
     <script type="module">
       import { html, render } from 'lit-html';
       import { getAppWebsocket } from '../test/mocks';
       import { HodMyCalendar } from '../dist';
+      import { classMap } from 'lit-html/directives/class-map';
       import { MembraneContextProvider } from '@holochain-open-dev/membrane-context';
 
       (async function () {
@@ -37,6 +40,10 @@
 
         customElements.define('hod-my-calendar', HodMyCalendar);
       })();
+      render(
+        html`<div class=${classMap({a: true})}></div>`,
+        document.getElementById('app')
+      );
     </script>
   </body>
 </html>
