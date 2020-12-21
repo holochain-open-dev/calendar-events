@@ -51,7 +51,7 @@ const renderers: Lenses = {
       },
     },
   ],
-  entry: {
+  entryLenses: {
     calendar_event: {
       name: 'Calendar Event',
       render: (
@@ -72,7 +72,7 @@ const renderers: Lenses = {
       },
     },
   },
-  entryAttachments: [],
+  attachmentsLenses: [],
 };
 
 export default renderers;
