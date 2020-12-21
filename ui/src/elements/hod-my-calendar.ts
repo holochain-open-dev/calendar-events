@@ -1,4 +1,4 @@
-import { html, css, LitElement, PropertyValues } from 'lit-element';
+import { html, css, PropertyValues } from 'lit-element';
 
 import { Calendar } from '@fullcalendar/core';
 import type { DateSelectArg } from '@fullcalendar/core';
@@ -154,7 +154,7 @@ export class HodMyCalendar extends BaseElement {
 
   updated(changedValues: PropertyValues) {
     super.updated(changedValues);
-    if (changedValues.has('membraneContext') && this.membraneContext) {
+    if (changedValues.has('membraneContext') && this.membraneContext.appWebsocket) {
       this.loadCalendarEvents();
     }
   }

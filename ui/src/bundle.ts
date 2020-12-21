@@ -1,4 +1,4 @@
-import { ScopedRenderers } from '@compository/lib';
+import { Lenses } from '@compository/lib';
 import { html, render } from 'lit-html';
 import { AppWebsocket, CellId } from '@holochain/conductor-api';
 import { HodMyCalendar } from './elements/hod-my-calendar';
@@ -8,7 +8,7 @@ import { Constructor } from 'lit-element';
 //@ts-ignore
 import { createUniqueTag } from '@open-wc/scoped-elements/src/createUniqueTag';
 
-const renderers: ScopedRenderers = {
+const renderers: Lenses = {
   standalone: [
     {
       name: 'My Events Calendar',
