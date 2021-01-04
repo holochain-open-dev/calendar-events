@@ -22,7 +22,7 @@ import { CalendarEvent } from '../types';
 import { eventToFullCalendar } from '../utils';
 import { HodCreateCalendarEvent } from './hod-create-calendar-event';
 import { property, query } from 'lit-element/lib/decorators';
-import { Hashed } from '@compository/lib';
+import { Hashed } from '@holochain-open-dev/common';
 import { BaseElement } from './base-calendar';
 import { classMap } from 'lit-html/directives/class-map';
 

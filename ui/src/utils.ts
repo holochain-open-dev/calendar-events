@@ -1,4 +1,4 @@
-import { Hashed } from '@compository/lib';
+import { Hashed } from '@holochain-open-dev/common';
 import { CalendarEvent } from './types';
 
 export function eventToFullCalendar(calendarEvent: Hashed<CalendarEvent>) {

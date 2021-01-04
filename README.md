@@ -15,10 +15,8 @@ See our [`storybook`](https://holochain-open-dev.github.io/calendar-events-modul
 These are the things you need to know to decide if you can use this module in your happ:
 
 - Zome:
-  - Optional dependency with the [resource-bookings-zome](https://github/holochain-open-dev/resource-bookings-zome).
+  - Optional dependency with the [resource-bookings-zome](https://github/holochain-open-dev/resource-bookings-zome), when it is completed.
 - UI module:
-  - `ApolloClient` as the state-management and data-fetching engine.
-  - The resolvers are declared in the frontend using [`makeExecutableSchema`](https://www.npmjs.com/package/@graphql-tools/schema).
   - No framework or library assumed.
 
 ## Installation and usage
@@ -40,41 +38,11 @@ extern crate calendar_events;
 6. Add the zome into your `*.dna.workdir/dna.json` file.
 7. Compile the DNA with the usual `CARGO_TARGET=target cargo build --release --target wasm32-unknown-unknown`.
 
-### Using the UI module
+### Including the UI
 
 1. Install the module with `npm install @holochain-open-dev/calendar-events`.
-2. Add the GraphQl schema and resolvers to your `ApolloClient` setup:
 
-```js
-import { AppWebsocket } from "@holochain/conductor-api";
-import {
-  calendarEventsTypeDefs,
-  calendarEventsResolvers,
-} from "@holochain-open-dev/calendar-events";
-
-export async function setupClient(url) {
-  const appWebsocket = await AppWebsocket.connect(String(url));
-
-  const appInfo = await appWebsocket.appInfo({ app_id: "test-app" });
-
-  const cellId = appInfo.cell_data[0][0];
-
-  const executableSchema = makeExecutableSchema({
-    typeDefs: [rootTypeDef, calendarEventsTypeDefs],
-    resolvers: [calendarEventsResolvers(appWebsocket, cellId)],
-  });
-
-  const schemaLink = new SchemaLink({ schema: executableSchema });
-
-  return new ApolloClient({
-    typeDefs: allTypeDefs,
-    cache: new InMemoryCache(),
-    link: schemaLink,
-  });
-}
-```
-
-3. In the root file of your application, install the module:
+2. In the root file of your application, install the module:
 
 ```js
 import { CalendarEventsModule } from "@holochain-open-dev/calendar-events";
@@ -87,7 +55,7 @@ async function initApp() {
 }
 ```
 
-4. Once you have installed the module, all the elements you see in our storybook will become available for you to use in your HTML, like this:
+3. Once you have installed the module, all the elements you see in our storybook will become available for you to use in your HTML, like this:
 
 ```html
 ...

@@ -4,7 +4,7 @@ import { CircularProgress } from 'scoped-material-components/mwc-circular-progre
 
 import { CalendarEvent } from '../types';
 import { sharedStyles } from './sharedStyles';
-import { Hashed } from '@compository/lib';
+import { Hashed } from '@holochain-open-dev/common';
 import { BaseElement } from './base-calendar';
 
 /**

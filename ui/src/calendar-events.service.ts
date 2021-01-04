@@ -2,9 +2,9 @@ import { AppWebsocket, CellId } from '@holochain/conductor-api';
 import {
   timestampToMillis,
   millisToTimestamp,
+  Hashed
 } from '@holochain-open-dev/common';
 import { CalendarEvent } from './types';
-import { Hashed } from '@compository/lib';
 
 export class CalendarEventsService {
   constructor(
