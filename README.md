@@ -8,7 +8,7 @@ This module is designed to be included in other DNAs, assuming as little as poss
 
 ## Documentation
 
-See our [`storybook`](https://holochain-open-dev.github.io/calendar-events-module).
+See our [`storybook`](https://holochain-open-dev.github.io/calendar-events).
 
 ## Assumptions
 
@@ -27,40 +27,70 @@ These are the things you need to know to decide if you can use this module in yo
 2. Add a new `Cargo.toml` in that folder. In its content, paste the `Cargo.toml` content from any zome.
 3. Change the `name` properties of the `Cargo.toml` file to the name you want to give to this zome in your DNA.
 4. Add this zome as a dependency in the `Cargo.toml` file:
+
 ```toml
 [dependencies]
 calendar_events = {git = "https://github.com/holochain-open-dev/calendar-events-module", package = "calendar_events"}
 ```
+
 5. Create a `src` folder besides the `Cargo.toml` with this content:
+
 ```rust
 extern crate calendar_events;
 ```
+
 6. Add the zome into your `*.dna.workdir/dna.json` file.
 7. Compile the DNA with the usual `CARGO_TARGET=target cargo build --release --target wasm32-unknown-unknown`.
 
 ### Including the UI
 
-1. Install the module with `npm install @holochain-open-dev/calendar-events`.
+See the list of available elements [here](https://holochain-open-dev.github.io/calendar-events).
 
-2. In the root file of your application, install the module:
+1. Install the module with `npm install https://github.com/holochain-open-dev/calendar-events`.
+
+2. Import and define the the elements you want to include:
 
 ```js
-import { CalendarEventsModule } from "@holochain-open-dev/calendar-events";
-async function initApp() {
-  const client = await setupClient(`ws://localhost:8888`);
-
-  const calendarEventsModule = new CalendarEventsModule(client);
-
-  await calendarEventsModule.install();
-}
+import { HodMyCalendar } from "@holochain-open-dev/calendar-events";
 ```
 
-3. Once you have installed the module, all the elements you see in our storybook will become available for you to use in your HTML, like this:
+3. Import and define the `membrane-context-provider` element from `@holochain-open-dev/membrane-context`:
+
+```js
+import { MembraneContextProvider } from "@holochain-open-dev/membrane-context";
+
+customElements.define('membrane-context-provider', MembraneContextProvider);
+```
+
+4. Include the elements in your html inside an initialized instance of the membrane context provider:
 
 ```html
-...
 <body>
-  <hod-my-calendar></hod-my-calendar>
+  <membrane-context-provider id="context">
+    <hod-my-calendar> </hod-my-calendar>
+  </membrane-context-provider>
+
+  <script type="module">
+    import ConductorApi from "@holochain/conductor-api";
+    import { HodMyCalendar } from "@holochain-open-dev/calendar-events";
+    import { MembraneContextProvider } from "@holochain-open-dev/membrane-context";
+
+    (async function () {
+      const { appWebsocket, cellId } = await ConductorApi.AppWebsocket.connect(
+        "ws://localhost:8888"
+      );
+      customElements.define(
+        "membrane-context-provider",
+        MembraneContextProvider
+      );
+
+      const context = document.getElementById("context");
+      context.appWebsocket = appWebsocket;
+      context.cellId = cellId;
+
+      customElements.define("hod-my-calendar", HodMyCalendar);
+    })();
+  </script>
 </body>
 ```
 

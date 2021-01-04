@@ -1,15 +1,15 @@
 # UI Developer Setup
 
-UI module for the `calendar_events` zome.
+UI elements for the `calendar_events` zome.
 
-> This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) recommendation.
+> This library follows the [open-wc](https://github.com/open-wc/open-wc) recommendation.
 
 ## Requirements
 
 - Having run through [holochain RSM installation](https://github.com/holochain/holochain-dna-build-tutorial).
 - Having [holochain-run-dna](https://www.npmjs.com/package/@holochain-open-dev/holochain-run-dna) installed.
 
-## Local Demo with `es-dev-server`
+## Local Demo with `@web/dev-server`
 
 Run this from inside the `nix-shell` in which you have the `holochain` binary install.
 
@@ -61,7 +61,7 @@ npm run storybook
 To build a production version of Storybook, run
 
 ```bash
-npm run storybook:build
+npm run build-storybook
 ```
 
 ## Linting with ESLint, Prettier, and Types
