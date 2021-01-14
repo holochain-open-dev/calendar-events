@@ -2,59 +2,29 @@
   "version": "experimental",
   "tags": [
     {
-      "name": "hod-create-calendar-event",
-      "path": "./src/elements/hod-create-calendar-event.ts",
+      "name": "hod-calendar-event",
+      "path": "./src/bundle.ts",
       "properties": [
         {
-          "name": "initialEventProperties",
-          "description": "Initial calendar event parameters with which to populate the form",
-          "type": "Partial<CalendarEvent> | undefined",
-          "default": "\"undefined\""
-        }
-      ],
-      "events": [
+          "name": "calendarEventHash",
+          "description": "Calendar event hash to retrieve from the DNA",
+          "type": "string"
+        },
         {
-          "name": "event-created",
-          "description": "Fired after actually creating the event, containing the new CalendarEvent"
-        }
-      ],
-      "cssParts": [
+          "name": "calendarEventsService",
+          "type": "CalendarEventsService"
+        },
         {
-          "name": "event-title",
-          "description": "Style the event title textfield"
-        }
-      ]
-    },
-    {
-      "name": "hod-my-calendar",
-      "path": "./src/elements/hod-my-calendar.ts",
-      "attributes": [
+          "name": "cellId",
+          "type": "CellId | undefined"
+        },
         {
-          "name": "initial-view",
-          "description": "Initial calendar view (for reference visit https://fullcalendar.io/docs/plugin-index)",
-          "type": "'dayGridMonth' | 'timeGridWeek' | 'timeGridDay'",
-          "default": "\"timeGridWeek\""
-        }
-      ],
-      "properties": [
+          "name": "appWebsocket",
+          "type": "AppWebsocket | undefined"
+        },
         {
-          "name": "initialView",
-          "attribute": "initial-view",
-          "description": "Initial calendar view (for reference visit https://fullcalendar.io/docs/plugin-index)",
-          "type": "'dayGridMonth' | 'timeGridWeek' | 'timeGridDay'",
-          "default": "\"timeGridWeek\""
-        }
-      ],
-      "events": [
-        {
-          "name": "event-created",
-          "description": "Fired after actually creating the event, containing the new CalendarEvent"
-        }
-      ],
-      "cssParts": [
-        {
-          "name": "calendar",
-          "description": "Style the calendar"
+          "name": "adminWebsocket",
+          "type": "AdminWebsocket | undefined"
         }
       ]
     }

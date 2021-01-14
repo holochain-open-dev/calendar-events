@@ -1,11 +1,9 @@
-import { html, LitElement } from 'lit-element';
-import { Constructor, property, query } from 'lit-element/lib/decorators';
+import { html, property, query } from 'lit-element';
 import { TextField } from 'scoped-material-components/mwc-textfield';
 import { Button } from 'scoped-material-components/mwc-button';
 
 import { CalendarEvent } from '../types';
 import { sharedStyles } from './sharedStyles';
-import { ScopedElementsMixin as Scoped } from '@open-wc/scoped-elements';
 import { CalendarEventsService } from '../calendar-events.service';
 import { AppWebsocket, CellId } from '@holochain/conductor-api';
 import { BaseElement } from './base-calendar';
@@ -38,13 +36,6 @@ export class HodCreateCalendarEvent extends BaseElement {
 
   @query('#event-title')
   _titleField!: TextField;
-
-  get calendarEventsService(): CalendarEventsService {
-    return new CalendarEventsService(
-      this.membraneContext.appWebsocket as AppWebsocket,
-      this.membraneContext.cellId as CellId
-    );
-  }
 
   async createEvent() {
     const calendarEvent = await this.calendarEventsService.createCalendarEvent({

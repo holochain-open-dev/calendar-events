@@ -1,6 +1,12 @@
 ```js script
-import { html } from '@open-wc/demoing-storybook';
+import { html } from 'lit-element';
 import { withKnobs, withWebComponentsKnobs } from '@open-wc/demoing-storybook';
+
+import { MembraneContextProvider } from '@holochain-open-dev/membrane-context';
+import { HodMyCalendar } from '../dist';
+
+customElements.define('membrane-context-provider', MembraneContextProvider);
+customElements.define('hod-my-calendar', HodMyCalendar);
 
 export default {
   title: 'HodMyCalendar',
@@ -28,13 +34,29 @@ Displays all your relevant calendar events.
 
 ### Installation & Usage
 
-Please note that this custom element needs to be installed together with all the other elements of the `CalendarEventsModule`. Go to [https://github.com/holochain-open-dev/calendar-events-module](https://github.com/holochain-open-dev/calendar-events-module) for installation instructions.
+1. Import and define the `HodMyCalendar` class:
 
-After having installed the `CalendarEventsModule`, just add the element to your html:
+```js
+import { HodMyCalendar } from '@holochain-open-dev/calendar-events';
+
+customElements.define('hod-my-calendar', HodMyCalendar);
+```
+
+2. Import and define the `MembraneContextProvider`:
+
+```js
+import { MembraneContextProvider } from '@holochain-open-dev/membrane-context';
+
+customElements.define('membrane-context-provider', MembraneContextProvider);
+```
+
+3. Define the element anywhere in your html:
 
 ```html
 <body>
-  <hod-my-calendar></hod-my-calendar>
+  <membrane-context-provider id="context">
+    <hod-my-calendar> </hod-my-calendar>
+  </membrane-context-provider>
 </body>
 ```
 

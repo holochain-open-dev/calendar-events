@@ -10,15 +10,6 @@ This module is designed to be included in other DNAs, assuming as little as poss
 
 See our [`storybook`](https://holochain-open-dev.github.io/calendar-events).
 
-## Assumptions
-
-These are the things you need to know to decide if you can use this module in your happ:
-
-- Zome:
-  - Optional dependency with the [resource-bookings-zome](https://github/holochain-open-dev/resource-bookings-zome), when it is completed.
-- UI module:
-  - No framework or library assumed.
-
 ## Installation and usage
 
 ### Including the zome in your DNA
@@ -59,7 +50,7 @@ import { HodMyCalendar } from "@holochain-open-dev/calendar-events";
 ```js
 import { MembraneContextProvider } from "@holochain-open-dev/membrane-context";
 
-customElements.define('membrane-context-provider', MembraneContextProvider);
+customElements.define("membrane-context-provider", MembraneContextProvider);
 ```
 
 4. Include the elements in your html inside an initialized instance of the membrane context provider:
@@ -76,9 +67,15 @@ customElements.define('membrane-context-provider', MembraneContextProvider);
     import { MembraneContextProvider } from "@holochain-open-dev/membrane-context";
 
     (async function () {
-      const { appWebsocket, cellId } = await ConductorApi.AppWebsocket.connect(
+      const appWebsocket = await ConductorApi.AppWebsocket.connect(
         "ws://localhost:8888"
       );
+
+      const appInfo = await appWebsocket.appInfo({
+        installed_app_id: "test-app",
+      });
+      const cellId = appInfo.cell_data[0][0];
+
       customElements.define(
         "membrane-context-provider",
         MembraneContextProvider

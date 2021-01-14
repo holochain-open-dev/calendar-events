@@ -10,12 +10,10 @@ export default {
   input: `src/index.ts`,
   output: [{ dir: 'dist', format: 'es', sourcemap: true }],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash-es')
-  external: [
-    ...Object.keys(pkg.dependencies || {}).filter(
-      key => !key.includes('@fullcalendar')
-    ),
-    ...Object.keys(pkg.peerDependencies || {}),
-  ],
+  external(id) {
+    if (id.includes('./') || id.startsWith('/') || id.includes('@fullcalendar') || id.endsWith('.css')) return false;
+    return true;
+  },
   watch: {
     include: 'src/**',
   },

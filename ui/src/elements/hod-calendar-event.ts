@@ -1,5 +1,5 @@
 import { html, PropertyValues } from 'lit-element';
-import { property } from 'lit-element/lib/decorators';
+import { property } from 'lit-element';
 import { CircularProgress } from 'scoped-material-components/mwc-circular-progress';
 
 import { CalendarEvent } from '../types';
@@ -34,14 +34,8 @@ export class HodCalendarEvent extends BaseElement {
   @property({ type: Object })
   _calendarEvent: Hashed<CalendarEvent> | undefined = undefined;
 
-  updated(changedValues: PropertyValues) {
-    super.updated(changedValues);
-    if (
-      changedValues.has('membraneContext') &&
-      this.membraneContext.appWebsocket
-    ) {
-      this.loadEvent();
-    }
+  firstUpdated() {
+    this.loadEvent();
   }
 
   async loadEvent() {

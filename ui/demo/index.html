@@ -34,7 +34,9 @@
         context.appWebsocket = appWebsocket;
         context.cellId = cellId;
 
-        customElements.define('hod-my-calendar', HodMyCalendar);
+        setTimeout(() => {
+          customElements.define('hod-my-calendar', HodMyCalendar);
+        });
       })();
     </script>
   </body>

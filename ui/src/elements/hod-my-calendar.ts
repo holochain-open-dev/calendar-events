@@ -1,4 +1,4 @@
-import { html, css, PropertyValues } from 'lit-element';
+import { html, css, PropertyValues, property, query } from 'lit-element';
 
 import { Calendar } from '@fullcalendar/core';
 import type { DateSelectArg } from '@fullcalendar/core';
@@ -21,7 +21,6 @@ import { LinearProgress } from 'scoped-material-components/mwc-linear-progress';
 import { CalendarEvent } from '../types';
 import { eventToFullCalendar } from '../utils';
 import { HodCreateCalendarEvent } from './hod-create-calendar-event';
-import { property, query } from 'lit-element/lib/decorators';
 import { Hashed } from '@holochain-open-dev/common';
 import { BaseElement } from './base-calendar';
 import { classMap } from 'lit-html/directives/class-map';
@@ -72,13 +71,6 @@ export class HodMyCalendar extends BaseElement {
         }
       `,
     ];
-  }
-  static get scopedElements() {
-    return {
-      'mwc-menu-surface': MenuSurface,
-      'mwc-linear-progress': LinearProgress,
-      'hod-create-calendar-event': HodCreateCalendarEvent,
-    };
   }
 
   async loadCalendarEvents() {
@@ -151,16 +143,7 @@ export class HodMyCalendar extends BaseElement {
 
   async firstUpdated() {
     this.setupCalendar();
-  }
-
-  updated(changedValues: PropertyValues) {
-    super.updated(changedValues);
-    if (
-      changedValues.has('membraneContext') &&
-      this.membraneContext.appWebsocket
-    ) {
-      this.loadCalendarEvents();
-    }
+    await this.loadCalendarEvents();
   }
 
   renderCreateEventCard() {
@@ -194,5 +177,13 @@ export class HodMyCalendar extends BaseElement {
         <div id="calendar" style="flex: 1;" part="calendar"></div>
       </div>
     `;
+  }
+
+  static get scopedElements() {
+    return {
+      'mwc-menu-surface': MenuSurface,
+      'mwc-linear-progress': LinearProgress,
+      'hod-create-calendar-event': HodCreateCalendarEvent,
+    };
   }
 }

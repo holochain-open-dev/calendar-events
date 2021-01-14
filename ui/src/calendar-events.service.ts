@@ -24,28 +24,6 @@ export class CalendarEventsService {
     );
   }
 
-  private entryToEvent(entry: any): CalendarEvent {
-    return {
-      ...entry,
-      startTime: timestampToMillis(entry.startTime),
-      endTime: timestampToMillis(entry.endTime),
-    };
-  }
-
-  async getCalendarEvent(
-    calendarEventHash: string
-  ): Promise<Hashed<CalendarEvent>> {
-    const calendarEvent = await this.callZome(
-      'get_calendar_event',
-      calendarEventHash
-    );
-
-    return {
-      hash: calendarEventHash,
-      content: this.entryToEvent(calendarEvent),
-    };
-  }
-
   async createCalendarEvent({
     title,
     startTime,
@@ -73,6 +51,19 @@ export class CalendarEventsService {
     };
   }
 
+  async getCalendarEvent(
+    calendarEventHash: string
+  ): Promise<Hashed<CalendarEvent>> {
+    const calendarEvent = await this.callZome(
+      'get_calendar_event',
+      calendarEventHash
+    );
+
+    return {
+      hash: calendarEventHash,
+      content: this.entryToEvent(calendarEvent),
+    };
+  }
   async callZome(fn_name: string, payload: any) {
     return this.appWebsocket.callZome({
       cap: null as any,
@@ -83,4 +74,14 @@ export class CalendarEventsService {
       provenance: this.cellId[1],
     });
   }
+
+  /** Helpers */
+  private entryToEvent(entry: any): CalendarEvent {
+    return {
+      ...entry,
+      startTime: timestampToMillis(entry.startTime),
+      endTime: timestampToMillis(entry.endTime),
+    };
+  }
+
 }
