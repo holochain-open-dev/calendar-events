@@ -1,5 +1,5 @@
-import { html, PropertyValues } from 'lit-element';
-import { property } from 'lit-element';
+import { html, PropertyValues , property } from 'lit-element';
+
 import { CircularProgress } from 'scoped-material-components/mwc-circular-progress';
 
 import { CalendarEvent } from '../types';
