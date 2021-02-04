@@ -13,8 +13,8 @@ export class CalendarEventsService {
     protected zomeName = 'calendar_events'
   ) {}
 
-  async getMyCalendarEvents(): Promise<Array<Hashed<CalendarEvent>>> {
-    const events = await this.callZome('get_my_calendar_events', null);
+  async getAllCalendarEvents(): Promise<Array<Hashed<CalendarEvent>>> {
+    const events = await this.callZome('get_all_calendar_events', null);
 
     return events.map(
       ({ entry_hash, entry }: { entry_hash: string; entry: any }) => ({

@@ -3,13 +3,13 @@ use hc_utils::{WrappedAgentPubKey, WrappedEntryHash};
 use hdk3::prelude::timestamp::Timestamp;
 use hdk3::prelude::*;
 
-#[derive(Clone, SerializedBytes, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum EventLocation {
     Resource(WrappedEntryHash),
     Custom(String),
 }
 
-#[derive(Clone, Serialize, Deserialize, SerializedBytes)]
+#[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct CalendarEventOutput {
     entry_hash: WrappedEntryHash,
     entry: CalendarEvent,
@@ -27,7 +27,7 @@ pub struct CalendarEvent {
     pub invitees: Vec<WrappedAgentPubKey>,
 }
 
-#[derive(Clone, Serialize, Deserialize, SerializedBytes)]
+#[derive(Clone, Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct CreateCalendarEventInput {
     pub title: String,

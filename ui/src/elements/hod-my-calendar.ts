@@ -75,7 +75,7 @@ export class HodMyCalendar extends BaseElement {
 
   async loadCalendarEvents() {
     this._loading = true;
-    this._myCalendarEvents = await this.calendarEventsService.getMyCalendarEvents();
+    this._myCalendarEvents = await this.calendarEventsService.getAllCalendarEvents();
 
     if (this._myCalendarEvents) {
       const fullCalendarEvents = this._myCalendarEvents.map(
