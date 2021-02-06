@@ -42,7 +42,7 @@ export class HodMyCalendar extends BaseElement {
 
   /** Private properties */
 
-  @property({ type: Boolean, attribute: false }) _loading = false;
+  @property({ type: Boolean, attribute: false }) _loading = true;
   @property({ type: Array, attribute: false }) _myCalendarEvents:
     | Array<Hashed<CalendarEvent>>
     | undefined = undefined;
@@ -143,7 +143,18 @@ export class HodMyCalendar extends BaseElement {
 
   async firstUpdated() {
     this.setupCalendar();
-    await this.loadCalendarEvents();
+  }
+
+  updated(changedValues: PropertyValues) {
+    super.updated(changedValues);
+
+    if (
+      changedValues.has('membraneContext') &&
+      this.membraneContext &&
+      this.membraneContext.appWebsocket
+    ) {
+      this.loadCalendarEvents();
+    }
   }
 
   renderCreateEventCard() {
@@ -166,8 +177,9 @@ export class HodMyCalendar extends BaseElement {
 
   render() {
     return html`
-      <div style="position: relative; flex: 1; display: flex;"
-      class=${classMap({})}
+      <div
+        style="position: relative; flex: 1; display: flex;"
+        class=${classMap({})}
       >
         ${this.renderCreateEventCard()}
         ${this._loading
