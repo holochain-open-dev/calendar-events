@@ -8,67 +8,65 @@ import { Constructor } from 'lit-element';
 //@ts-ignore
 import { createUniqueTag } from '@open-wc/scoped-elements/src/createUniqueTag';
 
-const renderers: Lenses = {
-  standalone: [
-    {
-      name: 'My Events Calendar',
-      render(root: ShadowRoot, appWebsocket: AppWebsocket, cellId: CellId) {
-        const myCalendarTag = createUniqueTag(
-          'hod-my-calendar',
-          customElements
-        );
-        const holochainMembraneTag = createUniqueTag(
-          'membrane-context-provider',
-          customElements
-        );
-        customElements.define(
-          holochainMembraneTag,
-          (class extends MembraneContextProvider {} as unknown) as Constructor<HTMLElement>
-        );
-        root.innerHTML = `
-          <link
-            href="https://fonts.googleapis.com/icon?family=Material+Icons"
-            rel="stylesheet"
-          />
-          <${holochainMembraneTag} id="context">
-            <${myCalendarTag}></${myCalendarTag}>
-          </${holochainMembraneTag}>`;
+export default function lenses(
+  appWebsocket: AppWebsocket,
+  cellId: CellId
+): Lenses {
+  return {
+    standalone: [
+      {
+        name: 'My Events Calendar',
+        render(root: ShadowRoot) {
+          const myCalendarTag = createUniqueTag(
+            'hod-my-calendar',
+            customElements
+          );
+          const holochainMembraneTag = createUniqueTag(
+            'membrane-context-provider',
+            customElements
+          );
+          customElements.define(
+            holochainMembraneTag,
+            (class extends MembraneContextProvider {} as unknown) as Constructor<HTMLElement>
+          );
+          root.innerHTML = `
+            <link
+              href="https://fonts.googleapis.com/icon?family=Material+Icons"
+              rel="stylesheet"
+            />
+            <${holochainMembraneTag} id="context">
+              <${myCalendarTag}></${myCalendarTag}>
+            </${holochainMembraneTag}>`;
 
-        const context: MembraneContextProvider = (root.getElementById(
-          'context'
-        ) as unknown) as MembraneContextProvider;
-        context.appWebsocket = appWebsocket;
-        context.cellId = cellId;
+          const context: MembraneContextProvider = (root.getElementById(
+            'context'
+          ) as unknown) as MembraneContextProvider;
+          context.appWebsocket = appWebsocket;
+          context.cellId = cellId;
 
-        customElements.define(
-          myCalendarTag,
-          (class extends HodMyCalendar {} as unknown) as Constructor<HTMLElement>
-        );
+          customElements.define(
+            myCalendarTag,
+            (class extends HodMyCalendar {} as unknown) as Constructor<HTMLElement>
+          );
+        },
+      },
+    ],
+    entryLenses: {
+      calendar_event: {
+        name: 'Calendar Event',
+        render: (root: ShadowRoot, entryHash: string) => {
+          customElements.define('hod-calendar-event', HodCalendarEvent);
+          render(
+            html`<hod-calendar-event
+              .cellId=${cellId}
+              .appWebsocket=${appWebsocket}
+              .calendarEventHash="${entryHash}"
+            ></hod-calendar-event>`,
+            root
+          );
+        },
       },
     },
-  ],
-  entryLenses: {
-    calendar_event: {
-      name: 'Calendar Event',
-      render: (
-        root: ShadowRoot,
-        appWebsocket: AppWebsocket,
-        cellId: CellId,
-        entryHash: string
-      ) => {
-        customElements.define('hod-calendar-event', HodCalendarEvent);
-        render(
-          html`<hod-calendar-event
-            .cellId=${cellId}
-            .appWebsocket=${appWebsocket}
-            .calendarEventHash="${entryHash}"
-          ></hod-calendar-event>`,
-          root
-        );
-      },
-    },
-  },
-  attachmentsLenses: [],
-};
-
-export default renderers;
+    attachmentsLenses: [],
+  };
+}

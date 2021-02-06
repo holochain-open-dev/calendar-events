@@ -6,7 +6,7 @@ mod utils;
 use calendar_event::CalendarEventOutput;
 
 pub fn error<T>(reason: &str) -> ExternResult<T> {
-    Err(HdkError::Wasm(WasmError::Zome(String::from(reason))))
+    Err(WasmError::Zome(String::from(reason)))
 }
 
 entry_defs![
@@ -27,5 +27,5 @@ pub fn create_calendar_event(
 pub fn get_my_calendar_events(_: ()) -> ExternResult<Vec<CalendarEventOutput>> {
     let calendar_events = calendar_event::get_my_calendar_events()?;
 
-    Ok(GetMyCalendarEventsOutput(calendar_events))
+    Ok(calendar_events)
 }

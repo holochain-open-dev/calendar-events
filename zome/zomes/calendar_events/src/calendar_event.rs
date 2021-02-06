@@ -57,18 +57,11 @@ pub fn create_calendar_event(
 
     let calendar_event_hash = hash_entry(&calendar_event)?;
 
-    let path = my_calendar_events_path()?;
+    let path = calendar_events_path();
 
     path.ensure()?;
 
     create_link(path.hash()?, calendar_event_hash.clone(), ())?;
-
-    for invitee in calendar_event.invitees.clone() {
-        let invitee_path = calendar_events_path_for_agent(invitee.0);
-        invitee_path.ensure()?;
-
-        create_link(invitee_path.hash()?, calendar_event_hash.clone(), ())?;
-    }
 
     Ok(CalendarEventOutput {
         entry_hash: WrappedEntryHash(calendar_event_hash),
@@ -80,7 +73,7 @@ pub fn create_calendar_event(
  * Returns the calendar in which the agent is the creator or is an invitee
  */
 pub fn get_my_calendar_events() -> ExternResult<Vec<CalendarEventOutput>> {
-    let path = my_calendar_events_path()?;
+    let path = calendar_events_path();
 
     let links = get_links(path.hash()?, None)?;
 
@@ -100,13 +93,7 @@ pub fn get_calendar_event(calendar_event_hash: WrappedEntryHash) -> ExternResult
 }
 
 /** Private helpers **/
-fn my_calendar_events_path() -> ExternResult<Path> {
-    let agent_info = agent_info()?;
-    Ok(calendar_events_path_for_agent(
-        agent_info.agent_latest_pubkey,
-    ))
-}
 
-fn calendar_events_path_for_agent(public_key: AgentPubKey) -> Path {
-    Path::from(format!("calendar_events.{:?}", public_key))
+fn calendar_events_path() -> Path {
+    Path::from(format!("calendar_events"))
 }

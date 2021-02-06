@@ -12,7 +12,7 @@ const conductorConfig = Config.gen({});
 // Construct proper paths for your DNAs
 const calendarEvents = path.join(__dirname, "../../calendar_events.dna.gz");
 
-const sleep = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms));
+const sleep = (ms) => new Promise((resolve) => setTimeout(() => resolve(null), ms));
 
 const orchestrator = new Orchestrator();
 
@@ -59,7 +59,7 @@ orchestrator.registerScenario(
     );
     t.ok(calendarEvent.entry_hash);
 
-    await sleep(10);
+    await sleep(30);
 
     let calendarEvents = await alice_calendar.call(
       "calendar_events",
@@ -73,7 +73,7 @@ orchestrator.registerScenario(
       "get_my_calendar_events",
       null
     );
-    t.equal(calendarEvents.length, 0);
+    t.equal(calendarEvents.length, 1);
   }
 );
 
