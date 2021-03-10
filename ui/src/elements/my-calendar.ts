@@ -110,7 +110,7 @@ export abstract class MyCalendar extends BaseCalendarElement {
     if (element) {
       this._createEventMenu.anchor = element;
     }
-    console.log(this._createEvent);
+
     this._createEvent.clear();
     this._createEvent.initialEventProperties = {
       startTime: info.start.valueOf(),
