@@ -9,7 +9,7 @@ import { BaseCalendarElement } from './base-calendar';
 
 /**
  */
-export abstract class HodCalendarEvent extends BaseCalendarElement {
+export abstract class CalendarEventDetail extends BaseCalendarElement {
   static get styles() {
     return sharedStyles;
   }

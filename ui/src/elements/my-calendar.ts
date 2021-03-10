@@ -20,7 +20,7 @@ import { LinearProgress } from 'scoped-material-components/mwc-linear-progress';
 
 import { CalendarEvent } from '../types';
 import { eventToFullCalendar } from '../utils';
-import { HodCreateCalendarEvent } from './hod-create-calendar-event';
+import { CreateCalendarEvent } from './create-calendar-event';
 import { HoloHashed } from '@holochain-open-dev/core-types';
 import { BaseCalendarElement } from './base-calendar';
 import { classMap } from 'lit-html/directives/class-map';
@@ -29,7 +29,7 @@ import { classMap } from 'lit-html/directives/class-map';
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
  * @csspart calendar - Style the calendar
  */
-export abstract class HodMyCalendar extends BaseCalendarElement {
+export abstract class MyCalendar extends BaseCalendarElement {
   /** Public attributes */
 
   /**
@@ -54,7 +54,7 @@ export abstract class HodMyCalendar extends BaseCalendarElement {
   _createEventMenu!: MenuSurface;
 
   @query('#create-calendar-event')
-  _createEvent!: HodCreateCalendarEvent;
+  _createEvent!: CreateCalendarEvent;
 
   _calendar!: Calendar;
 
@@ -110,7 +110,7 @@ export abstract class HodMyCalendar extends BaseCalendarElement {
     if (element) {
       this._createEventMenu.anchor = element;
     }
-console.log(this._createEvent)
+    console.log(this._createEvent);
     this._createEvent.clear();
     this._createEvent.initialEventProperties = {
       startTime: info.start.valueOf(),
@@ -186,7 +186,7 @@ console.log(this._createEvent)
     return {
       'mwc-menu-surface': MenuSurface,
       'mwc-linear-progress': LinearProgress,
-      'hod-create-calendar-event': class extends HodCreateCalendarEvent {
+      'hod-create-calendar-event': class extends CreateCalendarEvent {
         get _calendarEventsService() {
           return service;
         }

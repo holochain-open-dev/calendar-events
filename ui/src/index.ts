@@ -1,4 +1,4 @@
-export { HodCreateCalendarEvent } from './elements/hod-create-calendar-event';
-export { HodMyCalendar } from './elements/hod-my-calendar';
-export { HodCalendarEvent } from './elements/hod-calendar-event';
+export { CreateCalendarEvent } from './elements/create-calendar-event';
+export { MyCalendar } from './elements/my-calendar';
+export { CalendarEventDetail } from './elements/calendar-event-detail';
 export { CalendarEventsService } from './calendar-events.service';

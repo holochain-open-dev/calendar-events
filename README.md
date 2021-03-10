@@ -44,7 +44,7 @@ See the list of available elements [here](https://holochain-open-dev.github.io/c
 ```js
 import ConductorApi from "@holochain/conductor-api";
 import {
-  HodMyCalendar,
+  MyCalendar,
   CalendarEventsService,
 } from "@holochain-open-dev/calendar-events";
 
@@ -61,8 +61,8 @@ async function setupCalendarEvents() {
   const service = new CalendarEventsService(appWebsocket, cellId);
 
   customElements.define(
-    "hod-my-calendar",
-    class extends HodMyCalendar {
+    "my-calendar",
+    class extends MyCalendar {
       get _calendarEventsService() {
         return service;
       }

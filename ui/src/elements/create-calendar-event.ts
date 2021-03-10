@@ -10,7 +10,7 @@ import { BaseCalendarElement } from './base-calendar';
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
  * @csspart event-title - Style the event title textfield
  */
-export abstract class HodCreateCalendarEvent extends BaseCalendarElement {
+export abstract class CreateCalendarEvent extends BaseCalendarElement {
   static get styles() {
     return sharedStyles;
   }
