@@ -21,15 +21,15 @@ import { LinearProgress } from 'scoped-material-components/mwc-linear-progress';
 import { CalendarEvent } from '../types';
 import { eventToFullCalendar } from '../utils';
 import { HodCreateCalendarEvent } from './hod-create-calendar-event';
-import { Hashed } from '@holochain-open-dev/common';
-import { BaseElement } from './base-calendar';
+import { HoloHashed } from '@holochain-open-dev/core-types';
+import { BaseCalendarElement } from './base-calendar';
 import { classMap } from 'lit-html/directives/class-map';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
  * @csspart calendar - Style the calendar
  */
-export class HodMyCalendar extends BaseElement {
+export abstract class HodMyCalendar extends BaseCalendarElement {
   /** Public attributes */
 
   /**
@@ -44,7 +44,7 @@ export class HodMyCalendar extends BaseElement {
 
   @property({ type: Boolean, attribute: false }) _loading = true;
   @property({ type: Array, attribute: false }) _myCalendarEvents:
-    | Array<Hashed<CalendarEvent>>
+    | Array<HoloHashed<CalendarEvent>>
     | undefined = undefined;
 
   @query('#calendar')
@@ -75,7 +75,7 @@ export class HodMyCalendar extends BaseElement {
 
   async loadCalendarEvents() {
     this._loading = true;
-    this._myCalendarEvents = await this.calendarEventsService.getAllCalendarEvents();
+    this._myCalendarEvents = await this._calendarEventsService.getAllCalendarEvents();
 
     if (this._myCalendarEvents) {
       const fullCalendarEvents = this._myCalendarEvents.map(
@@ -110,7 +110,7 @@ export class HodMyCalendar extends BaseElement {
     if (element) {
       this._createEventMenu.anchor = element;
     }
-
+console.log(this._createEvent)
     this._createEvent.clear();
     this._createEvent.initialEventProperties = {
       startTime: info.start.valueOf(),
@@ -143,18 +143,8 @@ export class HodMyCalendar extends BaseElement {
 
   async firstUpdated() {
     this.setupCalendar();
-  }
 
-  updated(changedValues: PropertyValues) {
-    super.updated(changedValues);
-
-    if (
-      changedValues.has('membraneContext') &&
-      this.membraneContext &&
-      this.membraneContext.appWebsocket
-    ) {
-      this.loadCalendarEvents();
-    }
+    this.loadCalendarEvents();
   }
 
   renderCreateEventCard() {
@@ -191,11 +181,16 @@ export class HodMyCalendar extends BaseElement {
     `;
   }
 
-  static get scopedElements() {
+  getScopedElements() {
+    const service = this._calendarEventsService;
     return {
       'mwc-menu-surface': MenuSurface,
       'mwc-linear-progress': LinearProgress,
-      'hod-create-calendar-event': HodCreateCalendarEvent,
+      'hod-create-calendar-event': class extends HodCreateCalendarEvent {
+        get _calendarEventsService() {
+          return service;
+        }
+      } as any,
     };
   }
 }

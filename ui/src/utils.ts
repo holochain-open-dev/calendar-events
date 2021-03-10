@@ -1,7 +1,7 @@
-import { Hashed } from '@holochain-open-dev/common';
+import { HoloHashed } from '@holochain-open-dev/core-types';
 import { CalendarEvent } from './types';
 
-export function eventToFullCalendar(calendarEvent: Hashed<CalendarEvent>) {
+export function eventToFullCalendar(calendarEvent: HoloHashed<CalendarEvent>) {
   return {
     id: calendarEvent.hash,
     title: calendarEvent.content.title,

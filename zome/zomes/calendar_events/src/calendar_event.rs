@@ -1,7 +1,6 @@
 use crate::utils;
 use hc_utils::{WrappedAgentPubKey, WrappedEntryHash};
-use hdk3::prelude::timestamp::Timestamp;
-use hdk3::prelude::*;
+use hdk::prelude::*;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum EventLocation {

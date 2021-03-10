@@ -1,23 +1,22 @@
 # UI Developer Setup
 
-UI elements for the `calendar_events` zome.
+UI module for the `calendar_events` zome.
 
-> This library follows the [open-wc](https://github.com/open-wc/open-wc) recommendation.
+All the instructions here assume you are running them inside the nix-shell at the root of the repository. For more info, see the [developer setup](/dev-setup.md).
 
-## Requirements
+## Setup
 
-- Having run through [holochain RSM installation](https://github.com/holochain/holochain-dna-build-tutorial).
-- Having [holochain-run-dna](https://www.npmjs.com/package/@holochain-open-dev/holochain-run-dna) installed.
+```bash
+npm install
+```
 
-## Local Demo with `@web/dev-server`
-
-Run this from inside the `nix-shell` in which you have the `holochain` binary install.
+## Running
 
 ```bash
 npm start
 ```
 
-To run a local development server that serves the basic demo located in `demo/index.html`
+This will serve a local development server that serves the basic demo located in `demo/index.html` at `localhost:8080/demo`.
 Take into account that this will run the holochain conductor in the background and connect the UI to the actual conductor.
 
 ## Building

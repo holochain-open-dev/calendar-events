@@ -4,12 +4,12 @@ import { CircularProgress } from 'scoped-material-components/mwc-circular-progre
 
 import { CalendarEvent } from '../types';
 import { sharedStyles } from './sharedStyles';
-import { Hashed } from '@holochain-open-dev/common';
-import { BaseElement } from './base-calendar';
+import { HoloHashed } from '@holochain-open-dev/core-types';
+import { BaseCalendarElement } from './base-calendar';
 
 /**
  */
-export class HodCalendarEvent extends BaseElement {
+export abstract class HodCalendarEvent extends BaseCalendarElement {
   static get styles() {
     return sharedStyles;
   }
@@ -32,14 +32,14 @@ export class HodCalendarEvent extends BaseElement {
   /** Private properties */
 
   @property({ type: Object })
-  _calendarEvent: Hashed<CalendarEvent> | undefined = undefined;
+  _calendarEvent: HoloHashed<CalendarEvent> | undefined = undefined;
 
   firstUpdated() {
     this.loadEvent();
   }
 
   async loadEvent() {
-    this._calendarEvent = await this.calendarEventsService.getCalendarEvent(
+    this._calendarEvent = await this._calendarEventsService.getCalendarEvent(
       this.calendarEventHash
     );
   }

@@ -30,7 +30,7 @@ calendar_events = {git = "https://github.com/holochain-open-dev/calendar-events-
 extern crate calendar_events;
 ```
 
-6. Add the zome into your `*.dna.workdir/dna.json` file.
+6. Add the zome into your `*.dna.workdir/dna.yaml` file.
 7. Compile the DNA with the usual `CARGO_TARGET=target cargo build --release --target wasm32-unknown-unknown`.
 
 ### Including the UI
@@ -42,63 +42,47 @@ See the list of available elements [here](https://holochain-open-dev.github.io/c
 2. Import and define the the elements you want to include:
 
 ```js
-import { HodMyCalendar } from "@holochain-open-dev/calendar-events";
+import ConductorApi from "@holochain/conductor-api";
+import {
+  HodMyCalendar,
+  CalendarEventsService,
+} from "@holochain-open-dev/calendar-events";
+
+async function setupCalendarEvents() {
+  const appWebsocket = await ConductorApi.AppWebsocket.connect(
+    "ws://localhost:8888"
+  );
+
+  const appInfo = await appWebsocket.appInfo({
+    installed_app_id: "test-app",
+  });
+  const cellId = appInfo.cell_data[0].cell_id;
+
+  const service = new CalendarEventsService(appWebsocket, cellId);
+
+  customElements.define(
+    "hod-my-calendar",
+    class extends HodMyCalendar {
+      get _calendarEventsService() {
+        return service;
+      }
+    }
+  );
+}
 ```
 
-3. Import and define the `membrane-context-provider` element from `@holochain-open-dev/membrane-context`:
-
-```js
-import { MembraneContextProvider } from "@holochain-open-dev/membrane-context";
-
-customElements.define("membrane-context-provider", MembraneContextProvider);
-```
-
-4. Include the elements in your html inside an initialized instance of the membrane context provider:
+3. Include the elements in your html:
 
 ```html
 <body>
-  <membrane-context-provider id="context">
-    <hod-my-calendar> </hod-my-calendar>
-  </membrane-context-provider>
-
-  <script type="module">
-    import ConductorApi from "@holochain/conductor-api";
-    import { HodMyCalendar } from "@holochain-open-dev/calendar-events";
-    import { MembraneContextProvider } from "@holochain-open-dev/membrane-context";
-
-    (async function () {
-      const appWebsocket = await ConductorApi.AppWebsocket.connect(
-        "ws://localhost:8888"
-      );
-
-      const appInfo = await appWebsocket.appInfo({
-        installed_app_id: "test-app",
-      });
-      const cellId = appInfo.cell_data[0][0];
-
-      customElements.define(
-        "membrane-context-provider",
-        MembraneContextProvider
-      );
-
-      const context = document.getElementById("context");
-      context.appWebsocket = appWebsocket;
-      context.cellId = cellId;
-
-      customElements.define("hod-my-calendar", HodMyCalendar);
-    })();
-  </script>
+  <hod-my-calendar> </hod-my-calendar>
 </body>
 ```
 
 Take into account that at this point the elements already expect a holochain conductor running at `ws://localhost:8888`.
 
+You can see a full working example [here](/ui/demo/index.html).
+
 ## Developer setup
 
-This respository is structured in the following way:
-
-- `ui/`: UI library.
-- `zome/`: example DNA with the `calendar_events` code.
-- Top level `Cargo.toml` is a virtual package necessary for other DNAs to include this zome by pointing to this git repository.
-
-Read the [UI developer setup](/ui/README.md) and the [Zome developer setup](/zome/README.md).
+Visit the [developer setup](/dev-setup.md).

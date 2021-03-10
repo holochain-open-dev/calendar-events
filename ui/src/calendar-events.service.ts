@@ -2,8 +2,8 @@ import { AppWebsocket, CellId } from '@holochain/conductor-api';
 import {
   timestampToMillis,
   millisToTimestamp,
-  Hashed
-} from '@holochain-open-dev/common';
+  HoloHashed
+} from '@holochain-open-dev/core-types';
 import { CalendarEvent } from './types';
 
 export class CalendarEventsService {
@@ -13,7 +13,7 @@ export class CalendarEventsService {
     protected zomeName = 'calendar_events'
   ) {}
 
-  async getAllCalendarEvents(): Promise<Array<Hashed<CalendarEvent>>> {
+  async getAllCalendarEvents(): Promise<Array<HoloHashed<CalendarEvent>>> {
     const events = await this.callZome('get_my_calendar_events', null);
 
     return events.map(
@@ -36,7 +36,7 @@ export class CalendarEventsService {
     endTime: number;
     location?: string;
     invitees: string[];
-  }): Promise<Hashed<CalendarEvent>> {
+  }): Promise<HoloHashed<CalendarEvent>> {
     const { entry_hash, entry } = await this.callZome('create_calendar_event', {
       title,
       startTime: millisToTimestamp(startTime),
@@ -53,7 +53,7 @@ export class CalendarEventsService {
 
   async getCalendarEvent(
     calendarEventHash: string
-  ): Promise<Hashed<CalendarEvent>> {
+  ): Promise<HoloHashed<CalendarEvent>> {
     const calendarEvent = await this.callZome(
       'get_calendar_event',
       calendarEventHash

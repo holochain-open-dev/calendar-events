@@ -4,15 +4,13 @@ import { Button } from 'scoped-material-components/mwc-button';
 
 import { CalendarEvent } from '../types';
 import { sharedStyles } from './sharedStyles';
-import { CalendarEventsService } from '../calendar-events.service';
-import { AppWebsocket, CellId } from '@holochain/conductor-api';
-import { BaseElement } from './base-calendar';
+import { BaseCalendarElement } from './base-calendar';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
  * @csspart event-title - Style the event title textfield
  */
-export class HodCreateCalendarEvent extends BaseElement {
+export abstract class HodCreateCalendarEvent extends BaseCalendarElement {
   static get styles() {
     return sharedStyles;
   }
@@ -38,7 +36,7 @@ export class HodCreateCalendarEvent extends BaseElement {
   _titleField!: TextField;
 
   async createEvent() {
-    const calendarEvent = await this.calendarEventsService.createCalendarEvent({
+    const calendarEvent = await this._calendarEventsService.createCalendarEvent({
       title: this._titleField.value,
       startTime: this.initialEventProperties?.startTime as number,
       endTime: this.initialEventProperties?.endTime as number,

@@ -1,5 +1,5 @@
 use hc_utils::WrappedEntryHash;
-use hdk3::prelude::*;
+use hdk::prelude::*;
 
 pub fn try_get_and_convert<T: TryFrom<SerializedBytes>>(
     entry_hash: EntryHash,
