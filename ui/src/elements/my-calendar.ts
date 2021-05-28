@@ -1,4 +1,12 @@
-import { html, css, PropertyValues, property, query } from 'lit-element';
+import { html, css } from 'lit';
+import { property, query, state } from 'lit/decorators.js';
+import { createRef, Ref, ref } from 'lit/directives/ref.js';
+
+import { MobxLitElement } from '@adobe/lit-mobx';
+import { ScopedRegistryHost } from '@lit-labs/scoped-registry-mixin';
+
+import { HoloHashed } from '@holochain-open-dev/core-types';
+import { requestContext } from '@holochain-open-dev/context';
 
 import { Calendar } from '@fullcalendar/core';
 import type { DateSelectArg } from '@fullcalendar/core';
@@ -18,18 +26,16 @@ import iconStyles from '@fortawesome/fontawesome-free/css/all.css'; // needs add
 import { MenuSurface } from 'scoped-material-components/mwc-menu-surface';
 import { LinearProgress } from 'scoped-material-components/mwc-linear-progress';
 
-import { CalendarEvent } from '../types';
+import { CalendarEvent, CALENDAR_EVENTS_SERVICE_CONTEXT } from '../types';
 import { eventToFullCalendar } from '../utils';
 import { CreateCalendarEvent } from './create-calendar-event';
-import { HoloHashed } from '@holochain-open-dev/core-types';
-import { BaseCalendarElement } from './base-calendar';
-import { classMap } from 'lit-html/directives/class-map';
+import { CalendarEventsService } from '../calendar-events.service';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
  * @csspart calendar - Style the calendar
  */
-export abstract class MyCalendar extends BaseCalendarElement {
+export class MyCalendar extends ScopedRegistryHost(MobxLitElement) {
   /** Public attributes */
 
   /**
@@ -40,15 +46,18 @@ export abstract class MyCalendar extends BaseCalendarElement {
   @property({ type: String, attribute: 'initial-view' })
   initialView: 'dayGridMonth' | 'timeGridWeek' | 'timeGridDay' = 'timeGridWeek';
 
+  /** Dependencies */
+
+  @requestContext(CALENDAR_EVENTS_SERVICE_CONTEXT)
+  _calendarEventsService!: CalendarEventsService;
+
   /** Private properties */
 
-  @property({ type: Boolean, attribute: false }) _loading = true;
-  @property({ type: Array, attribute: false }) _myCalendarEvents:
-    | Array<HoloHashed<CalendarEvent>>
-    | undefined = undefined;
+  @state() _loading = true;
+  @state() _myCalendarEvents: Array<HoloHashed<CalendarEvent>> | undefined =
+    undefined;
 
-  @query('#calendar')
-  _calendarEl!: HTMLElement;
+  _calendarEl: Ref<HTMLElement> = createRef();
 
   @query('#create-event-menu')
   _createEventMenu!: MenuSurface;
@@ -58,29 +67,14 @@ export abstract class MyCalendar extends BaseCalendarElement {
 
   _calendar!: Calendar;
 
-  static get styles() {
-    return [
-      commonStyles,
-      daygridStyles,
-      timeGridStyles,
-      bootstrapStyles,
-      iconStyles,
-      css`
-        :host {
-          display: flex;
-        }
-      `,
-    ];
-  }
-
   async loadCalendarEvents() {
     this._loading = true;
-    this._myCalendarEvents = await this._calendarEventsService.getAllCalendarEvents();
+    this._myCalendarEvents =
+      await this._calendarEventsService.getAllCalendarEvents();
 
     if (this._myCalendarEvents) {
-      const fullCalendarEvents = this._myCalendarEvents.map(
-        eventToFullCalendar
-      );
+      const fullCalendarEvents =
+        this._myCalendarEvents.map(eventToFullCalendar);
       this._calendar.removeAllEventSources();
       this._calendar.addEventSource(fullCalendarEvents);
       this._calendar.render();
@@ -89,7 +83,9 @@ export abstract class MyCalendar extends BaseCalendarElement {
   }
 
   getEventBeingCreated(): HTMLElement | undefined {
-    const harnesses = this._calendarEl.querySelectorAll(
+    if (!this._calendarEl.value) return;
+
+    const harnesses = this._calendarEl.value?.querySelectorAll(
       '.fc-timegrid-event-harness'
     );
 
@@ -119,7 +115,7 @@ export abstract class MyCalendar extends BaseCalendarElement {
   }
 
   setupCalendar() {
-    this._calendar = new Calendar(this._calendarEl, {
+    this._calendar = new Calendar(this._calendarEl.value as HTMLElement, {
       plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin],
       initialView: this.initialView,
       themeSystem: 'bootstrap',
@@ -141,7 +137,7 @@ export abstract class MyCalendar extends BaseCalendarElement {
     this._calendar.render();
   }
 
-  async firstUpdated() {
+  firstUpdated() {
     this.setupCalendar();
 
     this.loadCalendarEvents();
@@ -154,43 +150,50 @@ export abstract class MyCalendar extends BaseCalendarElement {
       corner="TOP_END"
     >
       <div style="padding: 16px;">
-        <hod-create-calendar-event
+        <create-calendar-event
           id="create-calendar-event"
           @event-created=${(e: CustomEvent) => {
             this._createEventMenu.open = false;
             this.loadCalendarEvents();
           }}
-        ></hod-create-calendar-event>
+        ></create-calendar-event>
       </div>
     </mwc-menu-surface>`;
   }
 
   render() {
     return html`
-      <div
-        style="position: relative; flex: 1; display: flex;"
-        class=${classMap({})}
-      >
+      <div class="column" style="position: relative; flex: 1;">
         ${this.renderCreateEventCard()}
+        <div ${ref(this._calendarEl)} style="flex: 1;"></div>
         ${this._loading
-          ? html`<mwc-linear-progress indeterminate></mwc-linear-progress>`
+          ? html`<mwc-linear-progress
+              indeterminate
+              style="width: 100%;"
+            ></mwc-linear-progress>`
           : html``}
-
-        <div id="calendar" style="flex: 1;" part="calendar"></div>
       </div>
     `;
   }
 
-  getScopedElements() {
-    const service = this._calendarEventsService;
-    return {
-      'mwc-menu-surface': MenuSurface,
-      'mwc-linear-progress': LinearProgress,
-      'hod-create-calendar-event': class extends CreateCalendarEvent {
-        get _calendarEventsService() {
-          return service;
+  static get styles() {
+    return [
+      commonStyles,
+      daygridStyles,
+      timeGridStyles,
+      bootstrapStyles,
+      iconStyles,
+      css`
+        :host {
+          display: flex;
         }
-      } as any,
-    };
+      `,
+    ];
   }
+
+  static elementDefinitions = {
+    'mwc-menu-surface': MenuSurface,
+    'mwc-linear-progress': LinearProgress,
+    'create-calendar-event': CreateCalendarEvent,
+  };
 }

@@ -1,16 +1,17 @@
-use crate::utils;
-use hc_utils::{WrappedAgentPubKey, WrappedEntryHash};
+use crate::err;
+use chrono::{serde::ts_milliseconds, DateTime, Utc};
 use hdk::prelude::*;
+use holo_hash::{AgentPubKeyB64, EntryHashB64};
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum EventLocation {
-    Resource(WrappedEntryHash),
+    Resource(EntryHashB64),
     Custom(String),
 }
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct CalendarEventOutput {
-    entry_hash: WrappedEntryHash,
+    entry_hash: EntryHashB64,
     entry: CalendarEvent,
 }
 
@@ -18,22 +19,28 @@ pub struct CalendarEventOutput {
 #[serde(rename_all = "camelCase")]
 #[derive(Clone)]
 pub struct CalendarEvent {
-    pub created_by: WrappedAgentPubKey,
+    pub created_by: AgentPubKeyB64,
     pub title: String,
-    pub start_time: Timestamp,
-    pub end_time: Timestamp,
+
+    #[serde(with = "ts_milliseconds")]
+    pub start_time: DateTime<Utc>,
+    #[serde(with = "ts_milliseconds")]
+    pub end_time: DateTime<Utc>,
+
     pub location: Option<EventLocation>,
-    pub invitees: Vec<WrappedAgentPubKey>,
+    pub invitees: Vec<AgentPubKeyB64>,
 }
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct CreateCalendarEventInput {
     pub title: String,
-    pub start_time: Timestamp,
-    pub end_time: Timestamp,
+    #[serde(with = "ts_milliseconds")]
+    pub start_time: DateTime<Utc>,
+    #[serde(with = "ts_milliseconds")]
+    pub end_time: DateTime<Utc>,
     pub location: Option<EventLocation>,
-    pub invitees: Vec<WrappedAgentPubKey>,
+    pub invitees: Vec<AgentPubKeyB64>,
 }
 /**
  * Creates a new calendar event, linking from the creator and the invitees public key
@@ -44,7 +51,7 @@ pub fn create_calendar_event(
     let agent_info = agent_info()?;
 
     let calendar_event = CalendarEvent {
-        created_by: WrappedAgentPubKey(agent_info.agent_latest_pubkey.clone()),
+        created_by: AgentPubKeyB64::from(agent_info.agent_latest_pubkey.clone()),
         title: calendar_event_input.title,
         start_time: calendar_event_input.start_time,
         end_time: calendar_event_input.end_time,
@@ -63,7 +70,7 @@ pub fn create_calendar_event(
     create_link(path.hash()?, calendar_event_hash.clone(), ())?;
 
     Ok(CalendarEventOutput {
-        entry_hash: WrappedEntryHash(calendar_event_hash),
+        entry_hash: EntryHashB64::from(calendar_event_hash),
         entry: calendar_event,
     })
 }
@@ -76,19 +83,39 @@ pub fn get_my_calendar_events() -> ExternResult<Vec<CalendarEventOutput>> {
 
     let links = get_links(path.hash()?, None)?;
 
-    links
+    let events = links
         .into_inner()
         .iter()
         .map(|link| {
-            utils::try_get_and_convert::<CalendarEvent>(link.target.clone())
-                .map(|(entry_hash, entry)| CalendarEventOutput { entry_hash, entry })
+            let element = get(link.target.clone(), GetOptions::default())?
+                .ok_or(err("Could not get calendar event"))?;
+
+            let calendar_event: CalendarEvent = element
+                .entry()
+                .to_app_option()?
+                .ok_or(err("Could not get calendar event"))?;
+
+            Ok(CalendarEventOutput {
+                entry_hash: link.target.clone().into(),
+                entry: calendar_event,
+            })
         })
-        .collect()
+        .collect::<ExternResult<Vec<CalendarEventOutput>>>()?;
+
+    Ok(events)
 }
 
 #[hdk_extern]
-pub fn get_calendar_event(calendar_event_hash: WrappedEntryHash) -> ExternResult<CalendarEvent> {
-    utils::try_get_and_convert::<CalendarEvent>(calendar_event_hash.0).map(|(_, entry)| entry)
+pub fn get_calendar_event(calendar_event_hash: EntryHashB64) -> ExternResult<CalendarEvent> {
+    let element = get(EntryHash::from(calendar_event_hash), GetOptions::default())?
+        .ok_or(err("Could not get calendar event"))?;
+
+    let calendar_event: CalendarEvent = element
+        .entry()
+        .to_app_option()?
+        .ok_or(err("Could not get calendar event"))?;
+
+    Ok(calendar_event)
 }
 
 /** Private helpers **/

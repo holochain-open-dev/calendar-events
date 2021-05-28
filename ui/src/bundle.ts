@@ -5,6 +5,8 @@ import { MyCalendar } from './elements/my-calendar';
 import { createUniqueTag } from '@open-wc/scoped-elements/src/createUniqueTag';
 import { CalendarEventsService } from './calendar-events.service';
 
+// TODO: FIX THIS
+
 export default function lenses(
   appWebsocket: AppWebsocket,
   cellId: CellId
@@ -27,11 +29,7 @@ export default function lenses(
 
           customElements.define(
             myCalendarTag,
-            class extends MyCalendar {
-              get _calendarEventsService() {
-                return service;
-              }
-            }
+            MyCalendar
           );
         },
       },

@@ -1,26 +1,21 @@
-import { html, property, query } from 'lit-element';
+import { html } from 'lit';
+import { property, query } from 'lit/decorators.js';
+import { requestContext } from '@holochain-open-dev/context';
+
+import { MobxLitElement } from '@adobe/lit-mobx';
+import { ScopedRegistryHost } from '@lit-labs/scoped-registry-mixin';
 import { TextField } from 'scoped-material-components/mwc-textfield';
 import { Button } from 'scoped-material-components/mwc-button';
 
-import { CalendarEvent } from '../types';
+import { CalendarEvent, CALENDAR_EVENTS_SERVICE_CONTEXT } from '../types';
 import { sharedStyles } from './sharedStyles';
-import { BaseCalendarElement } from './base-calendar';
+import { CalendarEventsService } from '../calendar-events.service';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
  * @csspart event-title - Style the event title textfield
  */
-export abstract class CreateCalendarEvent extends BaseCalendarElement {
-  static get styles() {
-    return sharedStyles;
-  }
-  static get scopedElements() {
-    return {
-      'mwc-textfield': TextField,
-      'mwc-button': Button,
-    };
-  }
-
+export class CreateCalendarEvent extends ScopedRegistryHost(MobxLitElement) {
   /** Public attributes */
 
   /**
@@ -30,19 +25,26 @@ export abstract class CreateCalendarEvent extends BaseCalendarElement {
   @property({ type: Object, attribute: false })
   initialEventProperties: Partial<CalendarEvent> | undefined = undefined;
 
+  /** Dependencies */
+
+  @requestContext(CALENDAR_EVENTS_SERVICE_CONTEXT)
+  _calendarEventsService!: CalendarEventsService;
+
   /** Private properties */
 
   @query('#event-title')
   _titleField!: TextField;
 
   async createEvent() {
-    const calendarEvent = await this._calendarEventsService.createCalendarEvent({
-      title: this._titleField.value,
-      startTime: this.initialEventProperties?.startTime as number,
-      endTime: this.initialEventProperties?.endTime as number,
-      location: undefined,
-      invitees: [],
-    });
+    const calendarEvent = await this._calendarEventsService.createCalendarEvent(
+      {
+        title: this._titleField.value,
+        startTime: this.initialEventProperties?.startTime as number,
+        endTime: this.initialEventProperties?.endTime as number,
+        location: undefined,
+        invitees: [],
+      }
+    );
 
     this.dispatchEvent(
       new CustomEvent('event-created', {
@@ -96,4 +98,13 @@ export abstract class CreateCalendarEvent extends BaseCalendarElement {
   public clear() {
     this._titleField.value = '';
   }
+
+  static get styles() {
+    return sharedStyles;
+  }
+
+  static elementDefinitions = {
+    'mwc-textfield': TextField,
+    'mwc-button': Button,
+  };
 }

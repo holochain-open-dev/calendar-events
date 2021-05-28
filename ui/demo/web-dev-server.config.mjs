@@ -5,7 +5,7 @@ export default {
   watch: true,
   nodeResolve: {
     browser: true,
-    dedupe: ['lit-html']
+    preferBuiltins: false
   },
   appIndex: 'demo/index.html',
   open: true,

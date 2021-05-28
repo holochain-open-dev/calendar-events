@@ -21,23 +21,23 @@ See our [`storybook`](https://holochain-open-dev.github.io/calendar-events).
 
 ```toml
 [dependencies]
-calendar_events = {git = "https://github.com/holochain-open-dev/calendar-events-module", package = "calendar_events"}
+hc_zome_calendar_events = {git = "https://github.com/holochain-open-dev/calendar-events", package = "hc_zome_calendar_events"}
 ```
 
 5. Create a `src` folder besides the `Cargo.toml` with this content:
 
 ```rust
-extern crate calendar_events;
+extern crate hc_zome_calendar_events;
 ```
 
-6. Add the zome into your `*.dna.workdir/dna.yaml` file.
+6. Add the zome into your `dna.yaml` file with the name `calendar_events`.
 7. Compile the DNA with the usual `CARGO_TARGET=target cargo build --release --target wasm32-unknown-unknown`.
 
 ### Including the UI
 
 See the list of available elements [here](https://holochain-open-dev.github.io/calendar-events).
 
-1. Install the module with `npm install https://github.com/holochain-open-dev/calendar-events`.
+1. Install the module with `npm install "https://github.com/holochain-open-dev/calendar-events#ui-build"`.
 
 2. Import and define the the elements you want to include:
 
@@ -46,7 +46,9 @@ import ConductorApi from "@holochain/conductor-api";
 import {
   MyCalendar,
   CalendarEventsService,
+  CALENDAR_EVENTS_SERVICE_CONTEXT,
 } from "@holochain-open-dev/calendar-events";
+import { ContextProviderElement } from "@holochain-open-dev/context";
 
 async function setupCalendarEvents() {
   const appWebsocket = await ConductorApi.AppWebsocket.connect(
@@ -60,14 +62,13 @@ async function setupCalendarEvents() {
 
   const service = new CalendarEventsService(appWebsocket, cellId);
 
-  customElements.define(
-    "my-calendar",
-    class extends MyCalendar {
-      get _calendarEventsService() {
-        return service;
-      }
-    }
-  );
+  customElements.define("context-provider", ContextProviderElement);
+
+  const provider = document.getElementById("provider");
+  provider.name = CALENDAR_EVENTS_SERVICE_CONTEXT;
+  provider.value = service;
+
+  customElements.define("my-calendar", MyCalendar);
 }
 ```
 
@@ -75,7 +76,9 @@ async function setupCalendarEvents() {
 
 ```html
 <body>
-  <hod-my-calendar> </hod-my-calendar>
+  <context-provider id="provider">
+    <my-calendar> </my-calendar>
+  </context-provider>
 </body>
 ```
 

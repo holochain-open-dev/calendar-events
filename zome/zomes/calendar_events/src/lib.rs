@@ -1,12 +1,11 @@
 use hdk::prelude::*;
 
 mod calendar_event;
-mod utils;
 
 use calendar_event::CalendarEventOutput;
 
-pub fn error<T>(reason: &str) -> ExternResult<T> {
-    Err(WasmError::Guest(String::from(reason)))
+pub fn err(reason: &str) -> WasmError {
+    WasmError::Guest(String::from(reason))
 }
 
 entry_defs![

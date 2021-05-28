@@ -1,9 +1,5 @@
 import { AppWebsocket, CellId } from '@holochain/conductor-api';
-import {
-  timestampToMillis,
-  millisToTimestamp,
-  HoloHashed
-} from '@holochain-open-dev/core-types';
+import { HoloHashed } from '@holochain-open-dev/core-types';
 import { CalendarEvent } from './types';
 
 export class CalendarEventsService {
@@ -19,7 +15,7 @@ export class CalendarEventsService {
     return events.map(
       ({ entry_hash, entry }: { entry_hash: string; entry: any }) => ({
         hash: entry_hash,
-        content: this.entryToEvent(entry),
+        content: entry,
       })
     );
   }
@@ -39,15 +35,15 @@ export class CalendarEventsService {
   }): Promise<HoloHashed<CalendarEvent>> {
     const { entry_hash, entry } = await this.callZome('create_calendar_event', {
       title,
-      startTime: millisToTimestamp(startTime),
-      endTime: millisToTimestamp(endTime),
+      startTime,
+      endTime,
       location,
       invitees,
     });
 
     return {
       hash: entry_hash,
-      content: this.entryToEvent(entry),
+      content: entry,
     };
   }
 
@@ -61,7 +57,7 @@ export class CalendarEventsService {
 
     return {
       hash: calendarEventHash,
-      content: this.entryToEvent(calendarEvent),
+      content: calendarEvent,
     };
   }
   async callZome(fn_name: string, payload: any) {
@@ -74,14 +70,4 @@ export class CalendarEventsService {
       provenance: this.cellId[1],
     });
   }
-
-  /** Helpers */
-  private entryToEvent(entry: any): CalendarEvent {
-    return {
-      ...entry,
-      startTime: timestampToMillis(entry.startTime),
-      endTime: timestampToMillis(entry.endTime),
-    };
-  }
-
 }

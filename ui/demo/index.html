@@ -14,23 +14,38 @@
     />
   </head>
   <body>
-    <my-calendar> </my-calendar>
+    <context-provider id="provider">
+      <my-calendar></my-calendar>
+    </context-provider>
 
     <script type="module">
-      import { getAppWebsocket } from '../test/mocks';
-      import { MyCalendar, CalendarEventsService } from '../dist';
+      import {
+        MyCalendar,
+        CalendarEventsService,
+        CALENDAR_EVENTS_SERVICE_CONTEXT,
+      } from '../dist';
+      import ConductorApi from '@holochain/conductor-api';
+      import { ContextProviderElement } from '@holochain-open-dev/context';
 
       (async function () {
-        const { appWebsocket, cellId } = await getAppWebsocket();
-
-        customElements.define(
-          'my-calendar',
-          class extends MyCalendar {
-            get _calendarEventsService() {
-              return new CalendarEventsService(appWebsocket, cellId);
-            }
-          }
+        const appWebsocket = await ConductorApi.AppWebsocket.connect(
+          'ws://localhost:8888'
         );
+        const appInfo = await appWebsocket.appInfo({
+          installed_app_id: 'test-app',
+        });
+
+        const cellId = appInfo.cell_data[0].cell_id;
+
+        const service = new CalendarEventsService(appWebsocket, cellId);
+
+        customElements.define('context-provider', ContextProviderElement);
+
+        const provider = document.getElementById('provider');
+        provider.name = CALENDAR_EVENTS_SERVICE_CONTEXT;
+        provider.value = service;
+
+        customElements.define('my-calendar', MyCalendar);
       })();
     </script>
   </body>

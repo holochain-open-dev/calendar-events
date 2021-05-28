@@ -10,9 +10,10 @@ import path from "path";
 const conductorConfig = Config.gen({});
 
 // Construct proper paths for your DNAs
-const calendarEvents = path.join(__dirname, "../../calendar_events.dna.gz");
+const calendarEvents = path.join(__dirname, "../../workdir/dna/calendar_events-test.dna");
 
-const sleep = (ms) => new Promise((resolve) => setTimeout(() => resolve(null), ms));
+const sleep = (ms) =>
+  new Promise((resolve) => setTimeout(() => resolve(null), ms));
 
 const orchestrator = new Orchestrator();
 
@@ -28,11 +29,6 @@ const installation: InstallAgentsHapps = [
     // happ 0
     [calendarEvents],
   ],
-];
-
-const dateToTimestamp = (date) => [
-  Math.floor(date / 1000),
-  (date % 1000) * 1000,
 ];
 
 orchestrator.registerScenario(
@@ -51,8 +47,8 @@ orchestrator.registerScenario(
       "create_calendar_event",
       {
         title: "Event 1",
-        startTime: [Math.floor(Date.now() / 1000), 0],
-        endTime: [Math.floor(Date.now() / 1000) + 1000, 0],
+        startTime: Date.now(),
+        endTime: Date.now() + 10000,
         location: { Custom: "hiii" },
         invitees: [],
       }

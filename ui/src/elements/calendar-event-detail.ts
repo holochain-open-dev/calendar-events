@@ -1,25 +1,20 @@
-import { html, PropertyValues , property } from 'lit-element';
+import { html } from 'lit';
+import { property } from 'lit/decorators.js';
+
+import { requestContext } from '@holochain-open-dev/context';
+import { HoloHashed } from '@holochain-open-dev/core-types';
+import { ScopedRegistryHost } from '@lit-labs/scoped-registry-mixin';
+import { MobxLitElement } from '@adobe/lit-mobx';
 
 import { CircularProgress } from 'scoped-material-components/mwc-circular-progress';
 
-import { CalendarEvent } from '../types';
+import { CalendarEvent, CALENDAR_EVENTS_SERVICE_CONTEXT } from '../types';
 import { sharedStyles } from './sharedStyles';
-import { HoloHashed } from '@holochain-open-dev/core-types';
-import { BaseCalendarElement } from './base-calendar';
+import { CalendarEventsService } from '../calendar-events.service';
 
 /**
  */
-export abstract class CalendarEventDetail extends BaseCalendarElement {
-  static get styles() {
-    return sharedStyles;
-  }
-
-  static get scopedElements() {
-    return {
-      'mwc-circular-progress': CircularProgress,
-    };
-  }
-
+export class CalendarEventDetail extends ScopedRegistryHost(MobxLitElement) {
   /** Public attributes */
 
   /**
@@ -28,6 +23,11 @@ export abstract class CalendarEventDetail extends BaseCalendarElement {
    */
   @property({ type: String, attribute: false })
   calendarEventHash!: string;
+
+  /** Dependencies */
+
+  @requestContext(CALENDAR_EVENTS_SERVICE_CONTEXT)
+  _calendarEventsService!: CalendarEventsService;
 
   /** Private properties */
 
@@ -46,7 +46,9 @@ export abstract class CalendarEventDetail extends BaseCalendarElement {
 
   render() {
     if (!this._calendarEvent)
-      return html`<mwc-circular-progress></mwc-circular-progress>`;
+      return html`<mwc-circular-progress
+        indeterminate
+      ></mwc-circular-progress>`;
 
     return html`
       <div class="column">
@@ -64,4 +66,11 @@ export abstract class CalendarEventDetail extends BaseCalendarElement {
       </div>
     `;
   }
+  static get styles() {
+    return sharedStyles;
+  }
+
+  static elementDefinitions = {
+    'mwc-circular-progress': CircularProgress,
+  };
 }
