@@ -19,14 +19,14 @@ This should create a `workdir/happ/sample.happ` file.
 After having built the DNA:
 
 ```bash
-cd test
+cd zome/tests
 npm install
 npm test
 ```
 
 ## Running
 
-After having built the DNA:
+After having built the DNA and happ: (and running from the root project folder)
 
 ```bash
 hc s generate workdir/happ/sample.happ --run=8888

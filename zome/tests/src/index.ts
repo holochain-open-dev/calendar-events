@@ -2,7 +2,6 @@ import {
   Orchestrator,
   Config,
   InstallAgentsHapps,
-  TransportConfigType,
   Player,
 } from "@holochain/tryorama";
 import path from "path";
@@ -25,6 +24,7 @@ const installation: InstallAgentsHapps = [
     // happ 0
     [calendarEvents],
   ],
+  // agent 1
   [
     // happ 0
     [calendarEvents],
@@ -53,7 +53,7 @@ orchestrator.registerScenario(
         invitees: [],
       }
     );
-    t.ok(calendarEvent.entry_hash);
+    t.ok(calendarEvent.entryHash);
 
     await sleep(30);
 

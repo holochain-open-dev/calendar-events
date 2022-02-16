@@ -10,6 +10,7 @@ pub enum EventLocation {
 }
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct CalendarEventOutput {
     entry_hash: EntryHashB64,
     entry: CalendarEvent,
