@@ -7,7 +7,7 @@ export class CalendarEventsMock {
 
   create_calendar_event(calendarInput) {
     const calendarEntry = {
-      entry_hash: randomEntryHash(),
+      entryHash: randomEntryHash(),
       entry: {
         ...calendarInput,
         createdBy: randomPubKey(),
