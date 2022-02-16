@@ -42,7 +42,7 @@ See the list of available elements [here](https://holochain-open-dev.github.io/c
 2. Import and define the the elements you want to include:
 
 ```js
-import ConductorApi from "@holochain/conductor-api";
+import ConductorApi from "@holochain/client";
 import {
   MyCalendar,
   CalendarEventsService,

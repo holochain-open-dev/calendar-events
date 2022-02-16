@@ -33,7 +33,7 @@ module.exports = {
             'node_modules/graphql-tag/**/*',
             'node_modules/isomorphic-ws/**/*',
             'node_modules/@msgpack/**/*',
-            'node_modules/@holochain/conductor-api/**/*',
+            'node_modules/@holochain/client/**/*',
           ],
         })
       ),
@@ -60,7 +60,7 @@ module.exports = {
             'node_modules/graphql-tag/**/*',
             'node_modules/isomorphic-ws/**/*',
             'node_modules/@msgpack/**/*',
-            'node_modules/@holochain/conductor-api/**/*',
+            'node_modules/@holochain/client/**/*',
           ],
         }),
 
