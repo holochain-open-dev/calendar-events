@@ -37,7 +37,7 @@
     "@fullcalendar/timegrid": "^5.7.0",
     "@holochain-open-dev/context": "git+https://github.com/holochain-open-dev/context.git#ui-build",
     "@holochain-open-dev/core-types": "git+https://github.com/holochain-open-dev/core-types.git#build",
-    "@holochain/conductor-api": "^0.0.4",
+    "@holochain/client": "^0.3.2",
     "@lit-labs/scoped-registry-mixin": "^1.0.0-rc.1",
     "@webcomponents/scoped-custom-element-registry": "0.0.1",
     "bootstrap": "^4.5.2",

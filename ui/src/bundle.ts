@@ -1,5 +1,5 @@
 import { Lenses } from '@compository/lib';
-import { AppWebsocket, CellId } from '@holochain/conductor-api';
+import { AppWebsocket, CellId } from '@holochain/client';
 import { MyCalendar } from './elements/my-calendar';
 //@ts-ignore
 import { createUniqueTag } from '@open-wc/scoped-elements/src/createUniqueTag';

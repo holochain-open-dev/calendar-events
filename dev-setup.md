@@ -25,7 +25,7 @@ holochain --version
 Should give something like:
 
 ```bash
-holochain 0.0.100
+holochain 0.0.126
 ```
 
 Read the [UI developer setup](/ui/README.md) and the [Zome developer setup](/zome/README.md). Run all the instructions there always from inside this nix-shell.

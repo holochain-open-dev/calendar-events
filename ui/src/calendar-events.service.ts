@@ -1,4 +1,4 @@
-import { AppWebsocket, CellId } from '@holochain/conductor-api';
+import { AppWebsocket, CellId } from '@holochain/client';
 import { HoloHashed } from '@holochain-open-dev/core-types';
 import { CalendarEvent } from './types';
 

@@ -1,4 +1,4 @@
-import ConductorApi from '@holochain/conductor-api';
+import ConductorApi from '@holochain/client';
 
 import { AppWebsocketMock, DnaMock } from 'holochain-ui-test-utils';
 import { CalendarEventsMock } from './calendar-events.mock';
