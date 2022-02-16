@@ -13,8 +13,8 @@ export class CalendarEventsService {
     const events = await this.callZome('get_my_calendar_events', null);
 
     return events.map(
-      ({ entry_hash, entry }: { entry_hash: string; entry: any }) => ({
-        hash: entry_hash,
+      ({ entryHash, entry }: { entryHash: string; entry: any }) => ({
+        hash: entryHash,
         content: entry,
       })
     );
@@ -33,7 +33,7 @@ export class CalendarEventsService {
     location?: string;
     invitees: string[];
   }): Promise<HoloHashed<CalendarEvent>> {
-    const { entry_hash, entry } = await this.callZome('create_calendar_event', {
+    const { entryHash, entry } = await this.callZome('create_calendar_event', {
       title,
       startTime,
       endTime,
@@ -42,7 +42,7 @@ export class CalendarEventsService {
     });
 
     return {
-      hash: entry_hash,
+      hash: entryHash,
       content: entry,
     };
   }
