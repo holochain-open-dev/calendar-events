@@ -1,7 +1,7 @@
 use crate::err;
 use chrono::{serde::ts_milliseconds, DateTime, Utc};
 use hdk::prelude::*;
-use holo_hash::{AgentPubKeyB64, EntryHashB64};
+use hdk::prelude::holo_hash::{EntryHashB64, AgentPubKeyB64};
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum EventLocation {
@@ -67,7 +67,7 @@ pub fn create_calendar_event(
 
     path.ensure()?;
 
-    create_link(path.hash()?, calendar_event_hash.clone(), ())?;
+    create_link(path.path_entry_hash()?, calendar_event_hash.clone(), ())?;
 
     Ok(CalendarEventOutput {
         entry_hash: EntryHashB64::from(calendar_event_hash),
@@ -81,10 +81,9 @@ pub fn create_calendar_event(
 pub fn get_my_calendar_events() -> ExternResult<Vec<CalendarEventOutput>> {
     let path = calendar_events_path();
 
-    let links = get_links(path.hash()?, None)?;
+    let links = get_links(path.path_entry_hash()?, None)?;
 
     let events = links
-        .into_inner()
         .iter()
         .map(|link| {
             let element = get(link.target.clone(), GetOptions::default())?

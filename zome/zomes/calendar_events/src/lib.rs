@@ -9,7 +9,7 @@ pub fn err(reason: &str) -> WasmError {
 }
 
 entry_defs![
-    Path::entry_def(),
+    PathEntry::entry_def(),
     calendar_event::CalendarEvent::entry_def()
 ];
 

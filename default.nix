@@ -1,21 +1,13 @@
-let 
-  holonixPath = builtins.fetchTarball {
-    url = "https://github.com/holochain/holonix/archive/3e94163765975f35f7d8ec509b33c3da52661bd1.tar.gz";
-    sha256 = "07sl281r29ygh54dxys1qpjvlvmnh7iv1ppf79fbki96dj9ip7d2";
-  };
+let
+  holonixPath = builtins.fetchTarball "https://github.com/holochain/holonix/archive/1f19ee64fe32f0bbed71257bcb396a8028baa622.tar.gz";
   holonix = import (holonixPath) {
-    includeHolochainBinaries = true;
-    holochainVersionId = "custom";
-    
-    holochainVersion = { 
-     rev = "363af6d8af8d18e4616f6aa56ad4d1f0fabaafb7";
-     sha256 = "0ssjhang6zljs0zrph998zj7582rf0vdb45p855awa7fmzpd4kfa";
-     cargoSha256 = "15g0ndb64hcfqyqn5pb01vnipg4gxlm0p543z2vr407dgrwfwvhw";
-     bins = {
-       holochain = "holochain";
-       hc = "hc";
-     };
-    };
-    holochainOtherDepsNames = ["lair-keystore"];
+    holochainVersionId = "v0_0_126";
   };
-in holonix.main
+  nixpkgs = holonix.pkgs;
+in nixpkgs.mkShell {
+  inputsFrom = [ holonix.main ];
+  packages = with nixpkgs; [
+    # Additional packages go here
+    nodejs-16_x
+  ];
+}
