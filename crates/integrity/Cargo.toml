@@ -1,6 +1,6 @@
 [package]
 authors = ["guillem.cordoba@gmail.com"]
-edition = "2018"
+edition = "2021"
 name = "hc_zome_calendar_events_integrity"
 version = "0.0.1"
 
@@ -12,5 +12,5 @@ name = "hc_zome_calendar_events_integrity"
 derive_more = "0"
 serde = "1"
 
-hdk = { version = "0.0.127", features = ["encoding"] }
+hdk = { version = "0.0.136" }
 chrono = {version = "0.4", features = ["serde"]}

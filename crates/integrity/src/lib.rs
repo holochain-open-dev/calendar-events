@@ -1,10 +1,9 @@
 use chrono::{serde::ts_milliseconds, DateTime, Utc};
 use hdk::prelude::*;
-use hdk::prelude::holo_hash::{EntryHashB64, AgentPubKeyB64};
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum EventLocation {
-    Resource(EntryHashB64),
+    Resource(EntryHash),
     Custom(String),
 }
 
@@ -20,5 +19,5 @@ pub struct CalendarEvent {
     pub end_time: DateTime<Utc>,
 
     pub location: Option<EventLocation>,
-    pub invitees: Vec<AgentPubKeyB64>,
+    pub invitees: Vec<AgentPubKey>,
 }

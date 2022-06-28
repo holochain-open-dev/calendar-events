@@ -1,69 +1,58 @@
+use std::collections::BTreeMap;
+
 use hdk::prelude::*;
 
-use hc_zome_calendar_events_integrity;
+use hc_zome_calendar_events_integrity::{self, CalendarEvent};
 
-entry_defs![
-    PathEntry::entry_def(),
-    calendar_event::CalendarEvent::entry_def()
-];
+entry_defs![PathEntry::entry_def(), CalendarEvent::entry_def()];
 
 /** Calendar events **/
 
 #[hdk_extern]
-pub fn create_calendar_event(
-    calendar_event: CalendarEvent,
-) -> ExternResult<HeaderHashB64> {
-    let agent_info = agent_info()?;
-
+pub fn create_calendar_event(calendar_event: CalendarEvent) -> ExternResult<HeaderHash> {
     let header_hash = create_entry(&calendar_event)?;
 
     let path = calendar_events_path();
 
     path.ensure()?;
 
-    create_link(path.path_entry_hash()?, header_hash.clone(), HdkLinkType::Any, ())?;
+    create_link(
+        path.path_entry_hash()?,
+        header_hash.clone(),
+        HdkLinkType::Any,
+        (),
+    )?;
 
     Ok(header_hash)
 }
 
 #[hdk_extern]
-pub fn get_my_calendar_events(_: ()) -> ExternResult<Vec<CalendarEventOutput>> {
+pub fn get_all_calendar_events(_: ()) -> ExternResult<BTreeMap<HeaderHash, CalendarEvent>> {
     let path = calendar_events_path();
 
     let links = get_links(path.path_entry_hash()?, None)?;
 
-    let events = links
-        .iter()
-        .map(|link| {
-            let element = get(link.target.clone(), GetOptions::default())?
-                .ok_or(err("Could not get calendar event"))?;
+    let get_input: Vec<GetInput> = links
+        .into_iter()
+        .map(|link| GetInput::new(link.target.into(), GetOptions::default()))
+        .collect();
 
-            let calendar_event: CalendarEvent = element
+    let maybe_elements = HDK.with(|hdk| hdk.borrow().get(get_input))?;
+
+    let mut all_calendar_events: BTreeMap<HeaderHash, CalendarEvent> = BTreeMap::new();
+
+    for maybe_el in maybe_elements {
+        if let Some(el) = maybe_el {
+            let calendar_event: CalendarEvent = el
                 .entry()
                 .to_app_option()?
-                .ok_or(err("Could not get calendar event"))?;
+                .ok_or(WasmError::Guest("Could not get calendar event".into()))?;
 
-            Ok(CalendarEventOutput {
-                entry_hash: link.target.clone().into(),
-                entry: calendar_event,
-            })
-        })
-        .collect::<ExternResult<Vec<CalendarEventOutput>>>()?;
+            all_calendar_events.insert(el.header_address().clone(), calendar_event);
+        }
+    }
 
-    Ok(events)
-}
-
-#[hdk_extern]
-pub fn get_calendar_event(calendar_event_hash: EntryHashB64) -> ExternResult<CalendarEvent> {
-    let element = get(EntryHash::from(calendar_event_hash), GetOptions::default())?
-        .ok_or(err("Could not get calendar event"))?;
-
-    let calendar_event: CalendarEvent = element
-        .entry()
-        .to_app_option()?
-        .ok_or(err("Could not get calendar event"))?;
-
-    Ok(calendar_event)
+    Ok(all_calendar_events)
 }
 
 /** Private helpers **/
