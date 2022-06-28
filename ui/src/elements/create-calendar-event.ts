@@ -1,21 +1,20 @@
-import { html } from 'lit';
+import { html, LitElement } from 'lit';
 import { property, query } from 'lit/decorators.js';
-import { requestContext } from '@holochain-open-dev/context';
+import { contextProvided } from '@lit-labs/context';
+import { ScopedElementsMixin } from '@open-wc/scoped-elements';
 
-import { MobxLitElement } from '@adobe/lit-mobx';
-import { ScopedRegistryHost } from '@lit-labs/scoped-registry-mixin';
-import { TextField } from 'scoped-material-components/mwc-textfield';
-import { Button } from 'scoped-material-components/mwc-button';
+import { Button, TextField } from '@scoped-elements/material-web';
 
-import { CalendarEvent, CALENDAR_EVENTS_SERVICE_CONTEXT } from '../types';
+import { CalendarEvent } from '../types';
 import { sharedStyles } from './sharedStyles';
-import { CalendarEventsService } from '../calendar-events.service';
+import { CalendarEventsService } from '../calendar-events-service';
+import { calendarEventsServiceContext } from '../context';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
  * @csspart event-title - Style the event title textfield
  */
-export class CreateCalendarEvent extends ScopedRegistryHost(MobxLitElement) {
+export class CreateCalendarEvent extends ScopedElementsMixin(LitElement) {
   /** Public attributes */
 
   /**
@@ -27,7 +26,7 @@ export class CreateCalendarEvent extends ScopedRegistryHost(MobxLitElement) {
 
   /** Dependencies */
 
-  @requestContext(CALENDAR_EVENTS_SERVICE_CONTEXT)
+  @contextProvided({ context: calendarEventsServiceContext })
   _calendarEventsService!: CalendarEventsService;
 
   /** Private properties */
@@ -103,8 +102,10 @@ export class CreateCalendarEvent extends ScopedRegistryHost(MobxLitElement) {
     return sharedStyles;
   }
 
-  static elementDefinitions = {
-    'mwc-textfield': TextField,
-    'mwc-button': Button,
-  };
+  static get scopedElements() {
+    return {
+      'mwc-textfield': TextField,
+      'mwc-button': Button,
+    };
+  }
 }

@@ -1,6 +1,5 @@
-import { AppWebsocket, CellId } from '@holochain/client';
-import { HoloHashed } from '@holochain-open-dev/core-types';
-import { CalendarEvent } from './types';
+import { Element } from '@holochain-open-dev/core-types';
+import { AppWebsocket, CellId, HeaderHash } from '@holochain/client';
 
 export class CalendarEventsService {
   constructor(
@@ -9,15 +8,8 @@ export class CalendarEventsService {
     protected zomeName = 'calendar_events'
   ) {}
 
-  async getAllCalendarEvents(): Promise<Array<HoloHashed<CalendarEvent>>> {
-    const events = await this.callZome('get_my_calendar_events', null);
-
-    return events.map(
-      ({ entryHash, entry }: { entryHash: string; entry: any }) => ({
-        hash: entryHash,
-        content: entry,
-      })
-    );
+  async getAllCalendarEvents(): Promise<Element[]> {
+    return this.callZome('get_all_calendar_events', null);
   }
 
   async createCalendarEvent({
@@ -32,37 +24,24 @@ export class CalendarEventsService {
     endTime: number;
     location?: string;
     invitees: string[];
-  }): Promise<HoloHashed<CalendarEvent>> {
-    const { entryHash, entry } = await this.callZome('create_calendar_event', {
+  }): Promise<HeaderHash> {
+    return this.callZome('create_calendar_event', {
       title,
       startTime,
       endTime,
       location,
       invitees,
     });
-
-    return {
-      hash: entryHash,
-      content: entry,
-    };
   }
 
   async getCalendarEvent(
-    calendarEventHash: string
-  ): Promise<HoloHashed<CalendarEvent>> {
-    const calendarEvent = await this.callZome(
-      'get_calendar_event',
-      calendarEventHash
-    );
-
-    return {
-      hash: calendarEventHash,
-      content: calendarEvent,
-    };
+    calendarEventHash: HeaderHash
+  ): Promise<Element | undefined> {
+    return this.callZome('get_calendar_event', calendarEventHash);
   }
   async callZome(fn_name: string, payload: any) {
     return this.appWebsocket.callZome({
-      cap: null as any,
+      cap_secret: null as any,
       cell_id: this.cellId,
       zome_name: this.zomeName,
       fn_name: fn_name,

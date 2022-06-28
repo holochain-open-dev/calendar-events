@@ -1,5 +1,3 @@
-use std::collections::BTreeMap;
-
 use hdk::prelude::*;
 
 use hc_zome_calendar_events_integrity::{self, CalendarEvent};
