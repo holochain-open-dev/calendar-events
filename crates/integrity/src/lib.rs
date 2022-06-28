@@ -1,4 +1,4 @@
-use chrono::{serde::ts_milliseconds, DateTime, Utc};
+// use chrono::{serde::ts_milliseconds};
 use hdk::prelude::*;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -12,11 +12,8 @@ pub enum EventLocation {
 #[derive(Clone)]
 pub struct CalendarEvent {
     pub title: String,
-
-    #[serde(with = "ts_milliseconds")]
-    pub start_time: DateTime<Utc>,
-    #[serde(with = "ts_milliseconds")]
-    pub end_time: DateTime<Utc>,
+    pub start_time: Timestamp,
+    pub end_time: Timestamp,
 
     pub location: Option<EventLocation>,
     pub invitees: Vec<AgentPubKey>,
