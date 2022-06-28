@@ -1,6 +1,6 @@
 [workspace]
 members = [
-  "zome/zomes/calendar_events",
+  "crates/*",
 ]
 
 [profile.dev]

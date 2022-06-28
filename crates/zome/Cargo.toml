@@ -1,0 +1,23 @@
+[package]
+authors = ["guillem.cordoba@gmail.com"]
+edition = "2018"
+name = "hc_zome_calendar_events"
+version = "0.0.1"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+name = "hc_zome_calendar_events"
+
+[dependencies]
+derive_more = "0"
+serde = "1"
+
+hdk = { version = "0.0.127", features = ["encoding"] }
+chrono = {version = "0.4", features = ["serde"]}
+hc_zome_calendar_events_integrity = {path="../integrity"}
+
+[dev-dependencies]
+futures = {version = "0.3.1", default-features = false}
+hdk = {version = "0.0.127", features = ["encoding", "test_utils"]}
+holochain = {version = "0.0.132", default-features = false, features = ["test_utils"]}
+tokio = {version = "1.3", features = ["full"]}

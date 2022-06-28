@@ -12,8 +12,8 @@ const globals = fromRollup(rollupGlobals);
 export default [
   replace({
     'process.env.NODE_ENV': '"production"',
-    'process.env.CONDUCTOR_URL': process.env.CONDUCTOR_URL
-      ? `"${process.env.CONDUCTOR_URL}"`
+    'process.env.HC_PORT': process.env.HC_PORT
+      ? `"${process.env.HC_PORT}"`
       : 'undefined',
   }),
   builtins(),
