@@ -1,30 +1,677 @@
 {
-  "version": "experimental",
-  "tags": [
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
     {
-      "name": "hod-calendar-event",
-      "path": "./src/bundle.ts",
-      "properties": [
+      "kind": "javascript-module",
+      "path": "src/calendar-events-service.ts",
+      "declarations": [
         {
-          "name": "calendarEventHash",
-          "description": "Calendar event hash to retrieve from the DNA",
-          "type": "string"
+          "kind": "class",
+          "description": "",
+          "name": "CalendarEventsService",
+          "members": [
+            {
+              "kind": "method",
+              "name": "getAllCalendarEvents",
+              "return": {
+                "type": {
+                  "text": "Promise<Element[]>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "createCalendarEvent",
+              "return": {
+                "type": {
+                  "text": "Promise<HeaderHash>"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "{\n    title,\n    startTime,\n    endTime,\n    location,\n    invitees,\n  }",
+                  "type": {
+                    "text": "{\n    title: string;\n    startTime: number;\n    endTime: number;\n    location?: string;\n    invitees: AgentPubKey[];\n  }"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getCalendarEvent",
+              "return": {
+                "type": {
+                  "text": "Promise<Element | undefined>"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "calendarEventHash",
+                  "type": {
+                    "text": "HeaderHash"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "callZome",
+              "parameters": [
+                {
+                  "name": "fn_name",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "payload",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CalendarEventsService",
+          "declaration": {
+            "name": "CalendarEventsService",
+            "module": "src/calendar-events-service.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/context.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "calendarEventsServiceContext"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "calendarEventsServiceContext",
+          "declaration": {
+            "name": "calendarEventsServiceContext",
+            "module": "src/context.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./elements/create-calendar-event"
+          }
         },
         {
-          "name": "calendarEventsService",
-          "type": "CalendarEventsService"
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./elements/all-events-calendar"
+          }
         },
         {
-          "name": "cellId",
-          "type": "CellId | undefined"
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./elements/calendar-events-context"
+          }
         },
         {
-          "name": "appWebsocket",
-          "type": "AppWebsocket | undefined"
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./elements/calendar-event-detail"
+          }
         },
         {
-          "name": "adminWebsocket",
-          "type": "AdminWebsocket | undefined"
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./calendar-events-service"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./context"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./types"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./elements/sharedStyles"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/types.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/utils.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "extractCalendarEvent",
+          "return": {
+            "type": {
+              "text": "CalendarEvent"
+            }
+          },
+          "parameters": [
+            {
+              "name": "element",
+              "type": {
+                "text": "Element"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "eventToEventCalendar",
+          "return": {
+            "type": {
+              "text": "Event"
+            }
+          },
+          "parameters": [
+            {
+              "name": "calendarEventElement",
+              "type": {
+                "text": "Element"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "extractCalendarEvent",
+          "declaration": {
+            "name": "extractCalendarEvent",
+            "module": "src/utils.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "eventToEventCalendar",
+          "declaration": {
+            "name": "eventToEventCalendar",
+            "module": "src/utils.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/elements/all-events-calendar.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "AllEventsCalendar",
+          "cssParts": [
+            {
+              "description": "Style the calendar",
+              "name": "calendar"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "initialView",
+              "type": {
+                "text": "'dayGridMonth' | 'timeGridWeek' | 'timeGridDay'"
+              },
+              "default": "'timeGridWeek'",
+              "description": "Initial calendar view (for reference visit https://fullcalendar.io/docs/plugin-index)",
+              "attribute": "initial-view"
+            },
+            {
+              "kind": "field",
+              "name": "_calendarEventsService",
+              "type": {
+                "text": "CalendarEventsService"
+              },
+              "description": "Dependencies"
+            },
+            {
+              "kind": "field",
+              "name": "_loading",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Private properties"
+            },
+            {
+              "kind": "field",
+              "name": "_allCalendarEvents",
+              "type": {
+                "text": "Array<Event> | undefined"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "_createEventMenu",
+              "type": {
+                "text": "MenuSurface"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_createEvent",
+              "type": {
+                "text": "CreateCalendarEvent"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "loadCalendarEvents"
+            },
+            {
+              "kind": "method",
+              "name": "openCreateEventMenu",
+              "parameters": [
+                {
+                  "name": "info",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderCreateEventCard"
+            },
+            {
+              "kind": "field",
+              "name": "scopedElements",
+              "static": true
+            }
+          ],
+          "events": [
+            {
+              "description": "Fired after actually creating the event, containing the new CalendarEvent",
+              "name": "event-created"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "initial-view",
+              "type": {
+                "text": "'dayGridMonth' | 'timeGridWeek' | 'timeGridDay'"
+              },
+              "default": "'timeGridWeek'",
+              "description": "Initial calendar view (for reference visit https://fullcalendar.io/docs/plugin-index)",
+              "fieldName": "initialView",
+              "attribute": "initial-view"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "ScopedElementsMixin",
+              "package": "@open-wc/scoped-elements"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AllEventsCalendar",
+          "declaration": {
+            "name": "AllEventsCalendar",
+            "module": "src/elements/all-events-calendar.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/elements/calendar-event-detail.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "CalendarEventDetail",
+          "members": [
+            {
+              "kind": "field",
+              "name": "calendarEventHash",
+              "type": {
+                "text": "String"
+              },
+              "description": "Calendar event hash to retrieve from the DNA"
+            },
+            {
+              "kind": "field",
+              "name": "_calendarEventsService",
+              "type": {
+                "text": "CalendarEventsService"
+              },
+              "description": "Dependencies"
+            },
+            {
+              "kind": "field",
+              "name": "_calendarEvent",
+              "type": {
+                "text": "Element | undefined"
+              },
+              "default": "undefined",
+              "description": "Private properties",
+              "attribute": "_calendarEvent"
+            },
+            {
+              "kind": "method",
+              "name": "loadEvent"
+            },
+            {
+              "kind": "field",
+              "name": "scopedElements",
+              "static": true
+            }
+          ],
+          "attributes": [
+            {
+              "name": "_calendarEvent",
+              "type": {
+                "text": "Element | undefined"
+              },
+              "default": "undefined",
+              "description": "Private properties",
+              "resolveInitializer": {
+                "module": "src/elements/calendar-event-detail.ts"
+              },
+              "fieldName": "_calendarEvent"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "ScopedElementsMixin",
+              "package": "@open-wc/scoped-elements"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CalendarEventDetail",
+          "declaration": {
+            "name": "CalendarEventDetail",
+            "module": "src/elements/calendar-event-detail.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/elements/calendar-events-context.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "CalendarEventsContext",
+          "members": [
+            {
+              "kind": "field",
+              "name": "service",
+              "type": {
+                "text": "CalendarEventsService"
+              },
+              "attribute": "service"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "service",
+              "type": {
+                "text": "CalendarEventsService"
+              },
+              "fieldName": "service"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CalendarEventsContext",
+          "declaration": {
+            "name": "CalendarEventsContext",
+            "module": "src/elements/calendar-events-context.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/elements/create-calendar-event.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "CreateCalendarEvent",
+          "cssParts": [
+            {
+              "description": "Style the event title textfield",
+              "name": "event-title"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "initialEventProperties",
+              "type": {
+                "text": "Partial<CalendarEvent>"
+              },
+              "default": "undefined",
+              "description": "Initial calendar event parameters with which to populate the form"
+            },
+            {
+              "kind": "field",
+              "name": "_calendarEventsService",
+              "type": {
+                "text": "CalendarEventsService"
+              },
+              "description": "Dependencies"
+            },
+            {
+              "kind": "field",
+              "name": "_titleField",
+              "type": {
+                "text": "TextField"
+              },
+              "description": "Private properties"
+            },
+            {
+              "kind": "method",
+              "name": "createEvent"
+            },
+            {
+              "kind": "method",
+              "name": "clear",
+              "privacy": "public",
+              "description": "Clears all previously filled values of the form"
+            },
+            {
+              "kind": "field",
+              "name": "scopedElements",
+              "static": true
+            }
+          ],
+          "events": [
+            {
+              "name": "event-created",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired after actually creating the event, containing the new CalendarEvent"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "ScopedElementsMixin",
+              "package": "@open-wc/scoped-elements"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CreateCalendarEvent",
+          "declaration": {
+            "name": "CreateCalendarEvent",
+            "module": "src/elements/create-calendar-event.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/elements/sharedStyles.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "sharedStyles",
+          "default": "css`\n  .column {\n    display: flex;\n    flex-direction: column;\n  }\n  .row {\n    display: flex;\n    flex-direction: row;\n  }\n  .flex-scrollable-parent {\n    position: relative;\n    display: flex;\n    flex: 1;\n  }\n\n  .flex-scrollable-container {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n\n  .flex-scrollable-x {\n    max-width: 100%;\n    overflow-x: auto;\n  }\n  .flex-scrollable-y {\n    max-height: 100%;\n    overflow-y: auto;\n  }\n`"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "sharedStyles",
+          "declaration": {
+            "name": "sharedStyles",
+            "module": "src/elements/sharedStyles.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "test/mocks/calendar-events.mock.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "CalendarEventsMock",
+          "members": [
+            {
+              "kind": "method",
+              "name": "create_calendar_event",
+              "parameters": [
+                {
+                  "name": "calendarInput"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "get_my_calendar_events"
+            },
+            {
+              "kind": "field",
+              "name": "calendarEvents",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CalendarEventsMock",
+          "declaration": {
+            "name": "CalendarEventsMock",
+            "module": "test/mocks/calendar-events.mock.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "test/mocks/index.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "getAppWebsocket"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "getAppWebsocket",
+          "declaration": {
+            "name": "getAppWebsocket",
+            "module": "test/mocks/index.js"
+          }
         }
       ]
     }
