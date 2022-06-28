@@ -27,7 +27,7 @@ pub fn create_calendar_event(calendar_event: CalendarEvent) -> ExternResult<Head
 }
 
 #[hdk_extern]
-pub fn get_all_calendar_events(_: ()) -> ExternResult<BTreeMap<HeaderHash, CalendarEvent>> {
+pub fn get_all_calendar_events(_: ()) -> ExternResult<Vec<Element>> {
     let path = calendar_events_path();
 
     let links = get_links(path.path_entry_hash()?, None)?;
@@ -39,20 +39,14 @@ pub fn get_all_calendar_events(_: ()) -> ExternResult<BTreeMap<HeaderHash, Calen
 
     let maybe_elements = HDK.with(|hdk| hdk.borrow().get(get_input))?;
 
-    let mut all_calendar_events: BTreeMap<HeaderHash, CalendarEvent> = BTreeMap::new();
+    let elements: Vec<Element> = maybe_elements.into_iter().filter_map(|el| el).collect();
 
-    for maybe_el in maybe_elements {
-        if let Some(el) = maybe_el {
-            let calendar_event: CalendarEvent = el
-                .entry()
-                .to_app_option()?
-                .ok_or(WasmError::Guest("Could not get calendar event".into()))?;
+    Ok(elements)
+}
 
-            all_calendar_events.insert(el.header_address().clone(), calendar_event);
-        }
-    }
-
-    Ok(all_calendar_events)
+#[hdk_extern]
+pub fn get_calendar_event(header_hash: HeaderHash) -> ExternResult<Option<Element>> {
+    get(header_hash, GetOptions::default())
 }
 
 /** Private helpers **/
