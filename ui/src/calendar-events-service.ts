@@ -1,5 +1,10 @@
 import { Element } from '@holochain-open-dev/core-types';
-import { AppWebsocket, CellId, HeaderHash } from '@holochain/client';
+import {
+  AgentPubKey,
+  AppWebsocket,
+  CellId,
+  HeaderHash,
+} from '@holochain/client';
 
 export class CalendarEventsService {
   constructor(
@@ -23,7 +28,7 @@ export class CalendarEventsService {
     startTime: number;
     endTime: number;
     location?: string;
-    invitees: string[];
+    invitees: AgentPubKey[];
   }): Promise<HeaderHash> {
     return this.callZome('create_calendar_event', {
       title,

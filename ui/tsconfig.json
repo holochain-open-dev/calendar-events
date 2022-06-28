@@ -14,7 +14,8 @@
     "declaration": true,
     "outDir": "dist",
     "inlineSources": true,
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "useDefineForClassFields": false
   },
   "include": ["src/**/*.ts"]
 }

@@ -1,27 +1,27 @@
 import { html, css, LitElement } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
-import { createRef, Ref, ref } from 'lit/directives/ref.js';
 
 import { ScopedElementsMixin } from '@open-wc/scoped-elements';
 
 import { contextProvided } from '@lit-labs/context';
-import { Element } from '@holochain-open-dev/core-types';
 
 import { LinearProgress, MenuSurface } from '@scoped-elements/material-web';
+import {
+  Event,
+  EventCalendar as OGEventCalendar,
+} from '@scoped-elements/event-calendar';
 
-import { CalendarEvent } from '../types';
 import { eventToEventCalendar } from '../utils';
 import { CreateCalendarEvent } from './create-calendar-event';
 import { CalendarEventsService } from '../calendar-events-service';
 import { sharedStyles } from './sharedStyles';
 import { calendarEventsServiceContext } from '../context';
-import { Event } from '@scoped-elements/event-calendar';
 
 /**
  * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
  * @csspart calendar - Style the calendar
  */
-export class EventCalendar extends ScopedElementsMixin(LitElement) {
+export class AllEventsCalendar extends ScopedElementsMixin(LitElement) {
   /** Public attributes */
 
   /**
@@ -42,8 +42,6 @@ export class EventCalendar extends ScopedElementsMixin(LitElement) {
   @state() _loading = true;
   @state() _allCalendarEvents: Array<Event> | undefined = undefined;
 
-  _calendarEl: Ref<HTMLElement> = createRef();
-
   @query('#create-event-menu')
   _createEventMenu!: MenuSurface;
 
@@ -55,7 +53,7 @@ export class EventCalendar extends ScopedElementsMixin(LitElement) {
     this._allCalendarEvents = (
       await this._calendarEventsService.getAllCalendarEvents()
     ).map(eventToEventCalendar);
-
+    console.log(await this._calendarEventsService.getAllCalendarEvents());
     this._loading = false;
   }
 
@@ -125,7 +123,7 @@ export class EventCalendar extends ScopedElementsMixin(LitElement) {
 
   static get scopedElements() {
     return {
-      'event-calendar': EventCalendar,
+      'event-calendar': OGEventCalendar,
       'mwc-menu-surface': MenuSurface,
       'mwc-linear-progress': LinearProgress,
       'create-calendar-event': CreateCalendarEvent,

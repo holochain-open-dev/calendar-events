@@ -14,38 +14,34 @@
     />
   </head>
   <body>
-    <context-provider id="provider">
-      <my-calendar></my-calendar>
-    </context-provider>
+    <calendar-events-context id="provider">
+      <all-events-calendar></all-events-calendar>
+    </calendar-events-context>
 
     <script type="module">
       import {
-        MyCalendar,
+        AllEventsCalendar,
+        CalendarEventsContext,
         CalendarEventsService,
-        CALENDAR_EVENTS_SERVICE_CONTEXT,
       } from '../dist';
-      import ConductorApi from '@holochain/client';
-      import { ContextProviderElement } from '@holochain-open-dev/context';
+      import { AppWebsocket } from '@holochain/client';
 
       (async function () {
-        const appWebsocket = await ConductorApi.AppWebsocket.connect(
-          'ws://localhost:8888'
-        );
+        const appWebsocket = await AppWebsocket.connect(`ws://localhost:${process.env.HC_PORT}`);
         const appInfo = await appWebsocket.appInfo({
-          installed_app_id: 'test-app',
+          installed_app_id: 'calendar_events',
         });
 
         const cellId = appInfo.cell_data[0].cell_id;
 
         const service = new CalendarEventsService(appWebsocket, cellId);
 
-        customElements.define('context-provider', ContextProviderElement);
+        customElements.define('calendar-events-context', CalendarEventsContext);
 
         const provider = document.getElementById('provider');
-        provider.name = CALENDAR_EVENTS_SERVICE_CONTEXT;
-        provider.value = service;
+        provider.service = service;
 
-        customElements.define('my-calendar', MyCalendar);
+        customElements.define('all-events-calendar', AllEventsCalendar);
       })();
     </script>
   </body>

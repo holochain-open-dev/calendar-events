@@ -8,11 +8,11 @@ entry_defs![PathEntry::entry_def(), CalendarEvent::entry_def()];
 
 #[hdk_extern]
 pub fn create_calendar_event(calendar_event: CalendarEvent) -> ExternResult<HeaderHash> {
-    let header_hash = create_entry(&calendar_event)?;
 
     let path = calendar_events_path();
-
     path.ensure()?;
+
+    let header_hash = create_entry(&calendar_event)?;
 
     create_link(
         path.path_entry_hash()?,
