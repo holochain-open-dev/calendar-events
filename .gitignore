@@ -2,6 +2,7 @@ target/
 node_modules/
 dist/
 .cargo/
-.hc
+.hc*
 *.dna
 *.happ
+.running

@@ -1,38 +1,42 @@
-import { html } from 'lit';
+import { html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 
-import { requestContext } from '@holochain-open-dev/context';
-import { HoloHashed } from '@holochain-open-dev/core-types';
-import { ScopedRegistryHost } from '@lit-labs/scoped-registry-mixin';
-import { MobxLitElement } from '@adobe/lit-mobx';
+import { contextProvided } from '@lit-labs/context';
 
-import { CircularProgress } from 'scoped-material-components/mwc-circular-progress';
+import { ScopedElementsMixin } from '@open-wc/scoped-elements';
 
-import { CalendarEvent, CALENDAR_EVENTS_SERVICE_CONTEXT } from '../types';
+import { CircularProgress } from '@scoped-elements/material-web';
+
+import { CalendarEvent } from '../types';
 import { sharedStyles } from './sharedStyles';
-import { CalendarEventsService } from '../calendar-events.service';
+import { CalendarEventsService } from '../calendar-events-service';
+import { calendarEventsServiceContext } from '../context';
+import { Element, serializeHash } from '@holochain-open-dev/core-types';
+import { HeaderHash } from '@holochain/client';
+import { extractCalendarEvent } from '../utils';
+import { AgentAvatar } from '@holochain-open-dev/profiles';
 
 /**
  */
-export class CalendarEventDetail extends ScopedRegistryHost(MobxLitElement) {
+export class CalendarEventDetail extends ScopedElementsMixin(LitElement) {
   /** Public attributes */
 
   /**
    * Calendar event hash to retrieve from the DNA
    * @type String
    */
-  @property({ type: String, attribute: false })
-  calendarEventHash!: string;
+  @property({ type: Object, attribute: false })
+  calendarEventHash!: HeaderHash;
 
   /** Dependencies */
 
-  @requestContext(CALENDAR_EVENTS_SERVICE_CONTEXT)
+  @contextProvided({ context: calendarEventsServiceContext })
   _calendarEventsService!: CalendarEventsService;
 
   /** Private properties */
 
   @property({ type: Object })
-  _calendarEvent: HoloHashed<CalendarEvent> | undefined = undefined;
+  _calendarEvent: Element | undefined = undefined;
 
   firstUpdated() {
     this.loadEvent();
@@ -50,18 +54,25 @@ export class CalendarEventDetail extends ScopedRegistryHost(MobxLitElement) {
         indeterminate
       ></mwc-circular-progress>`;
 
+    const calendarEvent = extractCalendarEvent(this._calendarEvent);
+
     return html`
       <div class="column">
-        <span> ${this._calendarEvent.content.title} </span>
-        <span> Created By: ${this._calendarEvent.content.createdBy} </span>
+        <span> ${calendarEvent.title} </span>
+        <span>
+          Created By:
+          <agent-avatar
+            .agentPubKey=${serializeHash(
+              this._calendarEvent.signed_header.hashed.content.author
+            )}
+          ></agent-avatar
+        ></span>
 
         <span style="margin-top: 16px">
-          Start Time:
-          ${new Date(this._calendarEvent.content.startTime).toLocaleString()}
+          Start Time: ${new Date(calendarEvent.startTime).toLocaleString()}
         </span>
         <span style="margin-top: 8px">
-          End Time:
-          ${new Date(this._calendarEvent.content.endTime).toLocaleString()}
+          End Time: ${new Date(calendarEvent.endTime).toLocaleString()}
         </span>
       </div>
     `;
@@ -70,7 +81,10 @@ export class CalendarEventDetail extends ScopedRegistryHost(MobxLitElement) {
     return sharedStyles;
   }
 
-  static elementDefinitions = {
-    'mwc-circular-progress': CircularProgress,
-  };
+  static get scopedElements() {
+    return {
+      'mwc-circular-progress': CircularProgress,
+      'agent-avatar': AgentAvatar,
+    };
+  }
 }
