@@ -1,0 +1,7 @@
+---
+manifest_version: "1"
+name: calendar_events
+uid: 00000000-0000-0000-0000-000000000000
+zomes:
+  - name: calendar_events
+    bundled: ../target/wasm32-unknown-unknown/release/hc_zome_calendar_events.wasm

@@ -1,0 +1,15 @@
+---
+manifest_version: "1"
+name: calendar_events_applet
+description: ~
+roles:
+  - id: calendar_events
+    provisioning:
+      strategy: create
+      deferred: false
+    dna:
+      bundled: "./calendar_events.dna"
+      properties: ~
+      uuid: ~
+      version: ~
+      clone_limit: 100
