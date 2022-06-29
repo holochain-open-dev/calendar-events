@@ -57,10 +57,11 @@ export class CalendarEventsApplet extends ScopedElementsMixin(LitElement) {
       </div>`;
 
     // TODO: add any elements that you have in your applet
-    return html` <div class="flex-scrollable-parent">
+    return html`
+    <div class="flex-scrollable-parent">
       <div class="flex-scrollable-container">
         <div class="flex-scrollable-y">
-          <all-events-calendar></all-events-calendar>
+          <all-events-calendar style="padding: 30px;"></all-events-calendar>
         </div>
       </div>
     </div>`;
