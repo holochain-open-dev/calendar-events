@@ -14,7 +14,7 @@ import {
 import { eventToEventCalendar } from '../utils';
 import { CreateCalendarEvent } from './create-calendar-event';
 import { CalendarEventsService } from '../calendar-events-service';
-import { sharedStyles } from './sharedStyles';
+import { sharedStyles } from '../sharedStyles';
 import { calendarEventsServiceContext } from '../context';
 
 /**

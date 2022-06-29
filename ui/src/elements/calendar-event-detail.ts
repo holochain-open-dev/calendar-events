@@ -8,7 +8,7 @@ import { ScopedElementsMixin } from '@open-wc/scoped-elements';
 import { CircularProgress } from '@scoped-elements/material-web';
 
 import { CalendarEvent } from '../types';
-import { sharedStyles } from './sharedStyles';
+import { sharedStyles } from '../sharedStyles';
 import { CalendarEventsService } from '../calendar-events-service';
 import { calendarEventsServiceContext } from '../context';
 import { Element, serializeHash } from '@holochain-open-dev/core-types';

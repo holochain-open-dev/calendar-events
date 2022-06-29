@@ -6,7 +6,7 @@ import { ScopedElementsMixin } from '@open-wc/scoped-elements';
 import { Button, TextField } from '@scoped-elements/material-web';
 
 import { CalendarEvent } from '../types';
-import { sharedStyles } from './sharedStyles';
+import { sharedStyles } from '../sharedStyles';
 import { CalendarEventsService } from '../calendar-events-service';
 import { calendarEventsServiceContext } from '../context';
 

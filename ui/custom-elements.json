@@ -172,7 +172,28 @@
           "name": "*",
           "declaration": {
             "name": "*",
-            "package": "./elements/sharedStyles"
+            "package": "./sharedStyles"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/sharedStyles.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "sharedStyles",
+          "default": "css`\n  .column {\n    display: flex;\n    flex-direction: column;\n  }\n  .row {\n    display: flex;\n    flex-direction: row;\n  }\n  .flex-scrollable-parent {\n    position: relative;\n    display: flex;\n    flex: 1;\n  }\n\n  .flex-scrollable-container {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n\n  .flex-scrollable-x {\n    max-width: 100%;\n    overflow-x: auto;\n  }\n  .flex-scrollable-y {\n    max-height: 100%;\n    overflow-y: auto;\n  }\n`"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "sharedStyles",
+          "declaration": {
+            "name": "sharedStyles",
+            "module": "src/sharedStyles.ts"
           }
         }
       ]
@@ -237,6 +258,70 @@
           "declaration": {
             "name": "eventToEventCalendar",
             "module": "src/utils.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "test/mocks/calendar-events.mock.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "CalendarEventsMock",
+          "members": [
+            {
+              "kind": "method",
+              "name": "create_calendar_event",
+              "parameters": [
+                {
+                  "name": "calendarInput"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "get_my_calendar_events"
+            },
+            {
+              "kind": "field",
+              "name": "calendarEvents",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CalendarEventsMock",
+          "declaration": {
+            "name": "CalendarEventsMock",
+            "module": "test/mocks/calendar-events.mock.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "test/mocks/index.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "getAppWebsocket"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "getAppWebsocket",
+          "declaration": {
+            "name": "getAppWebsocket",
+            "module": "test/mocks/index.js"
           }
         }
       ]
@@ -586,91 +671,6 @@
           "declaration": {
             "name": "CreateCalendarEvent",
             "module": "src/elements/create-calendar-event.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/elements/sharedStyles.ts",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "sharedStyles",
-          "default": "css`\n  .column {\n    display: flex;\n    flex-direction: column;\n  }\n  .row {\n    display: flex;\n    flex-direction: row;\n  }\n  .flex-scrollable-parent {\n    position: relative;\n    display: flex;\n    flex: 1;\n  }\n\n  .flex-scrollable-container {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n\n  .flex-scrollable-x {\n    max-width: 100%;\n    overflow-x: auto;\n  }\n  .flex-scrollable-y {\n    max-height: 100%;\n    overflow-y: auto;\n  }\n`"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "sharedStyles",
-          "declaration": {
-            "name": "sharedStyles",
-            "module": "src/elements/sharedStyles.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "test/mocks/calendar-events.mock.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "CalendarEventsMock",
-          "members": [
-            {
-              "kind": "method",
-              "name": "create_calendar_event",
-              "parameters": [
-                {
-                  "name": "calendarInput"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "get_my_calendar_events"
-            },
-            {
-              "kind": "field",
-              "name": "calendarEvents",
-              "type": {
-                "text": "array"
-              },
-              "default": "[]"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "CalendarEventsMock",
-          "declaration": {
-            "name": "CalendarEventsMock",
-            "module": "test/mocks/calendar-events.mock.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "test/mocks/index.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "getAppWebsocket"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "getAppWebsocket",
-          "declaration": {
-            "name": "getAppWebsocket",
-            "module": "test/mocks/index.js"
           }
         }
       ]

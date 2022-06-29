@@ -5,4 +5,4 @@ export * from './elements/calendar-event-detail';
 export * from './calendar-events-service';
 export * from './context';
 export * from './types';
-export * from './elements/sharedStyles';
+export * from './sharedStyles';
