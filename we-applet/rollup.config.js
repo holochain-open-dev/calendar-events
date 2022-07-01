@@ -1,12 +1,13 @@
 import nodeResolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import replace from "@rollup/plugin-replace";
-import builtins from "rollup-plugin-node-builtins";
-import globals from "rollup-plugin-node-globals";
+// import builtins from "rollup-plugin-node-builtins";
+// import globals from "rollup-plugin-node-globals";
 
 import babel from "@rollup/plugin-babel";
 import { importMetaAssets } from "@web/rollup-plugin-import-meta-assets";
 import { terser } from "rollup-plugin-terser";
+import { copy } from "rollup-plugin-copy";
 
 export default {
   input: "out-tsc/index.js",
@@ -28,6 +29,9 @@ export default {
     }),
     replace({
       "process.env.NODE_ENV": '"production"',
+    }),
+    copy({
+      targets: [{ src: "icon.png", dest: "dist" }],
     }),
     commonjs({}),
     /** Minify JS */
