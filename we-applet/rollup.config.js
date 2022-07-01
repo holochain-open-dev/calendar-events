@@ -7,7 +7,7 @@ import replace from "@rollup/plugin-replace";
 import babel from "@rollup/plugin-babel";
 import { importMetaAssets } from "@web/rollup-plugin-import-meta-assets";
 import { terser } from "rollup-plugin-terser";
-import { copy } from "rollup-plugin-copy";
+import copy from "rollup-plugin-copy";
 
 export default {
   input: "out-tsc/index.js",
