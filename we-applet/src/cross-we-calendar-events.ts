@@ -1,9 +1,5 @@
 import { ContextProvider } from "@lit-labs/context";
 import { property, state } from "lit/decorators.js";
-import {
-  ProfilesStore,
-  profilesStoreContext,
-} from "@holochain-open-dev/profiles";
 import { InstalledAppInfo, AppWebsocket } from "@holochain/client";
 import { ScopedElementsMixin } from "@open-wc/scoped-elements";
 import { CircularProgress } from "@scoped-elements/material-web";
@@ -15,28 +11,29 @@ import {
 } from "@calendar-events/elements";
 import { sharedStyles } from "@calendar-events/elements";
 
-export class CalendarEventsApplet extends ScopedElementsMixin(LitElement) {
+// to be removed once implemented in @lightningrodlabs/we-applet
+import { InstalledAppletInfo } from ".";
+
+export class CrossWeCalendarEvents extends ScopedElementsMixin(LitElement) {
   @property()
   appWebsocket!: AppWebsocket;
 
   @property()
-  profilesStore!: ProfilesStore;
-
-  @property()
-  appletAppInfo!: InstalledAppInfo;
+  appletsInfo!: InstalledAppletInfo[];
 
   @state()
   loaded = false;
 
   async firstUpdated() {
-    new ContextProvider(this, profilesStoreContext, this.profilesStore);
+
+    const cellsIds = this.appletsInfo.map((info) => info.installedAppInfo.cell_data[0].cell_id);
 
     new ContextProvider(
       this,
       calendarEventsServiceContext,
       new CalendarEventsService(
         this.appWebsocket,
-        [this.appletAppInfo.cell_data[0].cell_id]
+        cellsIds,
       )
     );
 

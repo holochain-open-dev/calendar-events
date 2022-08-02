@@ -60,7 +60,7 @@ async function setupCalendarEvents() {
   });
   const cellId = appInfo.cell_data[0].cell_id;
 
-  const service = new CalendarEventsService(appWebsocket, cellId);
+  const service = new CalendarEventsService(appWebsocket, [cellId]);
 
   customElements.define("context-provider", ContextProviderElement);
 
