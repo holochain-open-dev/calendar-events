@@ -1,19 +1,19 @@
-import { Element } from '@holochain-open-dev/core-types';
+import { Record } from '@holochain/client';
 import {
   AgentPubKey,
   AppWebsocket,
   CellId,
-  HeaderHash,
+  ActionHash,
 } from '@holochain/client';
 
 export class CalendarEventsService {
   constructor(
     protected appWebsocket: AppWebsocket,
     protected cellId: CellId,
-    protected zomeName = 'calendar_events'
+    protected zomeName = 'calendar_events_coordinator'
   ) {}
 
-  async getAllCalendarEvents(): Promise<Element[]> {
+  async getAllCalendarEvents(): Promise<Record[]> {
     return this.callZome('get_all_calendar_events', null);
   }
 
@@ -29,7 +29,7 @@ export class CalendarEventsService {
     endTime: number;
     location?: string;
     invitees: AgentPubKey[];
-  }): Promise<HeaderHash> {
+  }): Promise<ActionHash> {
     return this.callZome('create_calendar_event', {
       title,
       startTime,
@@ -40,8 +40,8 @@ export class CalendarEventsService {
   }
 
   async getCalendarEvent(
-    calendarEventHash: HeaderHash
-  ): Promise<Element | undefined> {
+    calendarEventHash: ActionHash
+  ): Promise<Record | undefined> {
     return this.callZome('get_calendar_event', calendarEventHash);
   }
   async callZome(fn_name: string, payload: any) {

@@ -1,5 +1,20 @@
 // use chrono::{serde::ts_milliseconds};
-use hdk::prelude::*;
+use hdi::prelude::*;
+
+
+
+#[hdk_entry_defs]
+#[unit_enum(UnitEntryTypes)]
+pub enum EntryTypes {
+	CalendarEvent(CalendarEvent),
+}
+
+#[hdk_link_types]
+pub enum LinkTypes {
+    CalendarEventsPath,
+    PathToCalendarEvent,
+}
+
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum EventLocation {
@@ -7,7 +22,7 @@ pub enum EventLocation {
     Custom(String),
 }
 
-#[hdk_entry(id = "calendar_event", visibility = "public")]
+#[hdk_entry_helper]
 #[serde(rename_all = "camelCase")]
 #[derive(Clone)]
 pub struct CalendarEvent {
