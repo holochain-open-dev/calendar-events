@@ -1,5 +1,5 @@
-import { Record } from '@holochain/client';
 import {
+  Record,
   AgentPubKey,
   AppWebsocket,
   CellId,
