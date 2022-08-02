@@ -2,13 +2,13 @@ import {
   AdminWebsocket,
   AppWebsocket,
   InstalledAppInfo,
-  InstalledAppletInfo,
+  // InstalledAppletInfo,
 } from "@holochain/client";
 import {
   WeApplet,
   AppletRenderers,
   WeServices,
-  WeInfo,
+  // WeInfo,
 } from "@lightningrodlabs/we-applet";
 
 import { CalendarEventsApplet } from "./calendar-events-applet";
@@ -55,10 +55,9 @@ const calendarEventsApplet: WeApplet = {
           render: (element: HTMLElement, registry: CustomElementRegistry) => {
             registry.define("cross-we-calendar-events", CrossWeCalendarEvents);
             element.innerHTML = `<cross-we-calendar-events style="flex: 1; display: flex;"></cross-we-calendar-events>`;
-            let appletElement = element.querySelector("calendar-events-applet") as any;
+            let appletElement = element.querySelector("cross-we-calendar-events") as any;
 
             appletElement.appWebsocket =  appWebsocket;
-            appletElement.profilesStore = weServices.profilesStore;
             appletElement.appletAppInfo = appletAppInfo;
           }
         }

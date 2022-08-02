@@ -16,6 +16,7 @@
   "dependencies": {
     "@calendar-events/elements": "file:../ui",
     "@holochain-open-dev/profiles": "^0.4.3",
+    "@holochain-open-dev/utils": "^0.2.4",
     "@holochain/client": "^0.6.0",
     "@lightningrodlabs/we-applet": "^0.0.1",
     "@lit-labs/context": "^0.1.2",

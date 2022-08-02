@@ -6,3 +6,4 @@ export * from './calendar-events-service';
 export * from './context';
 export * from './types';
 export * from './sharedStyles';
+export * from './utils';

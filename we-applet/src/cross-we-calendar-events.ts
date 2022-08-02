@@ -1,15 +1,15 @@
 import { ContextProvider } from "@lit-labs/context";
 import { property, state } from "lit/decorators.js";
-import { InstalledAppInfo, AppWebsocket } from "@holochain/client";
+import { InstalledAppInfo, AppWebsocket, CellId } from "@holochain/client";
 import { ScopedElementsMixin } from "@open-wc/scoped-elements";
 import { CircularProgress } from "@scoped-elements/material-web";
 import { LitElement, html } from "lit";
 import {
-  AllEventsCalendar,
   CalendarEventsService,
   calendarEventsServiceContext,
+  sharedStyles,
 } from "@calendar-events/elements";
-import { sharedStyles } from "@calendar-events/elements";
+import { CrossCellEventsCalendar } from './elements/cross-cell-events-calendar';
 
 // to be removed once implemented in @lightningrodlabs/we-applet
 import { InstalledAppletInfo } from ".";
@@ -19,14 +19,23 @@ export class CrossWeCalendarEvents extends ScopedElementsMixin(LitElement) {
   appWebsocket!: AppWebsocket;
 
   @property()
-  appletsInfo!: InstalledAppletInfo[];
+  appletAppsInfo!: InstalledAppletInfo[];
 
   @state()
   loaded = false;
 
+  @state()
+  cellNames: [CellId, string][] = [];
+
   async firstUpdated() {
 
-    const cellsIds = this.appletsInfo.map((info) => info.installedAppInfo.cell_data[0].cell_id);
+    const cellsIds = this.appletAppsInfo.map((info) => info.installedAppInfo.cell_data[0].cell_id);
+    let cellNames: [CellId, string][] = [];
+    this.appletAppsInfo.forEach((info) => cellNames.push(
+      [info.installedAppInfo.cell_data[0].cell_id, info.weInfo.name]
+    ))
+
+    this.cellNames = cellNames;
 
     new ContextProvider(
       this,
@@ -58,7 +67,7 @@ export class CrossWeCalendarEvents extends ScopedElementsMixin(LitElement) {
     <div class="flex-scrollable-parent">
       <div class="flex-scrollable-container">
         <div class="flex-scrollable-y">
-          <all-events-calendar style="padding: 30px;"></all-events-calendar>
+          <cross-cell-events-calendar .cellNames=${this.cellNames} style="padding: 30px;"></cross-cell-events-calendar>
         </div>
       </div>
     </div>`;
@@ -67,7 +76,7 @@ export class CrossWeCalendarEvents extends ScopedElementsMixin(LitElement) {
   static get scopedElements() {
     return {
       "mwc-circular-progress": CircularProgress,
-      "all-events-calendar": AllEventsCalendar,
+      "cross-cell-events-calendar": CrossCellEventsCalendar,
       // TODO: add any elements that you have in your applet
     };
   }

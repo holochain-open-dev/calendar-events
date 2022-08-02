@@ -5,9 +5,9 @@ import {
   CellId,
   ActionHash,
 } from '@holochain/client';
+import { RecordInfo } from './types';
 
 export class CalendarEventsService {
-
   singleCellId: CellId | undefined;
 
   constructor(
@@ -18,13 +18,25 @@ export class CalendarEventsService {
     this.singleCellId = cellIds.length === 1 ? cellIds[0] : undefined;
   }
 
-  async getAllCalendarEvents(): Promise<Record[]> {
-    let records: Record[] = [];
-    await Promise.all(this.cellIds.map(async (cellId) => {
-      let cell_records = await this.callZome('get_all_calendar_events', null, cellId);
-      records = [...records, ...cell_records]
-    }))
-    return records;
+  async getAllCalendarEvents(): Promise<RecordInfo[]> {
+    let recordInfos: RecordInfo[] = [];
+    await Promise.all(
+      this.cellIds.map(async cellId => {
+        const cellRecords: Record[] = await this.callZome(
+          'get_all_calendar_events',
+          null,
+          cellId
+        );
+        const cellRecordInfos: RecordInfo[] = cellRecords.map((record) => {
+          return {
+            record,
+            provenance: cellId,
+          }
+        })
+        recordInfos = [...recordInfos, ...cellRecordInfos];
+      })
+    );
+    return recordInfos;
   }
 
   async createCalendarEvent({
@@ -41,27 +53,37 @@ export class CalendarEventsService {
     invitees: AgentPubKey[];
   }): Promise<ActionHash | void> {
     if (this.singleCellId) {
-      return this.callZome('create_calendar_event', {
-        title,
-        startTime,
-        endTime,
-        location,
-        invitees,
-      },
-      this.singleCellId);
+      return this.callZome(
+        'create_calendar_event',
+        {
+          title,
+          startTime,
+          endTime,
+          location,
+          invitees,
+        },
+        this.singleCellId
+      );
     } else {
-      console.error("createCalendarEvent can only be called if the CellId is unambiguous.")
+      console.error(
+        'createCalendarEvent can only be called if the CellId is unambiguous.'
+      );
     }
   }
 
   async getCalendarEvent(
-    calendarEventHash: ActionHash,
+    calendarEventHash: ActionHash
   ): Promise<Record | undefined> {
-
     if (this.singleCellId) {
-      return this.callZome('get_calendar_event', calendarEventHash, this.singleCellId);
+      return this.callZome(
+        'get_calendar_event',
+        calendarEventHash,
+        this.singleCellId
+      );
     } else {
-      console.error("getCalendarEvent can only be called if the CellId is unambiguous.")
+      console.error(
+        'getCalendarEvent can only be called if the CellId is unambiguous.'
+      );
     }
   }
   async callZome(fn_name: string, payload: any, cellId: CellId) {
