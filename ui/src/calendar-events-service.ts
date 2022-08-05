@@ -27,12 +27,12 @@ export class CalendarEventsService {
           null,
           cellId
         );
-        const cellRecordInfos: RecordInfo[] = cellRecords.map((record) => {
+        const cellRecordInfos: RecordInfo[] = cellRecords.map(record => {
           return {
             record,
             provenance: cellId,
-          }
-        })
+          };
+        });
         recordInfos = [...recordInfos, ...cellRecordInfos];
       })
     );
