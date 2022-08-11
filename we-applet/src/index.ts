@@ -58,7 +58,7 @@ const calendarEventsApplet: WeApplet = {
             let appletElement = element.querySelector("cross-we-calendar-events") as any;
 
             appletElement.appWebsocket =  appWebsocket;
-            appletElement.appletAppInfo = appletAppInfo;
+            appletElement.appletAppsInfo = appletAppInfo;
           }
         }
       ],

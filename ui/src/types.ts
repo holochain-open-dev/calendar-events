@@ -9,7 +9,6 @@ export interface CalendarEvent {
   location: string;
 }
 
-
 export interface ElementInfo {
   element: Element;
   provenance: CellId;

@@ -13,7 +13,7 @@ export class CalendarEventsService {
   constructor(
     protected appWebsocket: AppWebsocket,
     protected cellIds: CellId[],
-    protected zomeName = 'calendar_events_coordinator'
+    protected zomeName = 'calendar_events'
   ) {
     this.singleCellId = cellIds.length === 1 ? cellIds[0] : undefined;
   }
@@ -27,12 +27,14 @@ export class CalendarEventsService {
           null,
           cellId
         );
-        const cellRecordInfos: ElementInfo[] = cellRecords.map((element: Element) => {
-          return {
-            element,
-            provenance: cellId,
-          };
-        });
+        const cellRecordInfos: ElementInfo[] = cellRecords.map(
+          (element: Element) => {
+            return {
+              element,
+              provenance: cellId,
+            };
+          }
+        );
         recordInfos = [...recordInfos, ...cellRecordInfos];
       })
     );
