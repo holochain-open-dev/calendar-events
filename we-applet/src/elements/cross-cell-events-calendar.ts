@@ -11,17 +11,20 @@ import {
   EventCalendar as OGEventCalendar,
 } from '@scoped-elements/event-calendar';
 
+import {
+  CreateCalendarEvent,
+  CalendarEventsService,
+  sharedStyles,
+  calendarEventsServiceContext,
+} from "@calendar-events/elements";
+import { CellId } from '@holochain/client';
 import { eventToEventCalendar } from '../utils';
-import { CreateCalendarEvent } from './create-calendar-event';
-import { CalendarEventsService } from '../calendar-events-service';
-import { sharedStyles } from '../sharedStyles';
-import { calendarEventsServiceContext } from '../context';
 
 /**
- * @fires event-created - Fired after actually creating the event, containing the new CalendarEvent
+ * Only supports displaying of calendar events of multiple cells currently -- no editing of events
  * @csspart calendar - Style the calendar
  */
-export class AllEventsCalendar extends ScopedElementsMixin(LitElement) {
+export class CrossCellEventsCalendar extends ScopedElementsMixin(LitElement) {
   /** Public attributes */
 
   /**
@@ -42,63 +45,67 @@ export class AllEventsCalendar extends ScopedElementsMixin(LitElement) {
   @state() _loading = true;
   @state() _allCalendarEvents: Array<Event> | undefined = undefined;
 
-  @query('#create-event-menu')
-  _createEventMenu!: MenuSurface;
+  @property()
+  cellNames!: [CellId, string][];
 
-  @query('#create-calendar-event')
-  _createEvent!: CreateCalendarEvent;
+  // @query('#create-event-menu')
+  // _createEventMenu!: MenuSurface;
+
+  // @query('#create-calendar-event')
+  // _createEvent!: CreateCalendarEvent;
 
   async loadCalendarEvents() {
     this._loading = true;
     this._allCalendarEvents = (
       await this._calendarEventsService.getAllCalendarEvents()
-    ).map(elementInfo => eventToEventCalendar(elementInfo.element));
+    ).map((recordInfo) => {
+      const cellName = this.cellNames.filter(([cellId, cellName]) => cellId === recordInfo.provenance)[0][1]
+      const titlePrefix = cellName + " - ";
+      return eventToEventCalendar(recordInfo.element, titlePrefix);
+    });
     console.log(await this._calendarEventsService.getAllCalendarEvents());
     this._loading = false;
   }
 
-  openCreateEventMenu(info: any) {
-    this._createEventMenu.open = true;
+  // openCreateEventMenu(info: any) {
+  //   this._createEventMenu.open = true;
 
-    this._createEventMenu.anchor = info.dayEl;
+  //   this._createEventMenu.anchor = info.dayEl;
 
-    this._createEvent.clear();
-    this._createEvent.initialEventProperties = {
-      startTime: info.date.valueOf(),
-      endTime: info.date.valueOf() + 3600000,
-    };
-  }
+  //   this._createEvent.clear();
+  //   this._createEvent.initialEventProperties = {
+  //     startTime: info.date.valueOf(),
+  //     endTime: info.date.valueOf() + 3600000,
+  //   };
+  // }
 
   firstUpdated() {
     this.loadCalendarEvents();
   }
 
-  renderCreateEventCard() {
-    return html` <mwc-menu-surface
-      id="create-event-menu"
-      absolute
-      corner="TOP_END"
-    >
-      <div style="padding: 16px;">
-        <create-calendar-event
-          id="create-calendar-event"
-          @event-created=${(e: CustomEvent) => {
-            this._createEventMenu.open = false;
-            this.loadCalendarEvents();
-          }}
-        ></create-calendar-event>
-      </div>
-    </mwc-menu-surface>`;
-  }
+  // renderCreateEventCard() {
+  //   return html` <mwc-menu-surface
+  //     id="create-event-menu"
+  //     absolute
+  //     corner="TOP_END"
+  //   >
+  //     <div style="padding: 16px;">
+  //       <create-calendar-event
+  //         id="create-calendar-event"
+  //         @event-created=${(e: CustomEvent) => {
+  //           this._createEventMenu.open = false;
+  //           this.loadCalendarEvents();
+  //         }}
+  //       ></create-calendar-event>
+  //     </div>
+  //   </mwc-menu-surface>`;
+  // }
 
   render() {
     return html`
       <div class="column" style="position: relative; flex: 1;">
-        ${this.renderCreateEventCard()}
         <event-calendar
           .events=${this._allCalendarEvents ? this._allCalendarEvents : []}
-          @date-clicked=${(e: CustomEvent) =>
-            this.openCreateEventMenu(e.detail)}
         ></event-calendar>
         ${this._loading
           ? html`<mwc-linear-progress
