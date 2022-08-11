@@ -51,7 +51,7 @@ const calendarEventsApplet: WeApplet = {
       },
       blocks: [
         {
-          name: "applet-class-renderer",
+          name: "merge-eye-view",
           render: (element: HTMLElement, registry: CustomElementRegistry) => {
             registry.define("cross-we-calendar-events", CrossWeCalendarEvents);
             element.innerHTML = `<cross-we-calendar-events style="flex: 1; display: flex;"></cross-we-calendar-events>`;
