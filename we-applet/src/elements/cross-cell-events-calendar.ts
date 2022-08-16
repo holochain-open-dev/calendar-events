@@ -19,6 +19,7 @@ import {
 } from "@calendar-events/elements";
 import { CellId } from '@holochain/client';
 import { eventToEventCalendar } from '../utils';
+import { WeAppletCellInfo } from '../types';
 
 /**
  * Only supports displaying of calendar events of multiple cells currently -- no editing of events
@@ -46,7 +47,7 @@ export class CrossCellEventsCalendar extends ScopedElementsMixin(LitElement) {
   @state() _allCalendarEvents: Array<Event> | undefined = undefined;
 
   @property()
-  cellNames!: [CellId, string][];
+  cellInfos!: WeAppletCellInfo[];
 
   // @query('#create-event-menu')
   // _createEventMenu!: MenuSurface;
@@ -59,11 +60,11 @@ export class CrossCellEventsCalendar extends ScopedElementsMixin(LitElement) {
     this._allCalendarEvents = (
       await this._calendarEventsService.getAllCalendarEvents()
     ).map((recordInfo) => {
-      const cellName = this.cellNames.filter(([cellId, cellName]) => cellId === recordInfo.provenance)[0][1]
-      const titlePrefix = cellName + " - ";
-      return eventToEventCalendar(recordInfo.element, titlePrefix);
+      const cellWeGroupInfo = this.cellInfos.filter((cellInfo) => cellInfo.cellId === recordInfo.provenance)[0].weInfo;
+      return eventToEventCalendar(recordInfo.element, cellWeGroupInfo);
     });
-    console.log(await this._calendarEventsService.getAllCalendarEvents());
+    console.log("@calendar-events: ", await this._calendarEventsService.getAllCalendarEvents());
+    console.log("@calendar-events: this._allCalendarEvents: ", this._allCalendarEvents);
     this._loading = false;
   }
 

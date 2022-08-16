@@ -14,7 +14,7 @@ export function eventToEventCalendar(calendarEventElement: Element): Event {
     id: serializeHash(calendarEventElement.signed_header.hashed.hash),
     title: calendarEvent.title,
     allDay: false,
-    backgroundColor: 'blue',
+    backgroundColor: '#8bc6e5',
     extendedProps: {},
     resourceIds: [],
     display: 'auto',

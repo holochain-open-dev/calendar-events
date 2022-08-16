@@ -7,3 +7,4 @@ dist/
 *.happ
 *.webhapp
 .running
+*dist.zip

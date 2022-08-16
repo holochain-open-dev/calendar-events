@@ -17,7 +17,7 @@ import { CrossWeCalendarEvents } from "./cross-we-calendar-events";
 
 // +++++++++++ to be removed if implemented in @lightningrodlabs/we-applet
 export interface WeInfo {
-  logo_src: string;
+  logoSrc: string;
   name: string;
 }
 export interface InstalledAppletInfo {

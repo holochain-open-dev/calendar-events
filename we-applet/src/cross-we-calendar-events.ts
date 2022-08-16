@@ -13,6 +13,8 @@ import { CrossCellEventsCalendar } from './elements/cross-cell-events-calendar';
 
 // to be removed once implemented in @lightningrodlabs/we-applet
 import { InstalledAppletInfo } from ".";
+import { WeAppletCellInfo } from "./types";
+
 
 export class CrossWeCalendarEvents extends ScopedElementsMixin(LitElement) {
   @property()
@@ -25,17 +27,20 @@ export class CrossWeCalendarEvents extends ScopedElementsMixin(LitElement) {
   loaded = false;
 
   @state()
-  cellNames: [CellId, string][] = [];
+  cellInfos: WeAppletCellInfo[] = [];
 
   async firstUpdated() {
 
     const cellsIds = this.appletAppsInfo.map((info) => info.installedAppInfo.cell_data[0].cell_id);
-    let cellNames: [CellId, string][] = [];
-    this.appletAppsInfo.forEach((info) => cellNames.push(
-      [info.installedAppInfo.cell_data[0].cell_id, info.weInfo.name]
-    ))
+    let cellInfos: WeAppletCellInfo[] = [];
+    this.appletAppsInfo.forEach((info) => cellInfos.push(
+      {
+        cellId: info.installedAppInfo.cell_data[0].cell_id,
+        weInfo: info.weInfo,
+      }
+    ));
 
-    this.cellNames = cellNames;
+    this.cellInfos = cellInfos;
 
     new ContextProvider(
       this,
@@ -67,7 +72,7 @@ export class CrossWeCalendarEvents extends ScopedElementsMixin(LitElement) {
     <div class="flex-scrollable-parent">
       <div class="flex-scrollable-container">
         <div class="flex-scrollable-y">
-          <cross-cell-events-calendar .cellNames=${this.cellNames} style="padding: 30px;"></cross-cell-events-calendar>
+          <cross-cell-events-calendar .cellInfos=${this.cellInfos} style="padding: 30px;"></cross-cell-events-calendar>
         </div>
       </div>
     </div>`;
