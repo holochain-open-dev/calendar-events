@@ -11,8 +11,9 @@ import { CalendarEvent } from '../types';
 import { sharedStyles } from '../sharedStyles';
 import { CalendarEventsService } from '../calendar-events-service';
 import { calendarEventsServiceContext } from '../context';
-import { Element, serializeHash } from '@holochain-open-dev/core-types';
-import { HeaderHash } from '@holochain/client';
+import { serializeHash } from '@holochain-open-dev/utils';
+import { Record } from '@holochain/client';
+import { ActionHash } from '@holochain/client';
 import { extractCalendarEvent } from '../utils';
 import { AgentAvatar } from '@holochain-open-dev/profiles';
 
@@ -26,7 +27,7 @@ export class CalendarEventDetail extends ScopedElementsMixin(LitElement) {
    * @type String
    */
   @property({ type: Object, attribute: false })
-  calendarEventHash!: HeaderHash;
+  calendarEventHash!: ActionHash;
 
   /** Dependencies */
 
@@ -36,7 +37,7 @@ export class CalendarEventDetail extends ScopedElementsMixin(LitElement) {
   /** Private properties */
 
   @property({ type: Object })
-  _calendarEvent: Element | undefined = undefined;
+  _calendarEvent: Record | undefined = undefined;
 
   firstUpdated() {
     this.loadEvent();
@@ -63,7 +64,7 @@ export class CalendarEventDetail extends ScopedElementsMixin(LitElement) {
           Created By:
           <agent-avatar
             .agentPubKey=${serializeHash(
-              this._calendarEvent.signed_header.hashed.content.author
+              this._calendarEvent.signed_action.hashed.content.author
             )}
           ></agent-avatar
         ></span>

@@ -1,4 +1,4 @@
-use hc_zome_calendar_events_integrity::*;
+use calendar_events_integrity::*;
 // use hc_zome_calendar_events::*;
 use hdk::prelude::holo_hash::*;
 use hdk::prelude::*;
@@ -14,7 +14,7 @@ async fn create_and_get_calendar_event() {
     // use prebuilt DNA file
     let dna_path = std::env::current_dir()
         .unwrap()
-        .join("../../workdir/calendar_events-test.dna");
+        .join("../../../workdir/calendar_events-test.dna");
     let dna = SweetDnaFile::from_bundle(&dna_path).await.unwrap();
 
     // Set up conductors
@@ -24,8 +24,8 @@ async fn create_and_get_calendar_event() {
 
     let ((alice,), (bobbo,)) = apps.into_tuples();
 
-    let alice_transactions = alice.zome("calendar_events");
-    // let bob_transactions = bobbo.zome("calendar_events");
+    let alice_transactions = alice.zome("calendar_events_coordinator");
+    // let bob_transactions = bobbo.zome("hc_zome_calendar_events_coordinator");
 
     println!("Alice {}", alice.agent_pubkey());
     println!("Bob {}", bobbo.agent_pubkey());
@@ -33,7 +33,7 @@ async fn create_and_get_calendar_event() {
     consistency_10s(&[&alice, &bobbo]).await;
 
     // Check that there are no calendar events initially
-    let all_calendar_events: Vec<Element> = conductors[0]
+    let all_calendar_events: Vec<Record> = conductors[0]
     .call(&alice_transactions, "get_all_calendar_events", ())
     .await;
     assert_eq!(all_calendar_events.len(), 0);
@@ -51,36 +51,36 @@ async fn create_and_get_calendar_event() {
 
     println!("calendar_event_input: {:?}\n", calendar_event_input);
 
-    let header_hash: HeaderHash = conductors[0]
+    let action_hash: ActionHash = conductors[0]
     .call(&alice_transactions, "create_calendar_event", calendar_event_input)
     .await;
 
-    println!("published calendar event with header hash {:?}\n", header_hash.clone());
+    println!("published calendar event with action hash {:?}\n", action_hash.clone());
 
     consistency_10s(&[&alice, &bobbo]).await;
 
-    let calendar_event_elements: Vec<Element> = conductors[0]
+    let calendar_event_elements: Vec<Record> = conductors[0]
     .call(&alice_transactions, "get_all_calendar_events", ())
     .await;
 
-    let response_header_hash: Option<HeaderHash> = match calendar_event_elements.clone().pop() {
-        Some(el) => Some(el.header_address().to_owned()),
+    let response_action_hash: Option<ActionHash> = match calendar_event_elements.clone().pop() {
+        Some(el) => Some(el.action_address().to_owned()),
         None => None
     };
 
-    println!("response_header_hash: {:?}\n", response_header_hash);
-    assert_eq!(response_header_hash, Some(header_hash.clone()));
+    println!("response_action_hash: {:?}\n", response_action_hash);
+    assert_eq!(response_action_hash, Some(action_hash.clone()));
 
 
-    let calendar_event_element: Element = conductors[0]
-    .call(&alice_transactions, "get_calendar_event", header_hash.clone())
+    let calendar_event_element: Record = conductors[0]
+    .call(&alice_transactions, "get_calendar_event", action_hash.clone())
     .await;
 
     // let calendar_event: CalendarEvent = calendar_event_element.entry().to_app_option().unwrap().unwrap();
-    let response_header_hash = calendar_event_element.header_address().to_owned();
+    let response_action_hash = calendar_event_element.action_address().to_owned();
 
     println!("calendar_event_element: {:?}\n", calendar_event_element);
-    assert_eq!(response_header_hash, header_hash);
+    assert_eq!(response_action_hash, action_hash);
 
 
 }

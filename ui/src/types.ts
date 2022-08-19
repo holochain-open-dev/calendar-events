@@ -1,4 +1,4 @@
-import { AgentPubKeyB64, Element } from '@holochain-open-dev/core-types';
+import { Record } from '@holochain/client';
 import { AgentPubKey, CellId } from '@holochain/client';
 
 export interface CalendarEvent {
@@ -9,7 +9,7 @@ export interface CalendarEvent {
   location: string;
 }
 
-export interface ElementInfo {
-  element: Element;
+export interface RecordInfo {
+  element: Record;
   provenance: CellId;
 }

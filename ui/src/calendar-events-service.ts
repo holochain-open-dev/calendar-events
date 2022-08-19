@@ -2,10 +2,10 @@ import {
   AgentPubKey,
   AppWebsocket,
   CellId,
-  HeaderHash,
+  ActionHash,
 } from '@holochain/client';
-import { Element } from '@holochain-open-dev/core-types';
-import { ElementInfo } from './types';
+import { Record } from '@holochain/client';
+import { RecordInfo } from './types';
 
 export class CalendarEventsService {
   singleCellId: CellId | undefined;
@@ -13,22 +13,22 @@ export class CalendarEventsService {
   constructor(
     protected appWebsocket: AppWebsocket,
     protected cellIds: CellId[],
-    protected zomeName = 'calendar_events'
+    protected zomeName = 'calendar_events_coordinator'
   ) {
     this.singleCellId = cellIds.length === 1 ? cellIds[0] : undefined;
   }
 
-  async getAllCalendarEvents(): Promise<ElementInfo[]> {
-    let recordInfos: ElementInfo[] = [];
+  async getAllCalendarEvents(): Promise<RecordInfo[]> {
+    let recordInfos: RecordInfo[] = [];
     await Promise.all(
       this.cellIds.map(async cellId => {
-        const cellRecords: Element[] = await this.callZome(
+        const cellRecords: Record[] = await this.callZome(
           'get_all_calendar_events',
           null,
           cellId
         );
-        const cellRecordInfos: ElementInfo[] = cellRecords.map(
-          (element: Element) => {
+        const cellRecordInfos: RecordInfo[] = cellRecords.map(
+          (element: Record) => {
             return {
               element,
               provenance: cellId,
@@ -53,7 +53,7 @@ export class CalendarEventsService {
     endTime: number;
     location?: string;
     invitees: AgentPubKey[];
-  }): Promise<HeaderHash | void> {
+  }): Promise<ActionHash | void> {
     if (this.singleCellId) {
       return this.callZome(
         'create_calendar_event',
@@ -74,8 +74,8 @@ export class CalendarEventsService {
   }
 
   async getCalendarEvent(
-    calendarEventHash: HeaderHash
-  ): Promise<Element | undefined> {
+    calendarEventHash: ActionHash
+  ): Promise<Record | undefined> {
     if (this.singleCellId) {
       return this.callZome(
         'get_calendar_event',

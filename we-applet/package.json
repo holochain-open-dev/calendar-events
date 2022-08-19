@@ -4,7 +4,7 @@
   "scripts": {
     "start": "npm run build:happ && cross-env HC_PORT=$(port) ADMIN_PORT=$(port) concurrently \"npm run start:happ\" \"npm run start:ui\"",
     "start:ui": "concurrently -k --names tsc,dev-server \"npm run build:watch\" \"wds --config ./web-dev-server.config.mjs\"",
-    "start:happ": "RUST_LOG=warn WASM_LOG=debug hc s -f=$ADMIN_PORT generate ./workdir/calendar-events-applet.happ --run=$HC_PORT -a calendar-events-applet network mdns",
+    "start:happ": "RUST_LOG=warn WASM_LOG=debug  echo \"pass\" | hc s --piped -f=$ADMIN_PORT generate ./workdir/calendar-events-applet.happ --run=$HC_PORT -a calendar-events-applet network mdns",
     "build": "rimraf dist && tsc && rollup --config rollup.config.js",
     "build:watch": "tsc -w --preserveWatchOutput",
     "package": "npm run build:happ && npm run package:ui && hc web-app pack ./workdir",
@@ -15,9 +15,9 @@
   },
   "dependencies": {
     "@calendar-events/elements": "file:../ui",
-    "@holochain-open-dev/profiles": "^0.3.4",
-    "@holochain/client": "^0.4.1",
-    "@lightningrodlabs/we-applet": "^0.0.1",
+    "@holochain-open-dev/profiles": "^0.5.0",
+    "@holochain/client": "^0.7.0",
+    "@lightningrodlabs/we-applet": "file:/home/matthias/code/holochain/lightningrodlabs/we-142/ui/libs/we-applet",
     "@lit-labs/context": "^0.1.2",
     "@open-wc/scoped-elements": "^2.0.1",
     "@scoped-elements/material-web": "^0.0.19",

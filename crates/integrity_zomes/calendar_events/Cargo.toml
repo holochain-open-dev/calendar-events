@@ -1,16 +1,16 @@
 [package]
 authors = ["guillem.cordoba@gmail.com"]
 edition = "2021"
-name = "hc_zome_calendar_events_integrity"
+name = "calendar_events_integrity"
 version = "0.0.1"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
-name = "hc_zome_calendar_events_integrity"
+name = "calendar_events_integrity"
 
 [dependencies]
 derive_more = "0"
 serde = "1"
 
-hdk = { version = "0.0.136" }
+hdi = "0.0.18"
 chrono = {version = "0.4", features = ["serde"]}
