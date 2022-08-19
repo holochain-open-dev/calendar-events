@@ -61,7 +61,7 @@ export class CrossCellEventsCalendar extends ScopedElementsMixin(LitElement) {
       await this._calendarEventsService.getAllCalendarEvents()
     ).map((recordInfo) => {
       const cellWeGroupInfo = this.cellInfos.filter((cellInfo) => cellInfo.cellId === recordInfo.provenance)[0].weInfo;
-      return eventToEventCalendar(recordInfo.element, cellWeGroupInfo);
+      return eventToEventCalendar(recordInfo.record, cellWeGroupInfo);
     });
     console.log("@calendar-events: ", await this._calendarEventsService.getAllCalendarEvents());
     console.log("@calendar-events: this._allCalendarEvents: ", this._allCalendarEvents);

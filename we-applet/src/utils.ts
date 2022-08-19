@@ -1,19 +1,20 @@
 import { CalendarEvent } from "@calendar-events/elements";
-import { Element, serializeHash } from '@holochain-open-dev/core-types';
+import { serializeHash } from '@holochain-open-dev/utils';
+import { Record } from "@holochain/client";
 import { decode } from '@msgpack/msgpack';
 import { Event } from '@scoped-elements/event-calendar';
 import { WeInfo } from ".";
 
 
-export function extractCalendarEvent(record: Element): CalendarEvent {
+export function extractCalendarEvent(record: Record): CalendarEvent {
   return decode((record.entry as any).Present.entry) as CalendarEvent;
 }
 
-export function eventToEventCalendar(calendarEventElement: Element, weGroupInfo?: WeInfo): Event {
-  const calendarEvent = extractCalendarEvent(calendarEventElement);
+export function eventToEventCalendar(calendarEventRecord: Record, weGroupInfo?: WeInfo): Event {
+  const calendarEvent = extractCalendarEvent(calendarEventRecord);
 
   return {
-    id: serializeHash(calendarEventElement.signed_header.hashed.hash),
+    id: serializeHash(calendarEventRecord.signed_action.hashed.hash),
     title: calendarEvent.title,
     allDay: false,
     backgroundColor: '#8bc6e5',

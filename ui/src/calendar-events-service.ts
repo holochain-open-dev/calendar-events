@@ -28,9 +28,9 @@ export class CalendarEventsService {
           cellId
         );
         const cellRecordInfos: RecordInfo[] = cellRecords.map(
-          (element: Record) => {
+          (record: Record) => {
             return {
-              element,
+              record,
               provenance: cellId,
             };
           }

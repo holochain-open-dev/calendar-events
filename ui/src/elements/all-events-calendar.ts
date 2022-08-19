@@ -52,7 +52,7 @@ export class AllEventsCalendar extends ScopedElementsMixin(LitElement) {
     this._loading = true;
     this._allCalendarEvents = (
       await this._calendarEventsService.getAllCalendarEvents()
-    ).map(elementInfo => eventToEventCalendar(elementInfo.element));
+    ).map(elementInfo => eventToEventCalendar(elementInfo.record));
     console.log(await this._calendarEventsService.getAllCalendarEvents());
     this._loading = false;
   }

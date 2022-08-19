@@ -23,7 +23,7 @@
               "name": "getAllCalendarEvents",
               "return": {
                 "type": {
-                  "text": "Promise<ElementInfo[]>"
+                  "text": "Promise<RecordInfo[]>"
                 }
               }
             },
@@ -32,7 +32,7 @@
               "name": "createCalendarEvent",
               "return": {
                 "type": {
-                  "text": "Promise<HeaderHash | void>"
+                  "text": "Promise<ActionHash | void>"
                 }
               },
               "parameters": [
@@ -49,14 +49,14 @@
               "name": "getCalendarEvent",
               "return": {
                 "type": {
-                  "text": "Promise<Element | undefined>"
+                  "text": "Promise<Record | undefined>"
                 }
               },
               "parameters": [
                 {
                   "name": "calendarEventHash",
                   "type": {
-                    "text": "HeaderHash"
+                    "text": "ActionHash"
                   }
                 }
               ]
@@ -231,9 +231,9 @@
           },
           "parameters": [
             {
-              "name": "element",
+              "name": "record",
               "type": {
-                "text": "Element"
+                "text": "Record"
               }
             }
           ]
@@ -248,9 +248,9 @@
           },
           "parameters": [
             {
-              "name": "calendarEventElement",
+              "name": "calendarEventRecord",
               "type": {
-                "text": "Element"
+                "text": "Record"
               }
             }
           ]
@@ -271,70 +271,6 @@
           "declaration": {
             "name": "eventToEventCalendar",
             "module": "src/utils.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "test/mocks/calendar-events.mock.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "CalendarEventsMock",
-          "members": [
-            {
-              "kind": "method",
-              "name": "create_calendar_event",
-              "parameters": [
-                {
-                  "name": "calendarInput"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "get_my_calendar_events"
-            },
-            {
-              "kind": "field",
-              "name": "calendarEvents",
-              "type": {
-                "text": "array"
-              },
-              "default": "[]"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "CalendarEventsMock",
-          "declaration": {
-            "name": "CalendarEventsMock",
-            "module": "test/mocks/calendar-events.mock.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "test/mocks/index.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "getAppWebsocket"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "getAppWebsocket",
-          "declaration": {
-            "name": "getAppWebsocket",
-            "module": "test/mocks/index.js"
           }
         }
       ]
@@ -500,7 +436,7 @@
               "kind": "field",
               "name": "_calendarEvent",
               "type": {
-                "text": "Element | undefined"
+                "text": "Record | undefined"
               },
               "default": "undefined",
               "description": "Private properties",
@@ -520,7 +456,7 @@
             {
               "name": "_calendarEvent",
               "type": {
-                "text": "Element | undefined"
+                "text": "Record | undefined"
               },
               "default": "undefined",
               "description": "Private properties",
@@ -684,6 +620,70 @@
           "declaration": {
             "name": "CreateCalendarEvent",
             "module": "src/elements/create-calendar-event.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "test/mocks/calendar-events.mock.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "CalendarEventsMock",
+          "members": [
+            {
+              "kind": "method",
+              "name": "create_calendar_event",
+              "parameters": [
+                {
+                  "name": "calendarInput"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "get_my_calendar_events"
+            },
+            {
+              "kind": "field",
+              "name": "calendarEvents",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CalendarEventsMock",
+          "declaration": {
+            "name": "CalendarEventsMock",
+            "module": "test/mocks/calendar-events.mock.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "test/mocks/index.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "getAppWebsocket"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "getAppWebsocket",
+          "declaration": {
+            "name": "getAppWebsocket",
+            "module": "test/mocks/index.js"
           }
         }
       ]

@@ -9,6 +9,6 @@ export interface CalendarEvent {
 }
 
 export interface RecordInfo {
-  element: Record;
+  record: Record;
   provenance: CellId;
 }
