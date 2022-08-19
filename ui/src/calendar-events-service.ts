@@ -3,8 +3,8 @@ import {
   AppWebsocket,
   CellId,
   ActionHash,
+  Record,
 } from '@holochain/client';
-import { Record } from '@holochain/client';
 import { RecordInfo } from './types';
 
 export class CalendarEventsService {

@@ -12,8 +12,7 @@ import { sharedStyles } from '../sharedStyles';
 import { CalendarEventsService } from '../calendar-events-service';
 import { calendarEventsServiceContext } from '../context';
 import { serializeHash } from '@holochain-open-dev/utils';
-import { Record } from '@holochain/client';
-import { ActionHash } from '@holochain/client';
+import { Record, ActionHash } from '@holochain/client';
 import { extractCalendarEvent } from '../utils';
 import { AgentAvatar } from '@holochain-open-dev/profiles';
 

@@ -1,5 +1,4 @@
-import { Record } from '@holochain/client';
-import { AgentPubKey, CellId } from '@holochain/client';
+import { Record, AgentPubKey, CellId } from '@holochain/client';
 
 export interface CalendarEvent {
   title: string;
