@@ -32,13 +32,13 @@ const calendarEventsApplet: WeApplet = {
     appWebsocket: AppWebsocket,
     adminWebsocket: AdminWebsocket,
     weServices: WeServices,
-    appletAppInfo: InstalledAppInfo | InstalledAppletInfo[],
+    appletAppInfo: InstalledAppletInfo[],
   ): Promise<AppletRenderers> {
     return {
       full(element: HTMLElement, registry: CustomElementRegistry) {
 
-        if ((appletAppInfo as any).length) {
-          console.error("Wrong type of appletAppInfo passed. Expected type 'InstalledAppletInfo[]'.")
+        if ((appletAppInfo as any).length > 1) {
+          console.error("Wrong type of appletAppInfo passed. Expected only a single 'InstalledAppletInfo' but got multiple.")
         } else {
           registry.define("calendar-events-applet", CalendarEventsApplet);
           element.innerHTML = `<calendar-events-applet style="flex: 1; display: flex;"></calendar-events-applet>`;
