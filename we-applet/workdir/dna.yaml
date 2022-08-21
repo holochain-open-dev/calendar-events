@@ -7,11 +7,11 @@ integrity:
   origin_time: 2022-08-02T08:55:49.200Z
   zomes:
     - name: calendar_events_integrity
-      bundled: ../../target/wasm32-unknown-unknown/release/hc_zome_calendar_events_integrity.wasm
+      bundled: ../../target/wasm32-unknown-unknown/release/calendar_events_integrity.wasm
 coordinator:
   zomes:
     - name: calendar_events_coordinator
-      bundled: ../../target/wasm32-unknown-unknown/release/hc_zome_calendar_events_coordinator.wasm
+      bundled: ../../target/wasm32-unknown-unknown/release/calendar_events_coordinator.wasm
       dependencies:
         - name: calendar_events_integrity
 
