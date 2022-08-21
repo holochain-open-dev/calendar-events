@@ -12,7 +12,7 @@ name = "calendar_events_coordinator"
 derive_more = "0"
 serde = "1"
 
-chrono = {version = "0.4", features = ["serde"]}
+chrono = { version = "0.4.22", default-features = false, features = ["clock", "std", "oldtime", "serde"], optional = true }
 calendar_events_integrity = {path = "../../integrity_zomes/calendar_events"}
 hdk = {version = "0.0.147"}
 
