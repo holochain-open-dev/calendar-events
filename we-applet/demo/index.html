@@ -39,10 +39,10 @@
               new ProfilesService(new ProfilesZomeMock())
             ),
           },
-          appInfo
+          [{ weInfo: { name: "Demo Group", logoSrc: "" }, installedAppInfo: appInfo }]
         );
         renderers.full(container, window.customElements);
-      }
+      };
       setup();
     </script>
   </body>

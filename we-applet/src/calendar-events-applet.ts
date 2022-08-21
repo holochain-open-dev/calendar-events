@@ -14,6 +14,7 @@ import {
   calendarEventsServiceContext,
 } from "@calendar-events/elements";
 import { sharedStyles } from "@calendar-events/elements";
+import { InstalledAppletInfo } from "@lightningrodlabs/we-applet";
 
 export class CalendarEventsApplet extends ScopedElementsMixin(LitElement) {
   @property()
@@ -23,7 +24,7 @@ export class CalendarEventsApplet extends ScopedElementsMixin(LitElement) {
   profilesStore!: ProfilesStore;
 
   @property()
-  appletAppInfo!: InstalledAppInfo;
+  appletAppInfo!: InstalledAppletInfo[];
 
   @state()
   loaded = false;
@@ -36,7 +37,7 @@ export class CalendarEventsApplet extends ScopedElementsMixin(LitElement) {
       calendarEventsServiceContext,
       new CalendarEventsService(
         this.appWebsocket,
-        [this.appletAppInfo.cell_data[0].cell_id]
+        [this.appletAppInfo[0].installedAppInfo.cell_data[0].cell_id]
       )
     );
 
