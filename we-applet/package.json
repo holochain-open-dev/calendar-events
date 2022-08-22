@@ -21,7 +21,7 @@
     "@lit-labs/context": "^0.1.2",
     "@open-wc/scoped-elements": "^2.0.1",
     "@scoped-elements/material-web": "^0.0.19",
-    "@scoped-elements/event-calendar": "github:matthme/event-calendar.git#cross-we-calendar",
+    "@scoped-elements/event-calendar": "file:/home/matthias/code/holochain/scoped-elements/event-calendar",
     "lit": "^2.2.0"
   },
   "devDependencies": {
