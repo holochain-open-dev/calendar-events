@@ -24,6 +24,7 @@ export default /** @type {import('@web/dev-server').DevServerConfig} */ ({
 
   /** Set appIndex to enable SPA routing */
   appIndex: "./demo/index.html",
+  rootDir: '../',
   clearTerminalOnReload: false,
 
   plugins: [
